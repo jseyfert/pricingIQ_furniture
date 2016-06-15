@@ -20,7 +20,7 @@ mongoose.connection.once('open', function(){
 
 
 app.get('/', function(req, res){
-	res.send('index.html');
+	res.send('index');
 });
 
 app.listen(7070, function(){
