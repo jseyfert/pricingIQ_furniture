@@ -31,5 +31,26 @@ module.exports = {
 	logout: function(req, res){
 		req.logout();
 		res.json({ message: 'You logged out like a champ!' });
+	},
+
+	getUser: function(req, res){
+			UserModel.findById(req.params.id, function(err, user){
+				if(err){
+					console.log(err);
+					res.send(err);
+				} else {
+					res.json(user);
+				}
+			})	
+	},
+
+	getAllUsers: function(req, res){
+		UserModel.find().exec(function(err, result){
+			if(err){
+				res.send(err);
+			} else {
+				res.send(result);
+			}
+		})
 	}
 };

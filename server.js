@@ -27,7 +27,8 @@ var userControl = require('./controllers/userControl.js');
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
 app.get('/logout', userControl.logout);
-
+app.get('/user/:id', userControl.getUser);
+app.get('/users', userControl.getAllUsers);
 
 
 
@@ -37,7 +38,6 @@ mongoose.connect('mongodb://localhost:27017/react_login');
 mongoose.connection.once('open', function(){
 	console.log('Lotus, you are connected to your database');
 });
-
 
 app.get('/', function(req, res){
 	res.send('index');
