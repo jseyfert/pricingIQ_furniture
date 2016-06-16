@@ -24,7 +24,7 @@ module.exports = function(passport){
 			if(err)
 				return done(err);
 			if(!user)
-				return done(null, false, { message: 'We coudld not find your email address.' });
+				return done(null, false, { message: 'We could not find your email address.' });
 			if(!user.validPassword(password))
 				return done(null, false, { message: 'Wrong password. Try again.'});
 			return done(null, user, { message: 'You logged in successfully' });
