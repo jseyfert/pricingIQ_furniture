@@ -1,3 +1,10 @@
+//UserAuth
+//	UserLoginData
+//		UserLoginForm
+//	UserSignupData
+//		UserSignupForm
+
+
 var React = require('react');
 var UserLoginForm = require('./userLoginForm.js');
 
@@ -38,7 +45,6 @@ var UserLoginData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<h1> something from user login data </h1>
 				<UserLoginForm handleUserLoginSubmit={ this.handleUserLoginSubmit }
 							   onPasswordChange={ this.onPasswordChange }
 							   onUsernameChange={ this.onUsernameChange }

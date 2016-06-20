@@ -6,12 +6,12 @@
 
 var React = require('react');
 
-var UserLoginForm = React.createClass({
+var UserSignupForm = React.createClass({
 	render: function(){
 		return (
 			<div>
-			<h2> Log in </h2>	
-				<form class="form-horizontal" onSubmit={ this.props.handleUserLoginSubmit }>
+			<h3> Sign Up </h3>
+				<form class="form-horizontal" onSubmit={ this.props.handleUserSignupSubmit }>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Email</label>
 						<div class="col-sm-10">
@@ -30,11 +30,11 @@ var UserLoginForm = React.createClass({
 							<input type="password" class="form-control" placeholder="Password" onChange={ this.props.onPasswordChange } value={ this.props.password }/>
 						</div>
 					</div>
-					<button className="btn btn-primary">Log in</button>
+					<button className="btn btn-primary">Sign up</button>
 				</form>
 			</div>
 			)
 	}
 });
 
-module.exports = UserLoginForm;
+module.exports = UserSignupForm;
