@@ -5,9 +5,9 @@ var passport = require('passport');
 
 module.exports = {
 	login: function(req, res, next){
-		console.log(req.body);
+			//console.log(req.body);
 		passport.authenticate('local-login', function(err, user, info){
-			console.log('You logged in.', info);
+			//console.log('You logged in.', info);
 			if(err) { return next(err); }
 			if(!user) { return res.status(404).json(info.message) }
 			req.logIn(user, function(err){
@@ -30,8 +30,8 @@ module.exports = {
 	},
 
 	logout: function(req, res){
+		return res.json({ message: 'You logged out like a champ!' });
 		req.logout();
-		res.json({ message: 'You logged out like a champ!' });
 	},
 
 	getUser: function(req, res){

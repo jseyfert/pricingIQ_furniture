@@ -9,6 +9,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
+var LogoutUser = require('./userLogout.js');
+
+
 
 var UserAuth = React.createClass({
 	getInitialState: function(){
@@ -18,13 +21,12 @@ var UserAuth = React.createClass({
 	},
 
 	loginUserFromServer: function(user){
-		console.log(user);
 		$.ajax({
 			method: 'POST',
 			url: '/login',
 			data: user,
 			success: function(data){
-				console.log(data);
+				console.log("Login successful.");
 			},
 			error: function(xhr, status, err){
 				console.error('/login', status, err.toString())
@@ -33,15 +35,44 @@ var UserAuth = React.createClass({
 	},
 
 	signupUserFromServer: function(user){
+		$.ajax({
+			method: 'POST',
+			url: '/signup',
+			data: user, 
+			success: function(data){
+				console.log("Signup successful.", data);
+			},
+			error: function(xhr, status, err){
+				console.error('/signup', status, err.toString())
+			}
+		})
 
 	},
 
+	logoutUser: function(){
+		var self = this;
+		$.ajax({
+			url: '/logout',
+			method: 'GET', 
+			success: function(){
+				self.setState({ user: null });
+				console.log("Logout successful.");
+			},
+			error: function(xhr, status, err){
+				console.error('/logout', status, err.toString());
+			}
+		})
+		
+	},
+
 	render: function(){
+
 		return (
 			<div>
-				<div className="container color">
-					<UserLoginData loginUserFromServer={ this.loginUserFromServer }/>
-					<UserSignupData />
+				<div className="container">
+					<UserLoginData loginUserFromServer={ this.loginUserFromServer } />
+					<UserSignupData signupUserFromServer={ this.signupUserFromServer }/>
+					<LogoutUser logoutUser={ this.logoutUser } />
 				</div>
 			</div>
 			)

@@ -51,7 +51,8 @@ var UserLoginData = React.createClass({
 							   onEmailChange={ this.onEmailChange }
 							   email={ this.state.email }
 							   password={ this.state.password } 
-							   username={ this.state.username }/>
+							   username={ this.state.username }
+							   />
 			</div>
 			)
 	}
