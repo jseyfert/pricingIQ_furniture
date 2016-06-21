@@ -13,9 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(__dirname + '/views'));
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
 app.use(passport.initialize());
 app.use(passport.session()); 
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
 app.use(session({
  cookie: {
    maxAge: 60000

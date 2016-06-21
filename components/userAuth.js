@@ -3,6 +3,8 @@
 //		UserLoginForm
 //	UserSignupData
 //		UserSignupForm
+//  UserLogout
+
 
 
 var React = require('react');
@@ -49,15 +51,17 @@ var UserAuth = React.createClass({
 
 	},
 
-	logoutUser: function(){
+	logoutUser: function(user){
 		var self = this;
+		var user = self.state.user;
 		$.ajax({
 			url: '/logout',
-			method: 'GET', 
-			success: function(){
-				self.setState({ user: null });
+			method: 'GET',
+			data: user, 
+			success: function(data){
+				self.setState({ data: null });
 				console.log("Logout successful.");
-			},
+			}.bind(self),
 			error: function(xhr, status, err){
 				console.error('/logout', status, err.toString());
 			}
