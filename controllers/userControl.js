@@ -29,13 +29,9 @@ module.exports = {
 		})(req, res, next);
 	},
 
-	logout: function(req, res, next){
-		//res.send({ message: 'You logged out like a champ!' });
+	logout: function(req, res){
 		req.logout();
-		req.session.destroy(function(err){
-			if(err) { return next(err); }
-			return res.send({ authenticated: req.isAuthenticated() });
-		})
+		res.send({ message: 'You logged out like a champ!' });
 	},
 
 	getUser: function(req, res){

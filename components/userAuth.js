@@ -28,7 +28,7 @@ var UserAuth = React.createClass({
 			url: '/login',
 			data: user,
 			success: function(data){
-				console.log("Login successful.");
+				console.log("Login successful.", data);
 			},
 			error: function(xhr, status, err){
 				console.error('/login', status, err.toString())
@@ -60,7 +60,7 @@ var UserAuth = React.createClass({
 			data: user, 
 			success: function(data){
 				self.setState({ data: null });
-				console.log("Logout successful.");
+				console.log("Logout successful.", data);
 			}.bind(self),
 			error: function(xhr, status, err){
 				console.error('/logout', status, err.toString());
