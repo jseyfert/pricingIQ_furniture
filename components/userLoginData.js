@@ -12,8 +12,7 @@ var UserLoginData = React.createClass({
 	getInitialState: function(){
 		return {
 			email: "",
-			password: "", 
-			username: ""
+			password: "" 
 		}
 	},
 
@@ -25,9 +24,6 @@ var UserLoginData = React.createClass({
 		this.setState({ password: event.target.value })
 	},
 
-	onUsernameChange: function(event){
-		this.setState({ username: event.target.value })
-	},
 
 	handleUserLoginSubmit: function(e){
 		e.preventDefault();
@@ -35,10 +31,9 @@ var UserLoginData = React.createClass({
 		var user = {};
 		user.email = this.state.email;
 		user.password = this.state.password;
-		user.username = this.state.username;
 
 		this.props.loginUserFromServer(user);
-		this.setState({ email: '', password: '', username: '' });
+		this.setState({ email: '', password: '' });
 	},
 
 
@@ -47,11 +42,9 @@ var UserLoginData = React.createClass({
 			<div>
 				<UserLoginForm handleUserLoginSubmit={ this.handleUserLoginSubmit }
 							   onPasswordChange={ this.onPasswordChange }
-							   onUsernameChange={ this.onUsernameChange }
 							   onEmailChange={ this.onEmailChange }
 							   email={ this.state.email }
-							   password={ this.state.password } 
-							   username={ this.state.username }
+							   password={ this.state.password }
 							   />
 			</div>
 			)

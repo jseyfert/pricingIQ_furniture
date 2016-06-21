@@ -31,7 +31,7 @@ module.exports = {
 
 	logout: function(req, res){
 		req.logout();
-		res.send({ message: 'You logged out like a champ!' });
+		res.json({ message: 'You logged out like a champ!' });
 	},
 
 	getUser: function(req, res){

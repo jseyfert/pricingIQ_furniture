@@ -14,7 +14,6 @@ var UserSignupData = require('./userSignupData.js');
 var LogoutUser = require('./userLogout.js');
 
 
-
 var UserAuth = React.createClass({
 	getInitialState: function(){
 		return {
@@ -28,7 +27,7 @@ var UserAuth = React.createClass({
 			url: '/login',
 			data: user,
 			success: function(data){
-				console.log("Login successful.", data);
+				console.log("Login successful.", data.user._id);
 			},
 			error: function(xhr, status, err){
 				console.error('/login', status, err.toString())
@@ -69,14 +68,16 @@ var UserAuth = React.createClass({
 		
 	},
 
-	render: function(){
 
+
+	render: function(){
 		return (
 			<div>
 				<div className="container">
 					<UserLoginData loginUserFromServer={ this.loginUserFromServer } />
 					<UserSignupData signupUserFromServer={ this.signupUserFromServer }/>
 					<LogoutUser logoutUser={ this.logoutUser } />
+					
 				</div>
 			</div>
 			)

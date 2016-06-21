@@ -7,7 +7,10 @@
 var React = require('react');
 
 var UserLoginForm = React.createClass({
+
 	render: function(){
+			
+
 		return (
 			<div>
 			<h2> Log in </h2>	
@@ -16,12 +19,6 @@ var UserLoginForm = React.createClass({
 						<label class="col-sm-2 control-label">Email</label>
 						<div class="col-sm-10">
 							<input type="email" onChange={ this.props.onEmailChange } value={ this.props.email } class="form-control" placeholder="Email"/>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Username</label>
-						<div class="col-sm-10">
-							<input type="username" onChange={ this.props.onUsernameChange } value={ this.props.username } class="form-control" placeholder="Username"/>
 						</div>
 					</div>
 					<div class="form-group">
