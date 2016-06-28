@@ -45,7 +45,7 @@ var UserAuth = React.createClass({
 			url: '/signup',
 			data: user, 
 			success: function(data){
-				self.setState({ user: data })
+				self.setState({ user: data})
 				console.log("Signup successful.", data);
 			},
 			error: function(xhr, status, err){
@@ -57,13 +57,17 @@ var UserAuth = React.createClass({
 
 	logoutUser: function(user){
 		var self = this;
-		var user = self.state.user;
 		$.ajax({
 			url: '/logout',
 			method: 'GET', 
 			success: function(data){
-				self.setState({ data: "anonymous" });
-				console.log("Logout successful.", data);
+				$.ajax({
+					method: 'GET', 
+					url: '/oneUser'
+				}).done(function(data){
+					console.log(data);
+					self.setState({ user: data });
+				})
 			}.bind(self),
 			error: function(xhr, status, err){
 				console.error('/logout', status, err.toString());
