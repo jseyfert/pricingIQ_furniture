@@ -12,6 +12,7 @@ var ReactDOM = require('react-dom');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var LogoutUser = require('./userLogout.js');
+var AwareOfUser = require('./awareOfUser.js');
 
 
 var UserAuth = React.createClass({
@@ -22,12 +23,14 @@ var UserAuth = React.createClass({
 	},
 
 	loginUserFromServer: function(user){
+		var self = this;
 		$.ajax({
 			method: 'POST',
 			url: '/login',
 			data: user,
 			success: function(data){
-				console.log("Login successful.", data.user._id);
+				console.log("Login successful.", data);
+				self.setState({ user: data });
 			},
 			error: function(xhr, status, err){
 				console.error('/login', status, err.toString())
@@ -36,11 +39,13 @@ var UserAuth = React.createClass({
 	},
 
 	signupUserFromServer: function(user){
+		var self = this;	
 		$.ajax({
 			method: 'POST',
 			url: '/signup',
 			data: user, 
 			success: function(data){
+				self.setState({ user: data })
 				console.log("Signup successful.", data);
 			},
 			error: function(xhr, status, err){
@@ -55,10 +60,9 @@ var UserAuth = React.createClass({
 		var user = self.state.user;
 		$.ajax({
 			url: '/logout',
-			method: 'GET',
-			data: user, 
+			method: 'GET', 
 			success: function(data){
-				self.setState({ data: null });
+				self.setState({ data: "anonymous" });
 				console.log("Logout successful.", data);
 			}.bind(self),
 			error: function(xhr, status, err){
@@ -68,16 +72,32 @@ var UserAuth = React.createClass({
 		
 	},
 
+	getOneUserFromServer: function(){
+		var self = this;
+		$.ajax({
+			method: 'GET', 
+			url: '/oneUser'
+		}).done(function(data){
+			console.log(data);
+			self.setState({ user: data });
+		})
+	},
+
+	componentDidMount: function(){
+		this.getOneUserFromServer();
+	},
+
 
 
 	render: function(){
-		return (
+			var user = this.state.user ? <AwareOfUser user={ this.state.user } /> : null;
+			return (
 			<div>
 				<div className="container">
+					{ user }
 					<UserLoginData loginUserFromServer={ this.loginUserFromServer } />
 					<UserSignupData signupUserFromServer={ this.signupUserFromServer }/>
 					<LogoutUser logoutUser={ this.logoutUser } />
-					
 				</div>
 			</div>
 			)

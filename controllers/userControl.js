@@ -2,6 +2,7 @@ var UserModel = require('../models/userModel.js');
 var express = require('express');
 var app = express();
 var passport = require('passport');
+var mongoose = require('mongoose');
 
 module.exports = {
 	login: function(req, res, next){
@@ -53,5 +54,25 @@ module.exports = {
 				res.send(result);
 			}
 		})
+	},
+
+	getOneUser: function(req, res){
+		if(req.user) {
+     		console.log(req.user)
+     		mongoose.model('User').findById({
+         		_id: req.user._id
+       		},
+       		function(err, user) {
+         		if (err) {
+           			return console.log(err);
+         		} else {
+           			res.json(user)
+         		}
+       		});
+   		} else {
+     		res.json({
+       			user: "anonymous"
+     		})
+   		}
 	}
 };
