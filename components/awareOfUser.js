@@ -15,7 +15,7 @@ function AwareOfUser(props){
 		} else {
 			return (
 				<div>
-				<h1> Welcome Please sign in </h1>
+				<h3> Welcome Please sign in </h3>
 				<UserLoginData loginUserFromServer={ props.loginUserFromServer } />
 				<UserSignupData signupUserFromServer={ props.signupUserFromServer }/>
 				</div>
