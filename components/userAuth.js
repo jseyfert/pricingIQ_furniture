@@ -9,9 +9,8 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var UserLoginData = require('./userLoginData.js');
-var UserSignupData = require('./userSignupData.js');
-var LogoutUser = require('./userLogout.js');
+
+
 var AwareOfUser = require('./awareOfUser.js');
 
 
@@ -94,14 +93,12 @@ var UserAuth = React.createClass({
 
 
 	render: function(){
-			var user = this.state.user ? <AwareOfUser user={ this.state.user } /> : null;
+			var user = this.state.user ? <AwareOfUser user={ this.state.user } logoutUser={ this.logoutUser } loginUserFromServer={ this.loginUserFromServer } signupUserFromServer={ this.signupUserFromServer }/> : null;
 			return (
 			<div>
 				<div className="container">
 					{ user }
-					<UserLoginData loginUserFromServer={ this.loginUserFromServer } />
-					<UserSignupData signupUserFromServer={ this.signupUserFromServer }/>
-					<LogoutUser logoutUser={ this.logoutUser } />
+					
 				</div>
 			</div>
 			)
