@@ -33,7 +33,7 @@ var UserSignupForm = React.createClass({
           						
         					</div>
       					</div>
-      					<button className="btn btn-primary">Log in</button>
+      					<button className="btn btn-primary">Sign up</button>
     				</form>
   				</div>
 			</div>
