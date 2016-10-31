@@ -1,6 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
-var passport = require('passport');
+var passport = require('passport'); //i dont think this needs to be here
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){

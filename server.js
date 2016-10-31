@@ -4,23 +4,27 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
+// var cookieParser = require('cookie-parser')
 require('./userConfig/passport.js')(passport);
 
 var app = express();
 
+ 
 //mounting all of your middleware
+// app.use(cookieParser())
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(__dirname + '/views'));
-app.use(passport.initialize());
-app.use(passport.session()); 
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
+app.use(session({ secret: 'thisIsPricingIQ' }));  // should this go above passport initialize
 app.use(session({
  cookie: {
-   maxAge: 60000
+   maxAge: 60
  }
 }));
+app.use(passport.initialize());
+app.use(passport.session()); 
+   // 60 * 60 * 24 * 1; // 1 day
 
 var userControl = require('./controllers/userControl.js');
 
@@ -63,16 +67,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 mongoose.connect('mongodb://localhost:27017/react_login');
-mongoose.connection.once('open', function(){
-	console.log('Lotus, you are connected to your database');
-});
+mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 app.get('/', function(req, res){
-	res.send('index');
+ res.send('index');
 });
 
 app.listen(7070, function(){
-	console.log('Lo your server is up and running successfully');
+	console.log('server on 7070');
 });
+
 
 

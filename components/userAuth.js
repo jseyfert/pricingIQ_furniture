@@ -1,25 +1,29 @@
-//UserAuth
-//	UserLoginData
-//		UserLoginForm
-//	UserSignupData
-//		UserSignupForm
-//  UserLogout
-
-
+// UserAuth
+// 	awareOfUser
+// 		UserLoginData
+// 			UserLoginForm
+// 		UserSignupData
+// 			UserSignupForm
+// 	  UserLogout
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-
 var AwareOfUser = require('./awareOfUser.js');
-
 
 var UserAuth = React.createClass({
 	getInitialState: function(){
 		return {
-			user: null
+			user: null,
+			activeComponent: 'login'
 		}
 	},
+
+	setActiveComponent: function(componentName) {
+    this.setState({
+      activeComponent: componentName
+    })
+  },
 
 	loginUserFromServer: function(user){
 		var self = this;
@@ -53,6 +57,10 @@ var UserAuth = React.createClass({
 		})
 
 	},
+
+	test: function() {
+    console.log('in test');
+  },
 
 	logoutUser: function(user){
 		var self = this;
@@ -93,7 +101,7 @@ var UserAuth = React.createClass({
 
 
 	render: function(){
-			var user = this.state.user ? <AwareOfUser user={ this.state.user } logoutUser={ this.logoutUser } loginUserFromServer={ this.loginUserFromServer } signupUserFromServer={ this.signupUserFromServer }/> : null;
+			var user = this.state.user ? <AwareOfUser user={ this.state.user } activeComponent={ this.state.activeComponent } test={ this.test } setActiveComponent={ this.setActiveComponent } logoutUser={ this.logoutUser } loginUserFromServer={ this.loginUserFromServer } signupUserFromServer={ this.signupUserFromServer }/> : null;
 			return (
 			<div>
 				<div className="container">

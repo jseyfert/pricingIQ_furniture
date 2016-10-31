@@ -1,8 +1,3 @@
-//UserAuth
-//	UserLoginData
-//		UserLoginForm
-//	UserSignupData
-//		UserSignupForm
 
 var React = require('react');
 
@@ -10,34 +5,30 @@ var UserSignupForm = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<h3> Sign Up </h3>
-				<div className="row">
-    				<form className="col s6" onSubmit={ this.props.handleUserSignupSubmit }>
-  	  					<div className="row">
-        					<div className=".input-field col s6">
-        						<label for="email">Email</label>
-          						<input id="email" type="email" className="validate" onChange={ this.props.onEmailChange } value={ this.props.email }/>
-          						
-        					</div>
-      					</div>
-      					<div className="row">
-        					<div className=".input-field col s6">
-        						<label for="username">Username</label>
-          						<input className="validate" onChange={ this.props.onUsernameChange } value={ this.props.username }/>
-        					</div>
-      					</div>	
-      					<div className="row">
-        					<div className=".input-field col s6">
-        						<label for="password">Password</label>
-          						<input id="password" type="password" className="validate" onChange={ this.props.onPasswordChange } value={ this.props.password }/>
-          						
-        					</div>
-      					</div>
-      					<button className="btn btn-primary">Sign up</button>
-    				</form>
-  				</div>
+        <div className="container">
+          <div className="col-sm-6 col-sm-offset-3">
+          <h1><span className="fa fa-sign-in"></span> Signup</h1>
+      			<form className="" onSubmit={ this.props.handleUserSignupSubmit }>
+      				<div className="form-group">
+      					<label>Email</label>
+      					<input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email }/>
+      				</div>
+      				<div className="form-group">
+      					<label>Username</label>
+      					<input type="text" className="form-control" name="name" onChange={ this.props.onUsernameChange } value={ this.props.username }/>
+      				</div>
+      				<div className="form-group">
+      					<label>Password</label>
+      					<input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password }/>
+      				</div>
+      			    <button className="btn btn-warning btn-lg">Sign up</button>
+      			</form>
+            <hr/>
+            <p>Already have an account? <a onClick={this.props.setActiveComponent.bind(null, 'login')}>Login</a></p>
+          </div>    
+        </div>    
 			</div>
-			)
+		)
 	}
 });
 
