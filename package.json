@@ -30,7 +30,8 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "react": "^15.1.0",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "validator": "^6.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",

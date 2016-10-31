@@ -8,7 +8,6 @@ var session = require('express-session');
 require('./userConfig/passport.js')(passport);
 
 var app = express();
-
  
 //mounting all of your middleware
 // app.use(cookieParser())
@@ -16,15 +15,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(__dirname + '/views'));
-app.use(session({ secret: 'thisIsPricingIQ' }));  // should this go above passport initialize
+app.use(session({ secret: 'thisIsPricingIQ' }));  
 app.use(session({
  cookie: {
-   maxAge: 60
+   maxAge: 60 * 60 * 24 * 1 // = 1 day
  }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); 
-   // 60 * 60 * 24 * 1; // 1 day
 
 var userControl = require('./controllers/userControl.js');
 

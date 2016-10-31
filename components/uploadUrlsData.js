@@ -1,16 +1,46 @@
 
 var React = require('react');
 var UploadUrlsForm = require('./uploadUrlsForm.js');
+var validator = require('validator');
 
 var UploadUrlsData = React.createClass({
 	getInitialState: function(){
 		return {
-			url: ''
+			url: [],
+      maxUrls: false
 		}
 	},
 
+	parseAndValidateUrls: function(text){
+    var urlArray = text.split("\n");
+      
+    var validUrlArray = urlArray.map(function(url){
+        if (validator.isURL(url)){
+            return url;
+        } else {
+            return false;
+        }
+    }).filter(function(n){ return n != false })
+
+    return validUrlArray;
+	},
+
+  countValidUrls: function(array){
+    if (array.length <= 3){
+      return false;
+    } else {
+      return true;
+    }
+  },
+
 	onUrlChange: function(e){
-		this.setState({ url: e.target.value })
+		 var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
+     var maxUrls = this.countValidUrls(validatedUrlArray);
+
+		this.setState({ 
+      url: validatedUrlArray,
+      maxUrls: maxUrls
+    })
 	},
 
 	handleUrlSubmit: function(e){
@@ -23,11 +53,11 @@ var UploadUrlsData = React.createClass({
 		return (
 			<div>
 				<UploadUrlsForm 
-				test={ this.props.test }
 				logoutUser={ this.props.logoutUser } 
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
-				url={ this.state.url }
+        maxUrls={ this.state.maxUrls }
+        url={ this.state.url }
 				/>
 			</div>
 			)
@@ -35,3 +65,4 @@ var UploadUrlsData = React.createClass({
 });
 
 module.exports = UploadUrlsData;
+				// url={ this.state.url }
