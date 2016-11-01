@@ -4,7 +4,8 @@ var UploadUrlsForm = require('./uploadUrlsForm.js');
 var validator = require('validator');
 
 var UploadUrlsData = React.createClass({
-	getInitialState: function(){
+
+  getInitialState: function(){
 		return {
 			url: [],
       maxUrls: false
@@ -53,7 +54,8 @@ var UploadUrlsData = React.createClass({
 		return (
 			<div>
 				<UploadUrlsForm 
-				logoutUser={ this.props.logoutUser } 
+        logoutUser={ this.props.logoutUser } 
+				usernamePass={ this.props.usernamePass } 
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
         maxUrls={ this.state.maxUrls }

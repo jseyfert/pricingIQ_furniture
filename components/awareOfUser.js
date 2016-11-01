@@ -5,10 +5,12 @@ var UserSignupData = require('./userSignupData.js');
 var UploadUrlsData = require('./uploadUrlsData.js');
 
 function AwareOfUser(props){
+	var usernamePass = props.user.username;
+	console.log(usernamePass, 'one');
 		if(props.user.user !== "anonymous"){
 			return (
 				<div>
-					<UploadUrlsData logoutUser={ props.logoutUser } test={ props.test }  />
+					<UploadUrlsData logoutUser={ props.logoutUser } usernamePass={ usernamePass }  />
 				</div>
 			)
 		} else if (props.activeComponent === "login") {

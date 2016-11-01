@@ -6,7 +6,6 @@ var UploadUrlsForm = React.createClass({
   displayUrls: function(){
     var urlArray = this.props.url
     var maxUrl = this.props.maxUrls
-    // console.log(maxUrl);
 
     var urlListItems = urlArray.map(function(url ){
         return (
@@ -25,16 +24,16 @@ var UploadUrlsForm = React.createClass({
 
 
   render: function(){
-    var showWarning = this.props.maxUrls ? <div className="alert alert-danger">Max Urls reached - we will only process the first 3</div> : ' '; 
+    var showWarning = this.props.maxUrls ? <div className="alert alert-danger">Only 3 urls can be posted per day </div> : ' '; 
 		return (
 			<div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-          <a onClick={ this.props.logoutUser }>Logout</a>
+           <div> Welcome { this.props.usernamePass } </div>  <a onClick={ this.props.logoutUser }> Logout</a>
           <h1><span className="fa fa-sign-in"></span> Upload Urls </h1>
             <form className="" onSubmit={ this.props.handleUrlSubmit }>
               <div className="form-group">
-                
+               
                 <textarea className="form-control" name="url" rows="6" id="url" onChange={ this.props.onUrlChange }  required></textarea>
               </div>
                 <button className="btn btn-warning btn-lg">Submit</button>
@@ -45,6 +44,7 @@ var UploadUrlsForm = React.createClass({
         </div> 
         <div className="container">
           <div className="col-sm-12 col-sm-offset-0">
+           <h4> Your 3 Urls:</h4>
           <ol> { this.displayUrls() } </ol>
           </div>    
         </div>       

@@ -9,18 +9,22 @@ var UserSignupForm = React.createClass({
           <div className="col-sm-6 col-sm-offset-3">
           <h1><span className="fa fa-sign-in"></span> Signup</h1>
       			<form className="" onSubmit={ this.props.handleUserSignupSubmit }>
-      				<div className="form-group">
-      					<label>Email</label>
-      					<input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email }/>
-      				</div>
-      				<div className="form-group">
-      					<label>Username</label>
-      					<input type="text" className="form-control" name="name" onChange={ this.props.onUsernameChange } value={ this.props.username }/>
-      				</div>
-      				<div className="form-group">
-      					<label>Password</label>
-      					<input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password }/>
-      				</div>
+              <div className="form-group">
+                <label>Name</label>
+                <input type="text" className="form-control" name="name" onChange={ this.props.onUsernameChange } value={ this.props.username }/>
+              </div>
+              <div className="form-group">
+                <label>Company</label>
+                <input type="text" className="form-control" name="company" onChange={ this.props.onCompanyChange } value={ this.props.company }/>
+              </div>
+              <div classcompany="form-group">
+                <label>Email</label>
+                <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email }/>
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password }/>
+              </div>
       			    <button className="btn btn-warning btn-lg">Sign up</button>
       			</form>
             <hr/>
