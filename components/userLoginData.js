@@ -34,13 +34,15 @@ var UserLoginData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<UserLoginForm handleUserLoginSubmit={ this.handleUserLoginSubmit }
-							   onPasswordChange={ this.onPasswordChange }
-							   onEmailChange={ this.onEmailChange }
-							   email={ this.state.email }
-							   password={ this.state.password }
-							   setActiveComponent={ this.props.setActiveComponent }
-							   />
+				<UserLoginForm 
+					handleUserLoginSubmit={ this.handleUserLoginSubmit }
+					loginUserFromServer2={ this.props.loginUserFromServer2 }
+					onPasswordChange={ this.onPasswordChange }
+					onEmailChange={ this.onEmailChange }
+					email={ this.state.email }
+					password={ this.state.password }
+					setActiveComponent={ this.props.setActiveComponent }
+					/>
 			</div>
 			)
 	}

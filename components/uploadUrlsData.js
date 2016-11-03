@@ -45,9 +45,15 @@ var UploadUrlsData = React.createClass({
 	},
 
 	handleUrlSubmit: function(e){
-		e.preventDefault();
+    e.preventDefault();
 
-		console.log('boom yes');
+    var urls = [];
+    urls = this.state.url;
+
+    this.props.submitUrlsToServer(urls);
+    this.setState({ 
+      url: []
+    });
 	},
 
 	render: function(){

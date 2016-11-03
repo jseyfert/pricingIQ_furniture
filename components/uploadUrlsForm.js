@@ -44,7 +44,6 @@ var UploadUrlsForm = React.createClass({
         </div> 
         <div className="container">
           <div className="col-sm-12 col-sm-offset-0">
-           <h4> Your 3 Urls:</h4>
           <ol> { this.displayUrls() } </ol>
           </div>    
         </div>       

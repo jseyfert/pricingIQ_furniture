@@ -1,17 +1,24 @@
-// UserAuth
-// 	awareOfUser
-// 		UserLoginData
-// 			UserLoginForm
-// 		UserSignupData
-// 			UserSignupForm
-// 	  UserLogout
+// index *State*
+//   header
+//     UserLogout
+//   body
+//     awareOfUser
+//       UserLoginData *State*
+//         UserLoginForm
+//       UserSignupData *State*
+//         UserSignupForm
+//       UploadUrlsData *State*
+//         UploadUrlsForm
+//   footer
+
+
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-
 var AwareOfUser = require('./awareOfUser.js');
+var Header = require('./header.js');
 
-var UserAuth = React.createClass({
+var Index = React.createClass({
 	getInitialState: function(){
 		return {
 			user: null,
@@ -41,6 +48,22 @@ var UserAuth = React.createClass({
 		})
 	},
 
+	loginUserFromServer2: function(user){
+		var self = this;
+		$.ajax({
+			method: 'POST',
+			url: '/login',
+			data: user,
+			success: function(data){
+				console.log("Login successful - in loginUserFromServer2", data);
+				self.setState({ user: data });
+			},
+			error: function(xhr, status, err){
+				console.error('/login', status, err.toString())
+			}
+		})
+	},
+
 	signupUserFromServer: function(user){
 		var self = this;	
 		$.ajax({
@@ -55,12 +78,24 @@ var UserAuth = React.createClass({
 				console.error('/signup', status, err.toString())
 			}
 		})
-
 	},
 
-	test: function() {
-    console.log('in test');
-  },
+	submitUrlsToServer: function(urls){
+		console.log('in submitUrlsToServer', urls);
+		// var self = this;	
+		// $.ajax({
+		// 	method: 'POST',
+		// 	url: '/signup',
+		// 	data: urls, 
+		// 	success: function(data){
+		// 		self.setState({ urls: data})
+		// 		console.log("Signup successful.", data);
+		// 	},
+		// 	error: function(xhr, status, err){
+		// 		console.error('/signup', status, err.toString())
+		// 	}
+		// })
+	},
 
 	logoutUser: function(user){
 		var self = this;
@@ -80,7 +115,6 @@ var UserAuth = React.createClass({
 				console.error('/logout', status, err.toString());
 			}
 		})
-		
 	},
 
 	getOneUserFromServer: function(){
@@ -92,16 +126,19 @@ var UserAuth = React.createClass({
 			console.log(data);
 			self.setState({ user: data });
 		})
-	},
+	},	
 
 	componentDidMount: function(){
+		// console.log('in componentDidMount');
 		this.getOneUserFromServer();
 	},
 
 
+        // <Header />
 
+			// var user = this.state.user ? <AwareOfUser user={ this.state.user } activeComponent={ this.state.activeComponent } setActiveComponent={ this.setActiveComponent } logoutUser={ this.logoutUser } submitUrlsToServer={ this.submitUrlsToServer } loginUserFromServer={ this.loginUserFromServer } loginUserFromServer2={ this.loginUserFromServer2 } signupUserFromServer={ this.signupUserFromServer }/> : null;
 	render: function(){
-			var user = this.state.user ? <AwareOfUser user={ this.state.user } activeComponent={ this.state.activeComponent } test={ this.test } setActiveComponent={ this.setActiveComponent } logoutUser={ this.logoutUser } loginUserFromServer={ this.loginUserFromServer } signupUserFromServer={ this.signupUserFromServer }/> : null;
+		var user = null;
 			return (
 			<div>
 				<div className="container">
@@ -114,6 +151,6 @@ var UserAuth = React.createClass({
 });
 
 ReactDOM.render(
-	<UserAuth/>,
+	<Index />,
 	document.getElementById('app')
 );

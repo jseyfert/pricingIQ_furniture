@@ -4,7 +4,7 @@ var React = require('react');
 var UserLoginForm = React.createClass({
 
 	render: function(){
-			
+			console.log(this.props.loginUserFromServer2, 'in userLoginForm');
 
 		return (
 			<div>
