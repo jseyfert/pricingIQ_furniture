@@ -1,46 +1,59 @@
-// if (!Date.now) {
-//     Date.now = function() { return new Date().getTime(); }
-// }
-
-// var now1 = new Date();
-// var now2 =  Date.now();
-
-// console.log(now1, 'now1');
-// console.log(now2, 'now2');
-
 //===============================================================
 //===============================================================
 //===============================================================
 var parseUrl = require("parse-url");
 var _ = require("underscore");
 
-var urlArray = ['http://www.codewars.com/tom', 'http://www.codewars.com/tom', 'http://www.codewars.com/tom', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john']
-var domainArray = []
-var urlAndDomainArray = []
-var uniqueDomainArray = []
-var arrayOfObjects = []
+var urlArray = ['tim.com/asdf', 'http://www.codewars.com/tomf', 'http://www.codewars.com/toma', 'http://www.codewars.com/tomsdf', 'http://www.facebook.com/tom1','http://www.facebook.com/john2', 'http://www.facebook.com/tom3','http://www.facebook.com/john4', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john']
+var domains = []
+var distinctDomains = []
+var domainsAndUrls = []
+var arrOfObj = [];
 
+// parse domains from urls and add to two new arrrays
 urlArray.map(function(url){
   var getDomain = parseUrl(url).resource
-  domainArray.push(getDomain)
+  domains.push(getDomain)
+  domainsAndUrls.push([getDomain, url])
 })
 
-uniqueDomainArray = _.uniq(domainArray) // use underscore to select only unique domains
+// use underscore to select only unique domains
+distinctDomains = _.uniq(domains) 
 
-uniqueDomainArray.map(function(domain){
-  arrayOfObjects.push({
-    domain: domain,
-    urls: []
-  })
-})
+// creat json obj
+var createObj = function(arr, domain, index) {
+  var property = ''
+  var array = []
+  for(i = 0; i < arr.length ; i++) {
+    if(arr[i][0] === domain){
+      property = domain
+      array.push(arr[i][1])        
+    } else {
+      null;
+    }
+    arrOfObj[index] = {
+      domain: property,
+      urls: array
+    }
+  }
+}
 
-urlArray.map(function(url, index, array){
-  var getDomain = parseUrl(url).resource
-  urlAndDomainArray.push([getDomain, url])
-})
+// call createOb for each distinct domain
+var runPerDomain = function(arr, domainsAndUrls){
+  for(j = 0; j < arr.length ; j++) {
+    createObj(domainsAndUrls, arr[j], j)
+  }
+}
+
+runPerDomain(distinctDomains, domainsAndUrls)
+
+console.log(arrOfObj);
+
+////////////////////////////////////////////////////////////////////////
+
 
 // ///////this will be used to get the count of URls///////////////////////
-// var count = urlAndDomainArray.filter(function(item, index, array){
+// var count = domainsAndUrls.filter(function(item, index, array){
 //   return item[0]=='www.codewars.com'
 // }).length
 // console.log(count);
@@ -55,31 +68,24 @@ urlArray.map(function(url, index, array){
 
 
 //////////////get top 15 of URls for each domain////////////////////////
-var getTop15 = function(arr, domain) {
-  newArray = [];
-  count15 = 0;
-  for(i = 0; i < arr.length ; i++) {
-    if(arr[i][0] === domain){
-      newArray.push(arr[i][1])
-      count15 += 1;
-    } else {
-      null;
-    }
-  }
-  console.log(count15, 'total records');
-  return newArray.slice(0, 15);
-}
+// var getTop15 = function(arr, domain) {
+//   newArray = [];
+//   // count15 = 0;
+//   for(i = 0; i < arr.length ; i++) {
+//     if(arr[i][0] === domain){
+//       newArray.push(arr[i][1])
+//       // count15 += 1;
+//     } else {
+//       null;
+//     }
+//   }
+//   // console.log(count15, 'total records');
+//   return newArray.slice(0, 15);
+// }
 
-var facebook = getTop15(urlAndDomainArray, 'www.facebook.com' )
-console.log(facebook);
+// var facebook = getTop15(domainsAndUrls, 'www.facebook.com' )
+// console.log(facebook);
 ////////////////////////////////////////////////////////////////////////
-
-
-
-// for (*start w/ this(only executed once)*;*expression is true?*;*do this after each loop*){
-//   *Do Some Code* }
-
-// console.log(obj.hasOwnProperty("www.codewars.com")); // going to be used in an if statemt to see if it should add it to the aray 
 
 
 
