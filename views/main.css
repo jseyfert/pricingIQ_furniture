@@ -17,35 +17,13 @@ hr.showHr {
 }
 
 .marginBottom { 
-margin-bottom: 33px;
+  margin-bottom: 33px;
 }
- .smallUrlText {
+
+.smallUrlText {
   font-size: 66%;
- }
-
-/*body { 
-  background: #089DE3 !important;
 }
 
-div.jumbotron { 
-  background: #79CEF6 !important;
+li:hover {
+    background-color: #EEEEEE
 }
-
-/*body { 
-  background: #79CEF6  !important;
-}
-
-div.jumbotron { 
-      /* IE8 and below */
-    /*background: rgb(200, 54, 54);*/
-/*     all other browsers 
-    background: rgba(0, 0, 0, 0.5);
-}
-
-nav { 
-  background: #089DE3 !important;
-}
-
-.textWhite {
-  color: black !important
-}*/
