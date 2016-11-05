@@ -3,7 +3,7 @@
 //    userLogout/*/
 //    showWhichComponent
 //     UserLoginData *State*
-//       UserLoginForm
+//       UserLoginForm/*/
 //     UserSignupData *State*
 //       UserSignupForm
 //     UploadUrlsData *State*

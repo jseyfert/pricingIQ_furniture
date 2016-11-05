@@ -11,7 +11,7 @@ var UploadUrlsData = React.createClass({
   getInitialState: function(){
 		return {
 			uploadedUrls: [],
-      availableScrapers: ['amazon', 'walmart', 'sears']
+      availableDomains: ['amazon', 'walmart']
 		}
 	},
 
@@ -65,9 +65,14 @@ var UploadUrlsData = React.createClass({
     return arrOfObj;
 	},
 
-  countUrlsPerDomain: function(domain){
-    var arrOfObj = this.state.uploadedUrls
-    var count = 0
+  displayWhichBadge: function(domain){
+    var arrOfObj = this.state.uploadedUrls;
+    var availableDomains = this.state.availableDomains;
+    var count = 0;
+    var domainAvailable = _.include(availableDomains, domain)
+
+
+    console.log(domainAvailable, domain);
 
     arrOfObj.map(function(item){
       if (domain === item.domain){
@@ -75,10 +80,12 @@ var UploadUrlsData = React.createClass({
       }
     })
 
-    if (count === 0){
+    if(!domainAvailable){
+      return <span className="label label-danger label-as-badge">N/A</span>
+    } else if (count === 0){
       return null;
     } else if (count > 15){
-      return <span className="label label-danger label-as-badge">{ count }</span>
+      return <span className="label label-warning label-as-badge">{ count }</span>
     } else {
       return <span className="label label-success label-as-badge">{ count }</span>
     }
@@ -104,7 +111,7 @@ var UploadUrlsData = React.createClass({
 	},
 
   // componentDidMount: function(){
-  //   this.availableScrapers();
+  //   this.availableDomains();
   // },
 
 	render: function(){
@@ -112,8 +119,8 @@ var UploadUrlsData = React.createClass({
 			<div>
 				<UploadUrlsForm 
         uploadedUrls={ this.state.uploadedUrls } 
-        availableScrapers={ this.state.availableScrapers } 
-        countUrlsPerDomain={ this.countUrlsPerDomain }
+        availableDomains={ this.state.availableDomains } 
+        displayWhichBadge={ this.displayWhichBadge }
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
 				/>
