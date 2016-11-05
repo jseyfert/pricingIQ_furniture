@@ -2,7 +2,7 @@ var React = require('react');
 var UploadUrlsForm = React.createClass({
 
   render: function(){
-		return (
+    return (
 			<div>
         <div className="container">
             <div className="jumbotron">
@@ -21,19 +21,19 @@ var UploadUrlsForm = React.createClass({
               <div className="col-lg-4 col-md-6 col-xs-12 marginBottom">
                 <div className="center">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png" alt=""/>
-                  <span className="badge">3</span>
+                  { this.props.countUrlsPerDomain('amazon') }
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 col-xs-12 marginBottom">
                 <div className="center">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png" alt=""/>
-                  <span className="badge">0</span>
+                  { this.props.countUrlsPerDomain('walmart') }
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 col-xs-12 marginBottom">
                 <div className="center">
                   <img  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
-                  <span className="badge">13</span>
+                  { this.props.countUrlsPerDomain('sears') }
                 </div>
               </div>
             </div>

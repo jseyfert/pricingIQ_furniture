@@ -3,7 +3,6 @@ var React = require('react');
 var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
-
 var UploadUrlsForm = require('./uploadUrlsForm.js');
 
 
@@ -11,7 +10,8 @@ var UploadUrlsData = React.createClass({
 
   getInitialState: function(){
 		return {
-			uploadedUrls: []
+			uploadedUrls: [],
+      availableScrapers: ['amazon', 'walmart', 'sears']
 		}
 	},
 
@@ -65,6 +65,25 @@ var UploadUrlsData = React.createClass({
     return arrOfObj;
 	},
 
+  countUrlsPerDomain: function(domain){
+    var arrOfObj = this.state.uploadedUrls
+    var count = 0
+
+    arrOfObj.map(function(item){
+      if (domain === item.domain){
+        count = item.urls.length
+      }
+    })
+
+    if (count === 0){
+      return null;
+    } else if (count > 15){
+      return <span className="label label-danger label-as-badge">{ count }</span>
+    } else {
+      return <span className="label label-success label-as-badge">{ count }</span>
+    }
+  },
+
 	onUrlChange: function(e){
 		var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
 		this.setState({ 
@@ -80,14 +99,21 @@ var UploadUrlsData = React.createClass({
 
     this.props.submitUrlsToServer(urls);
     this.setState({ 
-      url: []
+      uploadedUrls: []
     });
 	},
+
+  // componentDidMount: function(){
+  //   this.availableScrapers();
+  // },
 
 	render: function(){
 		return (
 			<div>
 				<UploadUrlsForm 
+        uploadedUrls={ this.state.uploadedUrls } 
+        availableScrapers={ this.state.availableScrapers } 
+        countUrlsPerDomain={ this.countUrlsPerDomain }
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
 				/>

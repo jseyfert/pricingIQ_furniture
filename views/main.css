@@ -27,3 +27,7 @@ hr.showHr {
 li:hover {
     background-color: #EEEEEE
 }
+
+.label-as-badge {
+    border-radius: 1em;
+}

@@ -1,6 +1,6 @@
 // index *State*
-//   header///
-//    UserLogout///
+//   header/*/
+//    userLogout/*/
 //    showWhichComponent
 //     UserLoginData *State*
 //       UserLoginForm
@@ -8,7 +8,7 @@
 //       UserSignupForm
 //     UploadUrlsData *State*
 //       UploadUrlsForm
-//    footer///
+//    footer/*/
 
 
 
