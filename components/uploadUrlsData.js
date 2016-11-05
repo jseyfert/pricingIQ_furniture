@@ -1,46 +1,74 @@
 
 var React = require('react');
-var UploadUrlsForm = require('./uploadUrlsForm.js');
 var validator = require('validator');
+var parseDomain = require("parse-domain");
+var _ = require("underscore");
+
+var UploadUrlsForm = require('./uploadUrlsForm.js');
+
 
 var UploadUrlsData = React.createClass({
 
   getInitialState: function(){
 		return {
-			url: [],
-      maxUrls: false
+			uploadedUrls: []
 		}
 	},
 
 	parseAndValidateUrls: function(text){
     var urlArray = text.split("\n");
-      
-    var validUrlArray = urlArray.map(function(url){
-        if (validator.isURL(url)){
-            return url;
-        } else {
-            return false;
-        }
-    }).filter(function(n){ return n != false })
+    var domains = [];
+    var domainsAndUrls = [];
+    var distinctDomains = [];
+    var arrOfObj = [];
 
-    return validUrlArray;
+    // validate urls and parse domain
+    urlArray.map(function(url){
+        if (validator.isURL(url) && parseDomain(url)){
+          var getDomain = parseDomain(url).domain
+          domains.push(getDomain)
+          domainsAndUrls.push([getDomain, url])
+        } else {
+          return null;
+        }
+    })
+      
+    // use underscore to select only unique domains
+    distinctDomains = _.uniq(domains) 
+
+    // creat json obj
+    var createObj = function(arr, domain, index) {
+      var property = ''
+      var array = []
+      for(var i = 0; i < arr.length ; i++) {
+        if(arr[i][0] === domain){
+          property = domain
+          array.push(arr[i][1])        
+        } else {
+          null;
+        }
+        arrOfObj[index] = {
+          domain: property,
+          urls: array
+        }
+      }
+    }
+
+    // call createOb for each distinct domain
+    var runPerDomain = function(arr, domainsAndUrls){
+      for(var i = 0; i < arr.length ; i++) {
+        createObj(domainsAndUrls, arr[i], i)
+      }
+    }(distinctDomains, domainsAndUrls)
+
+    // console.log('end of function', arrOfObj);
+    return arrOfObj;
 	},
 
-  countValidUrls: function(array){
-    if (array.length <= 3){
-      return false;
-    } else {
-      return true;
-    }
-  },
-
 	onUrlChange: function(e){
-		 var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
-     var maxUrls = this.countValidUrls(validatedUrlArray);
-
+		var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
 		this.setState({ 
-      url: validatedUrlArray,
-      maxUrls: maxUrls
+      uploadedUrls: validatedUrlArray
     })
 	},
 
@@ -60,12 +88,8 @@ var UploadUrlsData = React.createClass({
 		return (
 			<div>
 				<UploadUrlsForm 
-        logoutUser={ this.props.logoutUser } 
-				usernamePass={ this.props.usernamePass } 
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
-        maxUrls={ this.state.maxUrls }
-        url={ this.state.url }
 				/>
 			</div>
 			)
@@ -73,4 +97,3 @@ var UploadUrlsData = React.createClass({
 });
 
 module.exports = UploadUrlsData;
-				// url={ this.state.url }

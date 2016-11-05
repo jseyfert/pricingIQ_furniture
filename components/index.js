@@ -1,22 +1,22 @@
 // index *State*
-//   header
-//     UserLogout
-//   body
-//     awareOfUser
-//       UserLoginData *State*
-//         UserLoginForm
-//       UserSignupData *State*
-//         UserSignupForm
-//       UploadUrlsData *State*
-//         UploadUrlsForm
-//   footer
+//   header///
+//    UserLogout///
+//    showWhichComponent
+//     UserLoginData *State*
+//       UserLoginForm
+//     UserSignupData *State*
+//       UserSignupForm
+//     UploadUrlsData *State*
+//       UploadUrlsForm
+//    footer///
 
 
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var AwareOfUser = require('./awareOfUser.js');
+var ShowWhichComponent = require('./showWhichComponent.js');
 var Header = require('./header.js');
+var Footer = require('./footer.js');
 
 var Index = React.createClass({
 	getInitialState: function(){
@@ -98,6 +98,7 @@ var Index = React.createClass({
 	},
 
 	logoutUser: function(user){
+		// console.log('in logoutUser');
 		var self = this;
 		$.ajax({
 			url: '/logout',
@@ -134,23 +135,32 @@ var Index = React.createClass({
 	},
 
 
-        // <Header />
-
-			// var user = this.state.user ? <AwareOfUser user={ this.state.user } activeComponent={ this.state.activeComponent } setActiveComponent={ this.setActiveComponent } logoutUser={ this.logoutUser } submitUrlsToServer={ this.submitUrlsToServer } loginUserFromServer={ this.loginUserFromServer } loginUserFromServer2={ this.loginUserFromServer2 } signupUserFromServer={ this.signupUserFromServer }/> : null;
 	render: function(){
-		var user = null;
+			if (!this.state.user) {
+				return null;
+			} else {
 			return (
-			<div>
-				<div className="container">
-					{ user }
-					
+				<div>
+					<Header 
+          user={ this.state.user } 
+          logoutUser={ this.logoutUser }
+          />
+					<ShowWhichComponent 
+          user={ this.state.user } 
+          logoutUser={ this.logoutUser } 
+          activeComponent={ this.state.activeComponent } 
+          setActiveComponent={ this.setActiveComponent } 
+          submitUrlsToServer={ this.submitUrlsToServer } 
+          loginUserFromServer={ this.loginUserFromServer } 
+          loginUserFromServer2={ this.loginUserFromServer2 } 
+          signupUserFromServer={ this.signupUserFromServer }
+          />
+					<Footer />
 				</div>
-			</div>
 			)
+			}
 	}
 });
 
-ReactDOM.render(
-	<Index />,
-	document.getElementById('app')
-);
+ReactDOM.render(	<Index />,	document.getElementById('app'));
+

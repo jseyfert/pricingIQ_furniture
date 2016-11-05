@@ -2,11 +2,7 @@ var React = require('react');
 
 var LogoutUser = React.createClass({
 	render: function(){
-		return (
-			<div>
-        <a onClick={ this.props.logoutUser }>Logout</a>
-			</div>
-			)
+		return  <a href="#" className="navbar-link colorBlue" onClick={ this.props.logoutUser }> Logout</a>
 	}
 });
 

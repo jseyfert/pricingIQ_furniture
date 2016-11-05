@@ -9,24 +9,14 @@ var checkUserLastSubmit = function (){
 
 }
 
-function AwareOfUser(props){
-		if(/*props.user.user !== "anonymous" && timeCheck2*/ false){
+function ShowWhichComponent(props){
+		if(/*props.user.user !== "anonymous" && timeCheck2*/ true){
 			return (
-				<div>
-				<LogoutUser />
-					you have already submitted for today - please come back tomorrow
-				</div>
-				)
-		} else if (props.user.user !== "anonymous"){
-			return (
-				<div>
 					<UploadUrlsData 
 					submitUrlsToServer={ props.submitUrlsToServer }
-					logoutUser={ props.logoutUser }
 					/>
-				</div>
 				)
-		} else if (/*props.activeComponent === "login"*/ true) {
+		} else if (/*props.activeComponent === "login"*/ false) {
 			return (
 				<div>
 				  <UserLoginData 
@@ -48,7 +38,7 @@ function AwareOfUser(props){
 		}
 };
 
-module.exports = AwareOfUser;
+module.exports = ShowWhichComponent;
 
 //<h2> Hello { props.user.user.username } </h2>
 // LogoutUser logoutUser={ props.logoutUser } />

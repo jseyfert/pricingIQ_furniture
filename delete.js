@@ -1,10 +1,20 @@
 //===============================================================
 //===============================================================
+// var funcs = [];
+// for (var i = 0; i < 3; i++) {          // let's create 3 functions
+//     funcs[i] = function() {            // and store them in funcs
+//         console.log("My value: " + i); // each should log its value.
+//     };
+// }
+// for (var j = 0; j < 3; j++) {
+//     funcs[j]();                        // and now let's run each one to see
+// }
 //===============================================================
+var validator = require('validator');
 var parseUrl = require("parse-url");
 var _ = require("underscore");
 
-var urlArray = ['tim.com/asdf', 'http://www.codewars.com/tomf', 'http://www.codewars.com/toma', 'http://www.codewars.com/tomsdf', 'http://www.facebook.com/tom1','http://www.facebook.com/john2', 'http://www.facebook.com/tom3','http://www.facebook.com/john4', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john', 'http://www.facebook.com/tom','http://www.facebook.com/john']
+var urlArray = ['','qwerqwer', 'http://www.codewars.com/1', 'http://www.codewars.com/2', 'http://www.facebook.com/1','http://www.facebook.com/2', 'http://www.facebook.com/3']
 var domains = []
 var distinctDomains = []
 var domainsAndUrls = []
@@ -12,16 +22,20 @@ var arrOfObj = [];
 
 // parse domains from urls and add to two new arrrays
 urlArray.map(function(url){
-  var getDomain = parseUrl(url).resource
-  domains.push(getDomain)
-  domainsAndUrls.push([getDomain, url])
+    if (validator.isURL(url)){
+      var getDomain = parseUrl(url).resource
+      domains.push(getDomain)
+      domainsAndUrls.push([getDomain, url])
+    } else {
+        return false;
+    }
 })
 
 // use underscore to select only unique domains
 distinctDomains = _.uniq(domains) 
 
 // creat json obj
-var createObj = function(arr, domain, index) {
+let createObj = function(arr, domain, index) {
   var property = ''
   var array = []
   for(i = 0; i < arr.length ; i++) {
@@ -39,13 +53,13 @@ var createObj = function(arr, domain, index) {
 }
 
 // call createOb for each distinct domain
-var runPerDomain = function(arr, domainsAndUrls){
-  for(j = 0; j < arr.length ; j++) {
-    createObj(domainsAndUrls, arr[j], j)
+let runPerDomain = function(arr, domainsAndUrls){
+  for(i = 0; i < arr.length ; i++) {
+    createObj(domainsAndUrls, arr[i], i)
   }
-}
+}(distinctDomains, domainsAndUrls)
 
-runPerDomain(distinctDomains, domainsAndUrls)
+// runPerDomain(distinctDomains, domainsAndUrls)
 
 console.log(arrOfObj);
 
