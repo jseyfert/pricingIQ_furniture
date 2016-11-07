@@ -1,7 +1,7 @@
 
 var React = require('react');
 
-var UserLoginForm = React.createClass({
+var UserLoginHtml = React.createClass({
 
 	render: function(){
 
@@ -30,4 +30,4 @@ var UserLoginForm = React.createClass({
 	}
 });
 
-module.exports = UserLoginForm;
+module.exports = UserLoginHtml;

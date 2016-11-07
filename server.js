@@ -18,7 +18,7 @@ app.use(express.static(__dirname + '/views'));
 app.use(session({ secret: 'thisIsPricingIQ' }));  
 app.use(session({
  cookie: {
-   maxAge: 60000  //60 * 60 * 24 * 1 // = 1 day
+  maxAge: 60000  // 30 days  //60 * 60 * 24 * 1 // = 1 day
  }
 }));
 app.use(passport.initialize());

@@ -3,7 +3,7 @@ var LogoutUser = require('./userLogout.js');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var UploadUrlsData = require('./uploadUrlsData.js');
-var UploadConfirmData = require('./uploadConfirmData.js');
+var ConfirmData = require('./ConfirmData.js');
 
 
 function ShowWhichComponent(props){
@@ -38,8 +38,8 @@ function ShowWhichComponent(props){
 		} else if (props.user.user !== "anonymous")  {
 			return (
 				<div>
-					<UploadConfirmData 
-          allSubmittedUrls = { props.allSubmittedUrls }
+					<ConfirmData 
+          allUrls = { props.allUrls }
           allDomains={ props.allDomains }
           />
 				</div>
@@ -47,7 +47,7 @@ function ShowWhichComponent(props){
 		} else {
       return (
         <div>
-ERROR ALREADY SUBMITTED
+					ERROR ALREADY SUBMITTED
         </div>
         )
     }

@@ -6,11 +6,11 @@ var UploadUrlsForm = React.createClass({
   displayWhichDomain: function(domain){
     var rows = [];
     var allDomains = this.props.allDomains;
-    var allSubmittedUrls = this.props.allSubmittedUrls;
+    var allUrls = this.props.allUrls;
 
     var displayWhichBadge = function(domain, serverDomainAvailable){
-      var clientDomainAvailable = _.where(allSubmittedUrls, {domain: domain}).length > 0
-      var urlCount = (_.where(allSubmittedUrls, {domain: domain}).length > 0) ? _.where(allSubmittedUrls, {domain: domain})[0].urls.length : null;
+      var clientDomainAvailable = _.where(allUrls, {domain: domain}).length > 0
+      var urlCount = (_.where(allUrls, {domain: domain}).length > 0) ? _.where(allUrls, {domain: domain})[0].urls.length : null;
       if (!serverDomainAvailable){
         return <span className="label label-danger label-as-badge">N/A</span> 
       } else if (clientDomainAvailable && urlCount > 15) {
@@ -30,6 +30,7 @@ var UploadUrlsForm = React.createClass({
           </div>
         )
     })
+
     return rows;
   },
 

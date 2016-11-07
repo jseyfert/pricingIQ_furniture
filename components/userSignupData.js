@@ -1,6 +1,6 @@
 
 var React = require('react');
-var UserSignupForm = require('./userSignupForm.js');
+var UserSignupHtml = require('./userSignupHtml.js');
 
 var UserSignupData = React.createClass({
 	getInitialState: function(){
@@ -50,7 +50,7 @@ var UserSignupData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<UserSignupForm 
+				<UserSignupHtml 
 				handleUserSignupSubmit={ this.handleUserSignupSubmit }
 				setActiveComponent={ this.props.setActiveComponent }
 				onEmailChange={ this.onEmailChange }

@@ -24,11 +24,11 @@ var Index = React.createClass({
 			user: null,
 			submitClicked: false,
 			activeComponent: 'login',
-			allSubmittedUrls: [],	//allUrls
+			allUrls: [],
 			allDomains: 
 			[
 			{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
-			{domain: 'walmart', domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
+			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
 			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
 			]
 		}
@@ -78,7 +78,7 @@ var Index = React.createClass({
 		console.log('in submitUrlsToServer', urls, this.state.user);
 
 	 this.setState({ 
-      allSubmittedUrls: urls,
+      allUrls: urls,
       submitClicked: true
     })
 		// var self = this;	
@@ -146,7 +146,7 @@ var Index = React.createClass({
           />
 					<ShowWhichComponent 
           user={ this.state.user } 
-          allSubmittedUrls={ this.state.allSubmittedUrls } 
+          allUrls={ this.state.allUrls } 
           allDomains={ this.state.allDomains } 
           logoutUser={ this.logoutUser } 
           submitClicked={ this.state.submitClicked } 

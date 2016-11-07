@@ -1,6 +1,6 @@
 
 var React = require('react');
-var UserLoginForm = require('./userLoginForm.js');
+var UserLoginHtml = require('./userLoginHtml.js');
 
 var UserLoginData = React.createClass({
 	getInitialState: function(){
@@ -34,7 +34,7 @@ var UserLoginData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<UserLoginForm 
+				<UserLoginHtml 
 					handleUserLoginSubmit={ this.handleUserLoginSubmit }
 					onPasswordChange={ this.onPasswordChange }
 					onEmailChange={ this.onEmailChange }
