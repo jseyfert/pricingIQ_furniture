@@ -3,17 +3,22 @@ var React = require('react');
 var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
-var UploadUrlsForm = require('./uploadUrlsForm.js');
+var UploadUrlsHtml = require('./uploadUrlsHtml.js');
 
+var domainImages = [
+  {domain: 'amazon',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
+  {domain: 'walmart', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
+  {domain: 'sears',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
+]
 
 var UploadUrlsData = React.createClass({
-
   getInitialState: function(){
+    // console.log(this.props.allDomains, 'boom boom room');
 		return {
-			uploadedUrls: [],
-      availableDomains: ['amazon', 'walmart']
+			allSubmittedUrls: []
 		}
 	},
+
 
 	parseAndValidateUrls: function(text){
     var urlArray = text.split("\n");
@@ -21,6 +26,13 @@ var UploadUrlsData = React.createClass({
     var domainsAndUrls = [];
     var distinctDomains = [];
     var arrOfObj = [];
+    var allDomains = this.props.allDomains;
+    var availableDomains = []
+    allDomains.map(function(obj){
+      if (obj.available){
+        availableDomains.push(obj.domain)
+      }
+    })
 
     // validate urls and parse domain
     urlArray.map(function(url){
@@ -38,18 +50,25 @@ var UploadUrlsData = React.createClass({
 
     // creat json obj
     var createObj = function(arr, domain, index) {
-      var property = ''
-      var array = []
+      var setDomain = '';
+      var array = [];
+      var img = '';
+      var domainAvailable = false;
       for(var i = 0; i < arr.length ; i++) {
         if(arr[i][0] === domain){
-          property = domain
+          setDomain = domain;
+          domainAvailable = _.include(availableDomains, domain);
+          (domainAvailable) ? img = _.where(domainImages, {domain: domain})[0].img : null;
           array.push(arr[i][1])        
         } else {
           null;
         }
+
         arrOfObj[index] = {
-          domain: property,
-          urls: array
+          domain: setDomain,
+          domainAvailable: domainAvailable,
+          urls: array,
+          img: img
         }
       }
     }
@@ -65,62 +84,55 @@ var UploadUrlsData = React.createClass({
     return arrOfObj;
 	},
 
-  displayWhichBadge: function(domain){
-    var arrOfObj = this.state.uploadedUrls;
-    var availableDomains = this.state.availableDomains;
-    var count = 0;
-    var domainAvailable = _.include(availableDomains, domain)
 
+  // displayWhichDomainOLD: function(domain){
+  //   var arrOfObj = this.state.allSubmittedUrls;
+  //   var availableDomains = this.props.availableDomains;
+  //   var count = 0;
+  //   var domainAvailable = _.include(availableDomains, domain)
 
-    console.log(domainAvailable, domain);
+  //   arrOfObj.map(function(item){
+  //     if (domain === item.domain){
+  //       count = item.urls.length
+  //     }
+  //   })
 
-    arrOfObj.map(function(item){
-      if (domain === item.domain){
-        count = item.urls.length
-      }
-    })
-
-    if(!domainAvailable){
-      return <span className="label label-danger label-as-badge">N/A</span>
-    } else if (count === 0){
-      return null;
-    } else if (count > 15){
-      return <span className="label label-warning label-as-badge">{ count }</span>
-    } else {
-      return <span className="label label-success label-as-badge">{ count }</span>
-    }
-  },
+  //   if(!domainAvailable){
+  //     return <span className="label label-danger label-as-badge">N/A</span>
+  //   } else if (count === 0){
+  //     return null;
+  //   } else if (count > 15){
+  //     return <span className="label label-warning label-as-badge">{ count }</span>
+  //   } else {
+  //     return <span className="label label-success label-as-badge">{ count }</span>
+  //   }
+  // },
 
 	onUrlChange: function(e){
 		var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
 		this.setState({ 
-      uploadedUrls: validatedUrlArray
+      allSubmittedUrls: validatedUrlArray
     })
 	},
 
 	handleUrlSubmit: function(e){
     e.preventDefault();
-
+    console.log('here');
     var urls = [];
-    urls = this.state.url;
+    urls = this.state.allSubmittedUrls;
 
     this.props.submitUrlsToServer(urls);
-    this.setState({ 
-      uploadedUrls: []
-    });
+    // this.setState({ 
+    //   allSubmittedUrls: []
+    // });
 	},
-
-  // componentDidMount: function(){
-  //   this.availableDomains();
-  // },
 
 	render: function(){
 		return (
 			<div>
-				<UploadUrlsForm 
-        uploadedUrls={ this.state.uploadedUrls } 
-        availableDomains={ this.state.availableDomains } 
-        displayWhichBadge={ this.displayWhichBadge }
+				<UploadUrlsHtml 
+        allDomains={ this.props.allDomains }
+        allSubmittedUrls={ this.state.allSubmittedUrls } 
 				handleUrlSubmit={ this.handleUrlSubmit }
 				onUrlChange={ this.onUrlChange }
 				/>

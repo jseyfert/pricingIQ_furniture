@@ -36,7 +36,6 @@ var UserLoginData = React.createClass({
 			<div>
 				<UserLoginForm 
 					handleUserLoginSubmit={ this.handleUserLoginSubmit }
-					loginUserFromServer2={ this.props.loginUserFromServer2 }
 					onPasswordChange={ this.onPasswordChange }
 					onEmailChange={ this.onEmailChange }
 					email={ this.state.email }

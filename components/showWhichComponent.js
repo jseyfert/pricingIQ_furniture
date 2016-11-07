@@ -3,30 +3,30 @@ var LogoutUser = require('./userLogout.js');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var UploadUrlsData = require('./uploadUrlsData.js');
+var UploadConfirmData = require('./uploadConfirmData.js');
 
-
-var checkUserLastSubmit = function (){
-
-}
 
 function ShowWhichComponent(props){
-		if(/*props.user.user !== "anonymous" && timeCheck2*/ true){
+// console.log(props.submitClicked);
+		if(props.submitClicked === false){
 			return (
+				<div>
 					<UploadUrlsData 
-					submitUrlsToServer={ props.submitUrlsToServer }
+          submitUrlsToServer={ props.submitUrlsToServer }
+					allDomains={ props.allDomains }
 					/>
+				</div>
 				)
-		} else if (/*props.activeComponent === "login"*/ false) {
+		} else if (props.user.user === "anonymous" && props.activeComponent === "login") {
 			return (
 				<div>
 				  <UserLoginData 
 				  loginUserFromServer={ props.loginUserFromServer }
-				  loginUserFromServer2={ props.loginUserFromServer2 }
 				  setActiveComponent={ props.setActiveComponent }
 				  />
 				</div>
 				)
-		} else {
+		} else if (props.user.user === "anonymous" && props.activeComponent === "signup")  {
 			return (
 				<div>
 				  <UserSignupData
@@ -35,7 +35,22 @@ function ShowWhichComponent(props){
 				  />
 				</div>
 				)
-		}
+		} else if (props.user.user !== "anonymous")  {
+			return (
+				<div>
+					<UploadConfirmData 
+          allSubmittedUrls = { props.allSubmittedUrls }
+          allDomains={ props.allDomains }
+          />
+				</div>
+				)
+		} else {
+      return (
+        <div>
+ERROR ALREADY SUBMITTED
+        </div>
+        )
+    }
 };
 
 module.exports = ShowWhichComponent;

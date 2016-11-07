@@ -22,10 +22,20 @@ var Index = React.createClass({
 	getInitialState: function(){
 		return {
 			user: null,
-			activeComponent: 'login'
+			submitClicked: false,
+			activeComponent: 'login',
+			allSubmittedUrls: [],	//allUrls
+			allDomains: 
+			[
+			{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
+			{domain: 'walmart', domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
+			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
+			]
 		}
 	},
 
+	//domain active
+       
 	setActiveComponent: function(componentName) {
     this.setState({
       activeComponent: componentName
@@ -40,22 +50,6 @@ var Index = React.createClass({
 			data: user,
 			success: function(data){
 				console.log("Login successful.", data);
-				self.setState({ user: data });
-			},
-			error: function(xhr, status, err){
-				console.error('/login', status, err.toString())
-			}
-		})
-	},
-
-	loginUserFromServer2: function(user){
-		var self = this;
-		$.ajax({
-			method: 'POST',
-			url: '/login',
-			data: user,
-			success: function(data){
-				console.log("Login successful - in loginUserFromServer2", data);
 				self.setState({ user: data });
 			},
 			error: function(xhr, status, err){
@@ -81,7 +75,12 @@ var Index = React.createClass({
 	},
 
 	submitUrlsToServer: function(urls){
-		console.log('in submitUrlsToServer', urls);
+		console.log('in submitUrlsToServer', urls, this.state.user);
+
+	 this.setState({ 
+      allSubmittedUrls: urls,
+      submitClicked: true
+    })
 		// var self = this;	
 		// $.ajax({
 		// 	method: 'POST',
@@ -147,12 +146,14 @@ var Index = React.createClass({
           />
 					<ShowWhichComponent 
           user={ this.state.user } 
+          allSubmittedUrls={ this.state.allSubmittedUrls } 
+          allDomains={ this.state.allDomains } 
           logoutUser={ this.logoutUser } 
+          submitClicked={ this.state.submitClicked } 
           activeComponent={ this.state.activeComponent } 
           setActiveComponent={ this.setActiveComponent } 
           submitUrlsToServer={ this.submitUrlsToServer } 
           loginUserFromServer={ this.loginUserFromServer } 
-          loginUserFromServer2={ this.loginUserFromServer2 } 
           signupUserFromServer={ this.signupUserFromServer }
           />
 					<Footer />
