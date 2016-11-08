@@ -2,7 +2,9 @@
 var React = require('react');
 
 var UserSignupHtml = React.createClass({
+
 	render: function(){
+    
 		return (
 			<div>
         <div className="container">
@@ -11,7 +13,7 @@ var UserSignupHtml = React.createClass({
       			<form className="" onSubmit={ this.props.handleUserSignupSubmit }>
               <div className="form-group">
                 <label>Name</label>
-                <input type="text" className="form-control" name="name" onChange={ this.props.onUsernameChange } value={ this.props.username }/>
+                <input type="text" className="form-control" name="name" onChange={ this.props.onUserChange } value={ this.props.user }/>
               </div>
               <div className="form-group">
                 <label>Company</label>
@@ -28,12 +30,12 @@ var UserSignupHtml = React.createClass({
       			    <button className="btn btn-warning btn-lg">Sign up</button>
       			</form>
             <hr/>
-            <p>Already have an account? <a onClick={this.props.setActiveComponent.bind(null, 'login')}>Login</a></p>
+            <p>Already have an account? <a onClick={ this.props.setActiveSubComponent.bind(null, 'login') }>Login</a></p>
           </div>    
         </div>    
-			</div>
-		)
-	}
+      </div>
+    )
+  }
 });
 
 module.exports = UserSignupHtml;

@@ -25,7 +25,7 @@ var UploadUrlsData = React.createClass({
     var availableDomains = []
 
     allDomains.map(function(obj){
-      console.log(obj);
+      // console.log(obj);
       if (obj.domainAvailable){
         availableDomains.push(obj.domain)
       }
@@ -79,7 +79,7 @@ var UploadUrlsData = React.createClass({
     return arrOfObj;
 	},
 
-	onUrlChange: function(e){
+	onUrlChange: function(e){    
 		var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
 		this.setState({ 
       allUrls: validatedUrlArray
@@ -88,7 +88,6 @@ var UploadUrlsData = React.createClass({
 
 	handleUrlSubmit: function(e){
     e.preventDefault();
-    console.log('here');
     var urls = [];
     urls = this.state.allUrls;
 

@@ -7,7 +7,7 @@ var UserSignupData = React.createClass({
 		return {
 			email: '',
 			password: '',
-			username: '',
+			user: '',
 			company: ''
 		}
 	},
@@ -20,8 +20,8 @@ var UserSignupData = React.createClass({
 		this.setState({ password: e.target.value })
 	},
 
-	onUsernameChange: function(e){
-		this.setState({ username: e.target.value })
+	onUserChange: function(e){
+		this.setState({ user: e.target.value })
 	},
 
 	onCompanyChange: function(e){
@@ -35,14 +35,14 @@ var UserSignupData = React.createClass({
 		var user = {};
 		user.email = this.state.email;
 		user.password = this.state.password;
-		user.username = this.state.username;
+		user.user = this.state.user;
 		user.company = this.state.company;
 
 		this.props.signupUserFromServer(user);
 		this.setState({ 
 			email: '',
 		  password: '',
-			username: '',
+			user: '',
 		  company: '' 
 		});
 	},
@@ -52,14 +52,14 @@ var UserSignupData = React.createClass({
 			<div>
 				<UserSignupHtml 
 				handleUserSignupSubmit={ this.handleUserSignupSubmit }
-				setActiveComponent={ this.props.setActiveComponent }
+				setActiveSubComponent={ this.props.setActiveSubComponent }
 				onEmailChange={ this.onEmailChange }
 				onPasswordChange={ this.onPasswordChange }
-				onUsernameChange={ this.onUsernameChange }
+				onUserChange={ this.onUserChange }
 				onCompanyChange={ this.onCompanyChange }
 				email={ this.state.email }
 				password={ this.state.password }
-				username={ this.state.username }
+				user={ this.state.user }
 				company={ this.state.company }
 				/>
 			</div>

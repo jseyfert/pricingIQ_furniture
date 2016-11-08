@@ -1,5 +1,13 @@
 //===============================================================
 //===============================================================
+// var midnight = new Date();
+// console.log(midnight);
+// midnight.setHours(23,59,59,0);
+// console.log(midnight);
+
+
+
+
 //===============================================================
 // var validator = require('validator');
 // var parseUrl = require("parse-url");

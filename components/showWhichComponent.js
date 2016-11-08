@@ -4,65 +4,78 @@ var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var UploadUrlsData = require('./uploadUrlsData.js');
 var ConfirmData = require('./ConfirmData.js');
+var ErrorPage = require('./ErrorPage.js');
 
 
-function ShowWhichComponent(props){
-// console.log(props.submitClicked);
-		if(props.submitClicked === false){
-			return (
-				<div>
-					<UploadUrlsData 
-          submitUrlsToServer={ props.submitUrlsToServer }
-					allDomains={ props.allDomains }
-					/>
-				</div>
-				)
-		} else if (props.user.user === "anonymous" && props.activeComponent === "login") {
-			return (
-				<div>
-				  <UserLoginData 
-				  loginUserFromServer={ props.loginUserFromServer }
-				  setActiveComponent={ props.setActiveComponent }
-				  />
-				</div>
-				)
-		} else if (props.user.user === "anonymous" && props.activeComponent === "signup")  {
-			return (
-				<div>
-				  <UserSignupData
-				  signupUserFromServer={ props.signupUserFromServer }
-				  setActiveComponent={ props.setActiveComponent }
-				  />
-				</div>
-				)
-		} else if (props.user.user !== "anonymous")  {
-			return (
-				<div>
-					<ConfirmData 
-          allUrls = { props.allUrls }
-          allDomains={ props.allDomains }
-          />
-				</div>
-				)
-		} else {
+var ShowWhichComponent = React.createClass({
+  
+  setActiveComponent: function() {
+    var user = (this.props.user.user === 'anonymous') ? false : true;
+    var okToSubmit = this.props.okToSubmit
+    var submitClicked = this.props.submitClicked
+    var activeSubComponent = this.props.activeSubComponent
+    console.log('in setActiveComp', '\nuser=', user, '\nokToSubmit=', okToSubmit, '\nsubmitClicked=', submitClicked, '\nactiveSubComponent=', activeSubComponent );
+
+    if (!submitClicked){
       return (
         <div>
-					ERROR ALREADY SUBMITTED
+          <UploadUrlsData 
+          allDomains={ this.props.allDomains }
+          submitUrlsToServer={ this.props.submitUrlsToServer }
+          />
+        </div>
+        )
+    } else if(user && okToSubmit && submitClicked){
+      return (
+        <div>
+          <ConfirmData 
+          allUrls = { this.props.allUrls }
+          allDomains={ this.props.allDomains }
+          />
+        </div>
+        )
+    } else if(user && !okToSubmit && submitClicked){
+        return (
+          <div>
+            <ErrorPage/>
+          </div>
+        )
+    } else if(!user && activeSubComponent === 'login'){
+      return (
+        <div>
+          <UserLoginData 
+          loginUserFromServer={ this.props.loginUserFromServer }
+          setActiveSubComponent={ this.props.setActiveSubComponent }
+          />
+        </div>
+        )
+    } else if(!user && activeSubComponent === 'signup'){
+      return (
+        <div>
+          <UserSignupData
+          signupUserFromServer={ this.props.signupUserFromServer }
+          setActiveSubComponent={ this.props.setActiveSubComponent }
+          />
+        </div>
+        )
+    } else {
+      return (
+        <div>
+          NOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!
         </div>
         )
     }
-};
+  },
+
+  render: function() {
+    return (
+      <div>
+        {this.setActiveComponent()}
+      </div>           
+      )
+  }
+
+});
 
 module.exports = ShowWhichComponent;
 
-//<h2> Hello { props.user.user.username } </h2>
-// LogoutUser logoutUser={ props.logoutUser } />
-
-
-	// var timeCheck = props.user.lastUrlSubmit
-	// var timeCheck1 = now - props.user.lastUrlSubmit
-	// var timeCheck2 = (now - props.user.lastUrlSubmit >= 86400000 ) ? true : false ;
-	// var timeCheck3 = (now - props.user.lastUrlSubmit <= 86400000 ) ? true : false ;
-	// console.log(timeCheck, timeCheck1, timeCheck2, timeCheck3, 'in time check');
-
-//<UploadUrlsData loginUserFromServer={ props.loginUserFromServer }  />
