@@ -44,6 +44,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <UserLoginData 
+          errorMessage={ this.props.errorMessage }
           loginUserFromServer={ this.props.loginUserFromServer }
           setActiveSubComponent={ this.props.setActiveSubComponent }
           />
@@ -53,6 +54,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <UserSignupData
+          errorMessage={ this.props.errorMessage }
           signupUserFromServer={ this.props.signupUserFromServer }
           setActiveSubComponent={ this.props.setActiveSubComponent }
           />

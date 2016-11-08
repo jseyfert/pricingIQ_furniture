@@ -19,6 +19,7 @@ var Footer = require('./footer.js');
 var Index = React.createClass({
 	getInitialState: function(){
 		return {
+			errorMessage: null,
 			okToSubmit: false,
 			submitClicked: false,
 			activeSubComponent: 'login',
@@ -28,7 +29,7 @@ var Index = React.createClass({
 			[
 			{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			{domain: 'sears' ,  domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
+			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
 			]
 		}
 	},
@@ -36,7 +37,8 @@ var Index = React.createClass({
 	setActiveSubComponent: function(componentName) {
 		// console.log('in setActiveSubComponent', componentName);
     this.setState({
-      activeSubComponent: componentName
+      activeSubComponent: componentName,
+      errorMessage: null,
     })
   },
 
@@ -50,6 +52,8 @@ var Index = React.createClass({
 		}).done(function(data){
 			// console.log( 'in getOneUser', data);
 			self.setState({ 
+        activeSubComponent: 'login',
+				errorMessage: null,
 				user: data,
 				okToSubmit: (currentTime > data.canSubmitAfter)
 				 });
@@ -68,12 +72,17 @@ var Index = React.createClass({
 				// console.log("in loginUserFromServer1", data.user);
 				// console.log("in loginUserFromServer2", currentTime, data.user.canSubmitAfter );
 				self.setState({ 
+          activeSubComponent: 'login',
+					errorMessage: null,
 					user: data.user,
 					okToSubmit: (currentTime > data.user.canSubmitAfter)
 					 });
 			},
 			error: function(xhr, status, err){
-				console.error('/login', status, err.toString())
+				console.error('/login', status, err)
+				self.setState({ 
+					errorMessage: 'Email or password incorrect'
+				 });
 			}
 		})
 	},
@@ -86,13 +95,18 @@ var Index = React.createClass({
 			data: user, 
 			success: function(data){
 				self.setState({ 
+          activeSubComponent: 'login',
+					errorMessage: null,
 					user: data.user,
 					okToSubmit: true
 				})
 				// console.log("Signup successful.", data.user);
 			},
 			error: function(xhr, status, err){
-				console.error('/signup', status, err.toString())
+				console.error('/signup', status, err)
+				self.setState({ 
+					errorMessage: 'That email is taken'
+				});
 			}
 		})
 	},
@@ -110,6 +124,8 @@ var Index = React.createClass({
 				}).done(function(data){
 					// console.log('in loggout', data);
 					self.setState({ 
+            activeSubComponent: 'login',
+						errorMessage: null,
 						user: data,
 						submitClicked: false
 						 });
@@ -123,7 +139,7 @@ var Index = React.createClass({
 
 	submitUrlsToServer: function(urls){
 		var midnight = new Date().setHours(23,59,59,0);
-		console.log('in submitUrlsToServer', midnight);
+		// console.log('in submitUrlsToServer', midnight);
 		this.setState({ 
 			allUrls: urls,
 			submitClicked: true
@@ -131,36 +147,21 @@ var Index = React.createClass({
 
 		// $.ajax({
 		// 	method: 'PUT',
-		// 	url: '/login',
-		// 	data: user,
+		// 	url: '/updateUser',
+		// 	data: this.state.user,
 		// 	success: function(data){
 		// 		// console.log("in loginUserFromServer1", data.user);
 		// 		// console.log("in loginUserFromServer2", currentTime, data.user.canSubmitAfter );
-		// 		self.setState({ 
-		// 			user: data.user,
-		// 			okToSubmit: (currentTime > data.user.canSubmitAfter)
-		// 			 });
+		// 		console.log("in submitUrls to server", data);
+		// 		// self.setState({ 
+		// 		// 	user: data.user,
+		// 		// 	okToSubmit: (currentTime > data.user.canSubmitAfter)
+		// 		// 	 });
 		// 	},
 		// 	error: function(xhr, status, err){
-		// 		console.error('/login', status, err.toString())
+		// 		console.error('/updateUser', status, err.toString())
 		// 	}
 		// })
-
-      // .put(function(req, res) {
-      //     User.findById(req.params.user_id, function(err, user) {
-      //         if (err)
-      //             res.send(err);
-      //         user.name = req.body.name;  // update the users info
-      //         // save the user
-      //         user.save(function(err) {
-      //             if (err)
-      //                 res.send(err);
-      //             res.json({ message: 'user updated!' });
-      //         });
-      //     });
-      // })
-
-
 	},
 
 	componentDidMount: function(){
@@ -181,6 +182,7 @@ var Index = React.createClass({
           user={ this.state.user } 
           okToSubmit={ this.state.okToSubmit } 
           submitClicked={ this.state.submitClicked } 
+          errorMessage={ this.state.errorMessage } 
           allUrls={ this.state.allUrls } 
           allDomains={ this.state.allDomains } 
           logoutUser={ this.logoutUser } 

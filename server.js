@@ -32,7 +32,7 @@ app.get('/logout', userControl.logout);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);
 app.get('/oneUser', userControl.getOneUser);
-app.get('/updateUser', userControl.updateUser);
+// app.put('/updateUser', userControl.updateUser);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');

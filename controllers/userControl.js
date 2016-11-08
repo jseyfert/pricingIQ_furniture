@@ -60,23 +60,71 @@ module.exports = {
 		})
 	},
 
-	getOneUser: function(req, res){
-		if(req.user) {
-     		console.log(req.user)
-     		mongoose.model('User').findById({
-         		_id: req.user._id
-       		},
-       		function(err, user) {
-         		if (err) {
-           			return console.log(err);
-         		} else {
-           			res.json(user)
-         		}
-       		});
-   		} else {
-     		res.json({
-       			user: "anonymous"
-     		})
-   		}
-	}
+  getOneUser: function(req, res){
+    if(req.user) {
+        console.log(req.user)
+        mongoose.model('User').findById({
+            _id: req.user._id
+          },
+          function(err, user) {
+            if (err) {
+                return console.log(err);
+            } else {
+                res.json(user)
+            }
+          });
+      } else {
+        res.json({
+            user: "anonymous"
+        })
+      }
+  }
+
+ //  ,
+
+ //  updateUser: function(req, res){
+ //    console.log('in update user');
+	// 	if(req.user) {
+ //     		console.log(req.user)
+ //     		mongoose.model('User').findById({
+ //         		_id: req.user._id
+ //       		},
+ //       		function(err, user) {
+ //         		if (err) {
+ //           			return console.log(err);
+ //         		} else {
+ //              user.canSubmitAfter = 335;  // update the users info
+ //              // save the user
+ //              user.save(function(err) {
+ //                  if (err) {
+ //                    res.send(err);
+ //                  } else {
+ //                    res.json({ message: 'user updated!' });
+ //                  }
+ //              });
+ //           			res.json(user)
+ //         		}
+ //       		});
+ //   		} else {
+ //     		res.json({
+ //       			message: "could not update user"
+ //     		})
+ //   		}
+	// }
 };
+
+
+      // .put(function(req, res) {
+      //     User.findById(req.params.user_id, function(err, user) {
+      //         if (err)
+      //             res.send(err);
+              // user.name = req.body.name;  // update the users info
+              // save the user
+              // user.save(function(err) {
+              //     if (err)
+      //         //         res.send(err);
+      //             res.json({ message: 'user updated!' });
+      //         });
+
+      //     });
+      // })

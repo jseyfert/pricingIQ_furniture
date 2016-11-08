@@ -12,17 +12,17 @@ var UploadUrlsForm = React.createClass({
       var clientDomainAvailable = _.where(allUrls, {domain: domain}).length > 0
       var urlCount = (_.where(allUrls, {domain: domain}).length > 0) ? _.where(allUrls, {domain: domain})[0].urls.length : null;
       if (!serverDomainAvailable){
-        return <span className="label label-danger label-as-badge">N/A</span> 
+        return <span className="label label-danger label-as-badge" key='na'>N/A</span> 
       } else if (clientDomainAvailable && urlCount > 15) {
-        return <span className="label label-warning label-as-badge">{ urlCount }</span>
+        return <span className="label label-warning label-as-badge" key='warning'>{ urlCount }</span>
       } else if (clientDomainAvailable & urlCount > 0) {
-        return <span className="label label-success label-as-badge">{ urlCount }</span>
+        return <span className="label label-success label-as-badge" key='success'>{ urlCount }</span>
       }
     }
 
     allDomains.map(function(obj){
         rows.push(              
-          <div className="col-lg-4 col-md-6 col-xs-12 marginBottom">
+          <div className="col-lg-4 col-md-6 col-xs-12 marginBottom" key={ obj.img }>
               <img src={ obj.img } key={ obj.img } alt=""/>
               { displayWhichBadge(obj.domain, obj.domainAvailable ) }
             <div className="center">
@@ -43,7 +43,7 @@ var UploadUrlsForm = React.createClass({
              <p>Drive data insight with the world's #1 web data platform.</p>
              <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
               <div className="form-group">
-              <textarea className="form-control" name="url" rows="10" cols="44" id="url" onChange={ this.props.onUrlChange } required/>
+              <textarea className="form-control" name="url" rows="1" cols="44" id="url" onChange={ this.props.onUrlChange } required/>
               </div>
               <button className="btn btn-warning btn-md">Submit</button>
             </form>

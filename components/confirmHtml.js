@@ -11,8 +11,8 @@ var ConfirmHtml = React.createClass({
 
     var displayListItem = function(urls){
       var listItem = []
-      urls.map(function(url){
-        listItem.push(<li className="list-group-item smallUrlText">{ url }</li>)
+      urls.map(function(url, index){
+        listItem.push(<li className="list-group-item smallUrlText" key={ url + index }>{ url }</li>)
       })
       return listItem;
     }
@@ -24,9 +24,9 @@ var ConfirmHtml = React.createClass({
       var img = ( _.where(allDomains, {domain: domain}).length > 0 ) ? _.where(allDomains, {domain: domain})[0].img : null;
       if (obj.domainAvailable) {
         rows.push(
-                <ul className="list-group">
+                <ul className="list-group" key={ domain }>
                   <li className="list-group-item">
-                    <img src={ img } key={ img } alt=""/>
+                    <img src={ img } alt=""/>
                     <span className="badge">{ count }</span>
                   </li>
                   { displayListItem(urls) }
