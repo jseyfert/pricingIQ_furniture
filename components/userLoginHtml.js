@@ -4,7 +4,8 @@ var React = require('react');
 var UserLoginHtml = React.createClass({
 
   showErrorMessage: function(){
-    var errorMessage = this.props.errorMessage
+    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
+    // console.log(errorMessage);
     if (errorMessage){
       return(
         <div>
@@ -19,7 +20,6 @@ var UserLoginHtml = React.createClass({
   },
 
   render: function(){
-// console.log('error message', this.props.errorMessage);
     return (
       <div>
         <div className="container">

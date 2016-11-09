@@ -101,6 +101,7 @@ var UploadUrlsData = React.createClass({
 		return (
 			<div>
 				<UploadUrlsHtml 
+        errorMessage={ this.props.errorMessage }
         allDomains={ this.props.allDomains }
         allUrls={ this.state.allUrls } 
 				handleUrlSubmit={ this.handleUrlSubmit }

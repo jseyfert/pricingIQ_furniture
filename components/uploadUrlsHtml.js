@@ -34,6 +34,19 @@ var UploadUrlsForm = React.createClass({
     return rows;
   },
 
+  showErrorMessage: function(){
+    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
+    // var errorMessage = (this.props.errorMessage[0] === 'index') ? this.props.errorMessage[1] : null;
+    // console.log(errorMessage);
+    // if (errorMessage){
+      return(
+            <div>
+              <p className="text-danger">{errorMessage}</p>
+            </div>
+        )
+    // }
+  },
+
   render: function(){
     return (
 			<div>
@@ -46,6 +59,7 @@ var UploadUrlsForm = React.createClass({
               <textarea className="form-control" name="url" rows="1" cols="44" id="url" onChange={ this.props.onUrlChange } required/>
               </div>
               <button className="btn btn-warning btn-md">Submit</button>
+              {this.showErrorMessage()}
             </form>
             <br/>
             <div className="row">
@@ -54,7 +68,7 @@ var UploadUrlsForm = React.createClass({
               { this.displayWhichDomain() }
             </div>
             <div className="col-lg-12 col-md-12 col-xs-12">
-              <p className="text-center">Dont see your domain? <a href="#">Vote for yours.</a></p>
+              <p className="text-center">Dont see your domain? <a >Vote for yours.</a></p>
             </div>
           </div>
         </div>

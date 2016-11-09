@@ -4,7 +4,7 @@ var React = require('react');
 var UserSignupHtml = React.createClass({
 
   showErrorMessage: function(){
-    var errorMessage = this.props.errorMessage
+    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
     if (errorMessage){
       return(
         <div>
