@@ -31,18 +31,10 @@ var Index = React.createClass({
 			[
 			{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
+			{domain: 'sears' ,  domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}
 			]
 		}
 	},
-
-	setActiveSubComponent: function(componentName) {
-		// console.log('in setActiveSubComponent', componentName);
-    this.setState({
-      activeSubComponent: componentName,
-      errorMessage: null,
-    })
-  },
 
 	getOneUserFromServer: function(){
 		var currentTime = new Date().getTime()
@@ -188,6 +180,14 @@ var Index = React.createClass({
 		// 	}
 		// })
 	},
+
+  setActiveSubComponent: function(componentName) {
+    // console.log('in setActiveSubComponent', componentName);
+    this.setState({
+      activeSubComponent: componentName,
+      errorMessage: null,
+    })
+  },
 
 	componentDidMount: function(){
 		this.getOneUserFromServer();
