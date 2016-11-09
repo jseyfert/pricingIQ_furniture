@@ -128,58 +128,63 @@ var Index = React.createClass({
 	},
 
 	submitUrlsToServer: function(urls){
+    var user = (this.state.user.user === 'anonymous') ? false : true;
     var noUrls = (urls.length === 0) ? true : false;
     var submitedToday = this.state.submitedToday
     var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
-    // var midnight = new Date().setHours(23,59,59,0);
 
-    if (noUrls) {
-      this.setState({ 
-        submitClick: false,
-        errorMessage: 'Submit at least 1 valid url'
-      })
-    }  else if (submitedToday) {
-      console.log('in submitedToday');
-      this.setState({ 
-        allUrls: urls,
-        submitClick: true,
-        submitUrlError: true,
-        errorMessage: null
-      })
-    } else if (noActiveDomains){
-      console.log('in noActiveDomains');
-      this.setState({ 
-        allUrls: urls,
-        submitClick: true,
-        submitUrlError: true,
-        errorMessage: null
-      })
-    } else {
-      this.setState({ 
-        allUrls: urls,
-        submitClick: true,
-        errorMessage: null
+    var midnightTonight = new Date().setHours(23,59,59,0);
+    // console.log(midnight);
+
+    // if (noUrls) {
+    //   this.setState({ 
+    //     submitClick: false,
+    //     errorMessage: 'Submit at least 1 valid url'
+    //   })
+    // }  else if (submitedToday) {
+    //   console.log('in submitedToday');
+    //   this.setState({ 
+    //     allUrls: urls,
+    //     submitClick: true,
+    //     submitUrlError: true,
+    //     errorMessage: null
+    //   })
+    // } else if (noActiveDomains){
+    //   console.log('in noActiveDomains');
+    //   this.setState({ 
+    //     allUrls: urls,
+    //     submitClick: true,
+    //     submitUrlError: true,
+    //     errorMessage: null
+    //   })
+    // } else {
+    //   this.setState({ 
+    //     allUrls: urls,
+    //     submitClick: true,
+    //     errorMessage: null
+    //   })
+    // }
+    
+    if (user){
+      $.ajax({
+        method: 'PUT',
+        url: '/updateUser',
+        data: { user: this.state.user, newCanSubmitAfter: midnightTonight},
+        success: function(data){
+          console.log("in update user CLIENT SIDE", data);
+          self.setState({ 
+            user: data,
+            submitedToday: true //old//(currentTime > data.user.canSubmitAfter)
+          });
+        },
+        error: function(xhr, status, err){
+          console.error('/updateUser', status, err.toString())
+        }
       })
     }
-
-		// $.ajax({
-		// 	method: 'PUT',
-		// 	url: '/updateUser',
-		// 	data: this.state.user,
-		// 	success: function(data){
-		// 		// console.log("in loginUserFromServer1", data.user);
-		// 		// console.log("in loginUserFromServer2", currentTime, data.user.canSubmitAfter );
-		// 		console.log("in submitUrls to server", data);
-		// 		// self.setState({ 
-		// 		// 	user: data.user,
-		// 		// 	submitedToday: (currentTime > data.user.canSubmitAfter)
-		// 		// 	 });
-		// 	},
-		// 	error: function(xhr, status, err){
-		// 		console.error('/updateUser', status, err.toString())
-		// 	}
-		// })
 	},
+
+
 
   setActiveSubComponent: function(componentName) {
     // console.log('in setActiveSubComponent', componentName);

@@ -22,7 +22,7 @@ module.exports = {
 
 	signup: function(req, res, next){
 		passport.authenticate('local-signup', function(err, user, info){
-			console.log('You signed up.', info);
+			// console.log('You signed up.', info);
 			if(err) { return next(err); }
 			if(!user) { return res.status(404).json(info.message); }
 			req.login(user, function(err){
@@ -62,7 +62,7 @@ module.exports = {
 
   getOneUser: function(req, res){
     if(req.user) {
-        console.log(req.user)
+        // console.log(req.user)
         mongoose.model('User').findById({
             _id: req.user._id
           },
@@ -80,37 +80,43 @@ module.exports = {
       }
   }
 
- //  ,
+  ,
 
- //  updateUser: function(req, res){
- //    console.log('in update user');
-	// 	if(req.user) {
- //     		console.log(req.user)
- //     		mongoose.model('User').findById({
- //         		_id: req.user._id
- //       		},
- //       		function(err, user) {
- //         		if (err) {
- //           			return console.log(err);
- //         		} else {
- //              user.canSubmitAfter = 335;  // update the users info
- //              // save the user
- //              user.save(function(err) {
- //                  if (err) {
- //                    res.send(err);
- //                  } else {
- //                    res.json({ message: 'user updated!' });
- //                  }
- //              });
- //           			res.json(user)
- //         		}
- //       		});
- //   		} else {
- //     		res.json({
- //       			message: "could not update user"
- //     		})
- //   		}
-	// }
+  updateUser: function(req, res){
+    var newCanSubmitAfter = req.body.newCanSubmitAfter
+    console.log('in update user SERVER SIDE1', req.body.newCanSubmitAfter);
+    console.log('in update user SERVER SIDE2', req.user._id);
+    // var midnight = new Date().setHours(23,59,59,0); // getting time on client side
+    // console.log('in update user SERVER SIDE2', req.user.newCanSubmitAfter);
+    // console.log('in update user SERVER SIDE1', req.body);
+		if(req.user) {
+     		// console.log('in req.user', req.user)
+     		mongoose.model('User').findById({
+         		_id: req.user._id
+       		},
+       		function(err, user) {
+         		if (err) {
+           		return console.log('in updateUser > mongoose > findById', err);
+         		} else {
+              user.canSubmitAfter = newCanSubmitAfter  // update canSubmitAfter with midnight tonight
+              user.save(function(err) { // save the user
+                  if (err) {
+                    // console.log('in updateUser > mongoose > findById > save user with new info', err);
+                    res.send(err);
+                  } else {
+                    // res.json({ message: 'user updated!' });
+           		      res.json(user)
+                  }
+              });
+         		}
+       		});
+   		} else {
+     		res.json({
+       			message: "could not update user"
+     		})
+   		}
+	}
+
 };
 
 

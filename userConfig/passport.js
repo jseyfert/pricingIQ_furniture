@@ -5,11 +5,11 @@ var passport = require('passport'); //i dont think this needs to be here
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
 		done(null, user.id);
-		console.log("This is the user: ", user);
+		// console.log("This is the user: ", user);
 	});
 
 	passport.deserializeUser(function(id, done){
-		console.log("This is the user ID: ", id);
+		// console.log("This is the user ID: ", id);
 		User.findById(id, function(err, user){
 			done(err, user)
 		})

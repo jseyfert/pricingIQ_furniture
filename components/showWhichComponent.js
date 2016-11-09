@@ -18,6 +18,7 @@ var ShowWhichComponent = React.createClass({
     var activeSubComponent = this.props.activeSubComponent
     console.log('user              =', user, '\nsubmitUrlError    =', submitUrlError, '\nsubmitedToday     =', submitedToday, '\nsubmitClick       =', submitClick, '\nactiveSubComponent=', activeSubComponent);
 
+    // if (false){
     if (!submitClick){
       return (
         <div>

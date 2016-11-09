@@ -28,11 +28,11 @@ var userControl = require('./controllers/userControl.js');
 
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
+app.put('/updateUser', userControl.updateUser);
 app.get('/logout', userControl.logout);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);
 app.get('/oneUser', userControl.getOneUser);
-// app.put('/updateUser', userControl.updateUser);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');
