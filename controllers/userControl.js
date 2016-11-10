@@ -81,11 +81,11 @@ module.exports = {
   },
 
   updateUser: function(req, res){
-    var newCanSubmitAfter = req.body.newCanSubmitAfter
-    console.log('in update user SERVER SIDE1', req.body.newCanSubmitAfter);
+    var canSubmitAfter = req.body.canSubmitAfter
+    console.log('in update user SERVER SIDE1', req.body.canSubmitAfter);
     console.log('in update user SERVER SIDE2', req.user._id);
     // var midnight = new Date().setHours(23,59,59,0); // getting time on client side
-    // console.log('in update user SERVER SIDE2', req.user.newCanSubmitAfter);
+    // console.log('in update user SERVER SIDE2', req.user.canSubmitAfter);
     // console.log('in update user SERVER SIDE1', req.body);
 		if(req.user) {
      		// console.log('in req.user', req.user)
@@ -96,7 +96,7 @@ module.exports = {
          		if (err) {
            		return console.log('in updateUser > mongoose > findById', err);
          		} else {
-              user.canSubmitAfter = newCanSubmitAfter  // update canSubmitAfter with midnight tonight
+              user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
               user.save(function(err) { // save the user
                   if (err) {
                     // console.log('in updateUser > mongoose > findById > save user with new info', err);

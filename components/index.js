@@ -41,27 +41,29 @@ var Index = React.createClass({
 	},
 
   updateUser: function(user){
-    // var midnightTonight = new Date().setHours(23,59,59,0);
+    var midnightTonight = new Date().setHours(23,59,59,0);
+    var self = this;
+    // console.log('whats the question',user);
 
-    if (user){
+    console.log(user);
       $.ajax({
         method: 'PUT',
         url: '/updateUser',
-        data: { user: this.state.user, newCanSubmitAfter: midnightTonight},
+        data: { user: user, canSubmitAfter: midnightTonight},
         success: function(data){
           console.log("in update user CLIENT SIDE", data);
           self.setState({ 
             user: data,
             errorMessage: null,
-            submittedToday: true // midnightTonight
+            submittedToday: true,
+            activeComponent: 'confirm'
           });
         },
         error: function(xhr, status, err){
           console.error('/updateUser', status, err.toString())
         }
       })
-    }
-  },
+  },  
 
   handleSubmitClick: function(urls){
     var user = (this.state.user.user === 'anonymous') ? false : true;
@@ -79,7 +81,8 @@ var Index = React.createClass({
       } else {
         console.log('#1 SUBMIT W/ USER-ID');                                            //submit with userID   #1
         console.log('#1 UPDATE USER');                                                  //***UPDATE USER***
-        this.setState({ activeComponent: 'confirm'})
+
+        this.updateUser(this.state.user);
       }
     } else if (!user) {   
       if (errorNoUrls) {
@@ -123,13 +126,16 @@ var Index = React.createClass({
         } else {
           console.log('#3 SUBMIT W/ USER-ID');                                            //submit with userID #3
           console.log('#3 UPDATE USER');                                                  //***UPDATE USER***
-          self.setState({ 
-            user: data.user,
-            errorMessage: null,
-            submittedToday: submittedToday,
-            noActiveDomains: noActiveDomains,
-            activeComponent: 'confirm'
-          })
+          
+          self.updateUser(data.user);
+
+          // self.setState({ 
+            // user: data.user,
+            // errorMessage: null,
+            // submittedToday: submittedToday,
+            // noActiveDomains: noActiveDomains,
+            // activeComponent: 'confirm'
+          // })
         }
       },
       error: function(xhr, status, err){
@@ -140,7 +146,9 @@ var Index = React.createClass({
         });
       }
     })  
-  },	
+  },
+
+
 
   signupUserFromServer: function(user){
     var self = this;
@@ -164,13 +172,17 @@ var Index = React.createClass({
         } else {
           console.log('#4 SUBMIT W/ USER-ID');                                            //submit with userID #4
           console.log('#4 UPDATE USER');                                                  //***UPDATE USER***
-          self.setState({ 
-            user: data.user,
-            errorMessage: null,
-            submittedToday: false,
-            noActiveDomains: noActiveDomains,
-            activeComponent: 'confirm'
-          })
+
+          self.updateUser(data.user);
+
+
+          // self.setState({ 
+          //   user: data.user,
+          //   errorMessage: null,
+          //   submittedToday: false,
+          //   noActiveDomains: noActiveDomains,
+          //   activeComponent: 'confirm'
+          // })
         }
       },
       error: function(xhr, status, err){
@@ -217,7 +229,6 @@ var Index = React.createClass({
 	componentDidMount: function(){
 		this.getOneUserFromServer();
 	},
-
 
 	render: function(){
 			if (!this.state.user) {
