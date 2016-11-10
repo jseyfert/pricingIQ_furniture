@@ -46,7 +46,7 @@ var UserSignupHtml = React.createClass({
       			    <button className="btn btn-warning btn-lg">Sign up</button>
       			</form>
             <hr/>
-            <p>Already have an account? <a onClick={ this.props.setActiveSubComponent.bind(null, 'login') }>Login</a></p>
+            <p>Already have an account? <a onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p>
           </div>    
         </div>    
       </div>

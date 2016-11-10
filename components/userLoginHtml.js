@@ -38,7 +38,7 @@ var UserLoginHtml = React.createClass({
       					<button className="btn btn-warning btn-lg">Log in</button>
       			</form>
             <hr/>
-            <p>Need an account? <a onClick={ this.props.setActiveSubComponent.bind(null, 'signup') } >Signup</a></p>
+            <p>Need an account? <a onClick={ this.props.setActiveComponent.bind(null, 'signup') } >Signup</a></p>
           </div>
         </div>
       </div>

@@ -1,55 +1,49 @@
 var React = require('react');
-var LogoutUser = require('./userLogout.js');
+
+var LandingData = require('./landingData.js');
+var ErrorSubmittedToday = require('./errorSubmittedToday.js');
+var ErrorNoActiveDomains = require('./errorNoActiveDomains.js');
+var ConfirmData = require('./confirmData.js');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
-var UploadUrlsData = require('./uploadUrlsData.js');
-var ConfirmData = require('./ConfirmData.js');
-var ErrorPage1 = require('./ErrorPage1.js');
-var ErrorPage2 = require('./ErrorPage2.js');
 
 
 var ShowWhichComponent = React.createClass({
   
   setActiveComponent: function() {
-    var user = (this.props.user.user === 'anonymous') ? false : true;
-    var submitedToday = this.props.submitedToday
-    var submitUrlError = this.props.submitUrlError
-    var submitClick = this.props.submitClick
-    var activeSubComponent = this.props.activeSubComponent
-    console.log('user              =', user, '\nsubmitUrlError    =', submitUrlError, '\nsubmitedToday     =', submitedToday, '\nsubmitClick       =', submitClick, '\nactiveSubComponent=', activeSubComponent);
+    var activeComponent = this.props.activeComponent
 
-    // if (false){
-    if (!submitClick){
+    if (activeComponent === 'landing'){
       return (
         <div>
-          <UploadUrlsData 
+          <LandingData 
           errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
-          submitUrlsToServer={ this.props.submitUrlsToServer }
+          handleSubmitClick={ this.props.handleSubmitClick }
           />
         </div>
         )
-    } else if(user && submitedToday){
-        return (
-          <div>
-            <ErrorPage1 // no valid urls
-            allUrls = { this.props.allUrls }
-            allDomains={ this.props.allDomains }
-            errorMessage={ this.props.errorMessage }
-            />
-          </div>
+    } else if(activeComponent === 'submittedToday'){
+      return (
+        <div>
+          <ErrorSubmittedToday
+          errorMessage={ this.props.errorMessage }
+          allDomains={ this.props.allDomains }
+          allUrls = { this.props.allUrls }
+          />
+        </div>
         )
-    } else if(user && submitUrlError ){
-        return (
-          <div>
-            <ErrorPage2 //no active domains
-            allUrls = { this.props.allUrls }
-            allDomains={ this.props.allDomains }
-            errorMessage={ this.props.errorMessage }
-            />
-          </div>
+    } else if(activeComponent === 'noActiveDomains'){
+      return (
+        <div>
+          <ErrorNoActiveDomains
+          errorMessage={ this.props.errorMessage }
+          allDomains={ this.props.allDomains }
+          allUrls = { this.props.allUrls }
+          />
+        </div>
         )
-    } else if(user && !submitedToday && submitClick && !submitUrlError){
+    } else if(activeComponent === 'confirm'){
       return (
         <div>
           <ConfirmData 
@@ -58,23 +52,23 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(!user && activeSubComponent === 'login'){
+    } else if(activeComponent === 'login'){
       return (
         <div>
           <UserLoginData 
           errorMessage={ this.props.errorMessage }
           loginUserFromServer={ this.props.loginUserFromServer }
-          setActiveSubComponent={ this.props.setActiveSubComponent }
+          setActiveComponent={ this.props.setActiveComponent }
           />
         </div>
         )
-    } else if(!user && activeSubComponent === 'signup'){
+    } else if(activeComponent === 'signup'){
       return (
         <div>
           <UserSignupData
           errorMessage={ this.props.errorMessage }
           signupUserFromServer={ this.props.signupUserFromServer }
-          setActiveSubComponent={ this.props.setActiveSubComponent }
+          setActiveComponent={ this.props.setActiveComponent }
           />
         </div>
         )
@@ -94,7 +88,6 @@ var ShowWhichComponent = React.createClass({
       </div>           
       )
   }
-
 });
 
 module.exports = ShowWhichComponent;

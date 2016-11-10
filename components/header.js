@@ -10,7 +10,7 @@ var Header = React.createClass({
       <div>
         <nav className="navbar navbar-default">
           <div className="container">
-            <a className="navbar-brand navbar-left" href="#">PricingIQ</a>
+            <a className="navbar-brand navbar-left">PricingIQ</a>
               { isLoggedIn }
           </div>
         </nav>

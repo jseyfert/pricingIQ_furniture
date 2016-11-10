@@ -2,7 +2,7 @@
 var React = require('react');
 var _ = require("underscore");
 
-var ErrorPage1 = React.createClass({
+var ErrorNoActiveDomains = React.createClass({
 
   // displayRow: function(){
   //   var rows = [];
@@ -37,13 +37,13 @@ var ErrorPage1 = React.createClass({
   render: function(){
   // var errorMessage = this.props.errorMessage[1]
   // var allUrls = this.props.allUrls
-  // // console.log('in error wrapper', errorMessage, allUrls);
+  // console.log('in error wrapper', errorMessage, allUrls);
 
     return (
         <div>
           <div className="container">
             <div className="jumbotron">
-               <h2>in error page 1  - already submitted today</h2>
+               <h2>in error page 2 - no active domains</h2>
               <div className="row">
               </div>
               </div>
@@ -56,4 +56,4 @@ var ErrorPage1 = React.createClass({
   }
 });
 
-module.exports = ErrorPage1;
+module.exports = ErrorNoActiveDomains;

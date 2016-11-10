@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require("underscore");
 
-var UploadUrlsForm = React.createClass({
+var LandingHtml = React.createClass({
 
   displayWhichDomain: function(domain){
     var rows = [];
@@ -77,5 +77,5 @@ var UploadUrlsForm = React.createClass({
   }
 });
 
-module.exports = UploadUrlsForm;
+module.exports = LandingHtml;
 

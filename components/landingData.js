@@ -3,10 +3,10 @@ var React = require('react');
 var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
-var UploadUrlsHtml = require('./uploadUrlsHtml.js');
+var LandingHtml = require('./landingHtml.js');
 
 
-var UploadUrlsData = React.createClass({
+var LandingData = React.createClass({
 
   getInitialState: function(){
 		return {
@@ -91,7 +91,7 @@ var UploadUrlsData = React.createClass({
     var urls = [];
     urls = this.state.allUrls;
 
-    this.props.submitUrlsToServer(urls);
+    this.props.handleSubmitClick(urls);
     // this.setState({ 
     //   allUrls: []
     // });
@@ -100,7 +100,7 @@ var UploadUrlsData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<UploadUrlsHtml 
+				<LandingHtml 
         errorMessage={ this.props.errorMessage }
         allDomains={ this.props.allDomains }
         allUrls={ this.state.allUrls } 
@@ -112,4 +112,4 @@ var UploadUrlsData = React.createClass({
 	}
 });
 
-module.exports = UploadUrlsData;
+module.exports = LandingData;

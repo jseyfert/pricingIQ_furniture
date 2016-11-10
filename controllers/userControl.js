@@ -78,9 +78,7 @@ module.exports = {
             user: "anonymous"
         })
       }
-  }
-
-  ,
+  },
 
   updateUser: function(req, res){
     var newCanSubmitAfter = req.body.newCanSubmitAfter
@@ -119,18 +117,3 @@ module.exports = {
 
 };
 
-
-      // .put(function(req, res) {
-      //     User.findById(req.params.user_id, function(err, user) {
-      //         if (err)
-      //             res.send(err);
-              // user.name = req.body.name;  // update the users info
-              // save the user
-              // user.save(function(err) {
-              //     if (err)
-      //         //         res.send(err);
-      //             res.json({ message: 'user updated!' });
-      //         });
-
-      //     });
-      // })

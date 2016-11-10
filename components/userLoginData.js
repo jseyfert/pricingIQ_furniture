@@ -40,7 +40,7 @@ var UserLoginData = React.createClass({
 					onEmailChange={ this.onEmailChange }
 					email={ this.state.email }
 					password={ this.state.password }
-					setActiveSubComponent={ this.props.setActiveSubComponent }
+					setActiveComponent={ this.props.setActiveComponent }
 					errorMessage={ this.props.errorMessage }
 					/>
 			</div>

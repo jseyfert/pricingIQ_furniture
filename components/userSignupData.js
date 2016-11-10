@@ -53,7 +53,7 @@ var UserSignupData = React.createClass({
 				<UserSignupHtml 
 				errorMessage={ this.props.errorMessage }
 				handleUserSignupSubmit={ this.handleUserSignupSubmit }
-				setActiveSubComponent={ this.props.setActiveSubComponent }
+				setActiveComponent={ this.props.setActiveComponent }
 				onEmailChange={ this.onEmailChange }
 				onPasswordChange={ this.onPasswordChange }
 				onUserChange={ this.onUserChange }
