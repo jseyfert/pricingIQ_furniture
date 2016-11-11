@@ -43,11 +43,13 @@ var ErrorSubmittedToday = React.createClass({
         <div>
           <div className="container">
             <div className="jumbotron">
-               <h2>in error page 1  - already submitted today</h2>
-              <div className="row">
-              </div>
+              <div className="alert alert-danger" role="alert">
+                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span className="sr-only">Error: </span>
+                 &nbsp; You already submitted today, please come back tomorrow
               </div>
             </div>
+          </div>
         </div>
                // <p className="text-danger">{ errorMessage }</p>
                // <p>domains:</p>

@@ -20,7 +20,7 @@ var Index = React.createClass({
 			allDomains: 
 			[{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			{domain: 'sears' ,  domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
+			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
 		}
 	},
 
@@ -40,12 +40,12 @@ var Index = React.createClass({
 		})
 	},
 
-  updateUser: function(user){
+  updateUser: function(user, urls){
     var midnightTonight = new Date().setHours(23,59,59,0);
     var self = this;
     // console.log('whats the question',user);
 
-    console.log(user);
+    console.log(user, urls);
       $.ajax({
         method: 'PUT',
         url: '/updateUser',
@@ -56,7 +56,8 @@ var Index = React.createClass({
             user: data,
             errorMessage: null,
             submittedToday: true,
-            activeComponent: 'confirm'
+            activeComponent: 'confirm',
+            allUrls: urls
           });
         },
         error: function(xhr, status, err){
@@ -73,28 +74,48 @@ var Index = React.createClass({
 
     if(user){
       if (errorNoUrls) {
-        this.setState({ activeComponent: 'landing', errorMessage: 'Please submit at least one valid Url' })
+        this.setState({ 
+          activeComponent: 'landing',
+          errorMessage: 'Please submit at least one valid Url',
+          allUrls: urls
+        })
       } else if (submittedToday) {
-        this.setState({ activeComponent: 'submittedToday'})
+        this.setState({
+          activeComponent: 'submittedToday',
+          allUrls: urls
+        })
       } else if (noActiveDomains){
-        this.setState({ activeComponent: 'noActiveDomains'})
+        this.setState({ 
+          activeComponent: 'noActiveDomains',
+          allUrls: urls
+      })
       } else {
         console.log('#1 SUBMIT W/ USER-ID');                                            //submit with userID   #1
         console.log('#1 UPDATE USER');                                                  //***UPDATE USER***
 
-        this.updateUser(this.state.user);
+        this.updateUser(this.state.user, urls);
       }
     } else if (!user) {   
       if (errorNoUrls) {
-        this.setState({ activeComponent: 'landing', errorMessage: 'Please submit at least one valid Url' })
+        this.setState({ 
+          activeComponent: 'landing', 
+          errorMessage: 'Please submit at least one valid Url',
+          allUrls: urls 
+        })
       } else {
         console.log('#2 SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
-        this.setState({ activeComponent: 'login', noActiveDomains: noActiveDomains, errorMessage: null})
+        this.setState({ 
+          activeComponent: 'login', 
+          noActiveDomains: noActiveDomains, 
+          errorMessage: null,
+          allUrls: urls
+        })
       }
     }
   },
 
   loginUserFromServer: function(user){
+    var urls = this.state.allUrls
     var currentTime = new Date().getTime()
     var self = this;
 
@@ -127,15 +148,8 @@ var Index = React.createClass({
           console.log('#3 SUBMIT W/ USER-ID');                                            //submit with userID #3
           console.log('#3 UPDATE USER');                                                  //***UPDATE USER***
           
-          self.updateUser(data.user);
+          self.updateUser(data.user, urls);
 
-          // self.setState({ 
-            // user: data.user,
-            // errorMessage: null,
-            // submittedToday: submittedToday,
-            // noActiveDomains: noActiveDomains,
-            // activeComponent: 'confirm'
-          // })
         }
       },
       error: function(xhr, status, err){
@@ -148,9 +162,11 @@ var Index = React.createClass({
     })  
   },
 
-
-
   signupUserFromServer: function(user){
+
+    var urls = this.state.allUrls
+    // console.log('whats da deal', allURls);
+
     var self = this;
 
     $.ajax({
@@ -168,21 +184,14 @@ var Index = React.createClass({
             submittedToday: false, 
             noActiveDomains: noActiveDomains,
             activeComponent: 'noActiveDomains'
+           
           })
         } else {
           console.log('#4 SUBMIT W/ USER-ID');                                            //submit with userID #4
           console.log('#4 UPDATE USER');                                                  //***UPDATE USER***
 
-          self.updateUser(data.user);
+          self.updateUser(data.user, urls);
 
-
-          // self.setState({ 
-          //   user: data.user,
-          //   errorMessage: null,
-          //   submittedToday: false,
-          //   noActiveDomains: noActiveDomains,
-          //   activeComponent: 'confirm'
-          // })
         }
       },
       error: function(xhr, status, err){

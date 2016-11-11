@@ -24,9 +24,20 @@ hr.showHr {
   font-size: 66%;
 }
 
-li:hover {
-    background-color: #EEEEEE
+.yellowText {
+  color: #F0AD4E;
 }
+
+li:hover {
+    background-color: #EEEEEE;
+}
+
+.greenHover:hover {
+    background-color: #DFF0D8;
+}
+
+.redHover:hover {
+    background-color: #EBCCCC;
 
 .label-as-badge {
     border-radius: 1em;

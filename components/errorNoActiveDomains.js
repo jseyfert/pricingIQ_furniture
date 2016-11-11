@@ -4,51 +4,65 @@ var _ = require("underscore");
 
 var ErrorNoActiveDomains = React.createClass({
 
-  // displayRow: function(){
-  //   var rows = [];
-  //   var allUrls = this.props.allUrls;
+  displayRowsAvailable: function(available){
+    var rows = [];
+    var allDomains = this.props.allDomains;
+    
+    allDomains.map(function(obj){
+      var domain = obj.domain
+      if (obj.domainAvailable === true) {
+        // console.log(domain);
+        rows.push( <li className="list-group-item text-success text-center greenHover">{ domain }</li> )
+      }
+    })
+    return rows;
+  },
 
-  //   allUrls.map(function(obj){
-  //     var domain = obj.domain
-  //     var domainAvailable = obj.domainAvailable
-  //     // console.log(domain, domainAvailable, obj);
-  //     if (!domainAvailable){
-  //       rows.push(
-  //               <div className="col-lg-3 col-md-3 col-xs-3" key={ domain }>
-  //               <div className="center">
-  //                   { domain } unavailable
-  //                   </div>
-  //               </div>
-  //             )
-  //     } else {
-  //       rows.push(
-  //               <div className="col-lg-3 col-md-3 col-xs-3" key={ domain }>
-  //               <div className="center">
-  //                   { domain } available
-  //                   </div>
-  //               </div>
-  //             )
-  //     }
-  //   })
+  displayRowsNotAvailable: function(available){
+    var rows = [];
+    var allUrls = this.props.allUrls;
 
-  //   return rows;
-  // },
+    allUrls.map(function(obj){
+      var domain = obj.domain
+      var domainAvailable = obj.domainAvailable
+      if (!domainAvailable){
+        rows.push( <li className="list-group-item text-danger text-center redHover">{ domain }</li> )
+      } 
+    })
+    return rows;
+  },
 
   render: function(){
-  // var errorMessage = this.props.errorMessage[1]
-  // var allUrls = this.props.allUrls
-  // console.log('in error wrapper', errorMessage, allUrls);
 
     return (
-        <div>
-          <div className="container">
-            <div className="jumbotron">
-               <h2>in error page 2 - no active domains</h2>
+      <div>
+        <div className="container">
+          <div className="jumbotron">
+            <div className="alert alert-danger" role="alert">
+              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span className="sr-only">Error: </span>
+               &nbsp; You did not submit any active domains
+            </div>
+            <hr className="showHr"/>
+            <div className="container-fluid">
               <div className="row">
-              </div>
+                <div className="col-lg-6">
+                  <ul className="list-group">
+                    <h4 className="text-danger text-center">Inactive Domains you submitted:</h4>
+                     { this.displayRowsNotAvailable() }
+                  </ul>
+                </div>
+                <div className="col-lg-6">
+                  <ul className="list-group">
+                    <h4 className="text-success text-center">Active Domains you can submit:</h4>
+                    { this.displayRowsAvailable() }
+                  </ul>
+                </div>
               </div>
             </div>
+          </div>
         </div>
+      </div>
                // <p className="text-danger">{ errorMessage }</p>
                // <p>domains:</p>
                 // { this.displayRow() }

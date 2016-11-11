@@ -82,8 +82,8 @@ module.exports = {
 
   updateUser: function(req, res){
     var canSubmitAfter = req.body.canSubmitAfter
-    console.log('in update user SERVER SIDE1', req.body.canSubmitAfter);
-    console.log('in update user SERVER SIDE2', req.user._id);
+    // console.log('in update user SERVER SIDE1', req.body.canSubmitAfter);
+    // console.log('in update user SERVER SIDE2', req.user._id);
     // var midnight = new Date().setHours(23,59,59,0); // getting time on client side
     // console.log('in update user SERVER SIDE2', req.user.canSubmitAfter);
     // console.log('in update user SERVER SIDE1', req.body);

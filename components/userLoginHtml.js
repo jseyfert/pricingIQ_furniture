@@ -9,12 +9,12 @@ var UserLoginHtml = React.createClass({
     if (errorMessage){
       return(
         <div>
-      <div className="alert alert-danger" role="alert">
-        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span className="sr-only">Error: </span>
-          { errorMessage }
-      </div>
-      </div>
+          <div className="alert alert-danger" role="alert">
+            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span className="sr-only">Error: </span>
+              { errorMessage }
+          </div>
+        </div>
         )
     }
   },
