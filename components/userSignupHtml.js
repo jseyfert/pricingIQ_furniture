@@ -17,6 +17,23 @@ var UserSignupHtml = React.createClass({
         )
     }
   },
+  showErrorMessage2: function(){
+    var passwordsMatch = (this.props.passwordsMatch) 
+    console.log(passwordsMatch)
+    if (!this.props.passwordsMatch){
+      return(
+        <div>
+          <div className="alert alert-danger" role="alert">
+            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span className="sr-only">Error: </span>
+            Passwords do not match
+          </div>
+        </div>
+        )
+    } else {
+      return null;
+    }
+  },
 
 	render: function(){
     
@@ -25,8 +42,9 @@ var UserSignupHtml = React.createClass({
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
           {this.showErrorMessage()}
+          {this.showErrorMessage2()}
           <h1><span className="fa fa-sign-in"></span> Signup</h1>
-      			<form className="" onSubmit={ this.props.handleUserSignupSubmit }>
+            <form className="" onSubmit={ this.props.handleUserSignupSubmit }>
               <div className="form-group">
                 <label>Name</label>
                 <input type="text" className="form-control" name="name" onChange={ this.props.onUserChange } value={ this.props.user } required/>
@@ -43,8 +61,12 @@ var UserSignupHtml = React.createClass({
                 <label>Password</label>
                 <input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password } required/>
               </div>
-      			    <button className="btn btn-warning btn-lg">Sign up</button>
-      			</form>
+              <div className="form-group">
+                <label>Confirm Password</label>
+                <input type="password" className="form-control" name="confirmPassword" onChange={ this.props.onConfirmPasswordChange } value={ this.props.confirmPassword } required/>
+              </div>
+                <button className="btn btn-warning btn-lg">Sign up</button>
+            </form>
             <hr/>
             <p>Already have an account? <a onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p>
           </div>    

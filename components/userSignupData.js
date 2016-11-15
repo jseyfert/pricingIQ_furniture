@@ -7,8 +7,10 @@ var UserSignupData = React.createClass({
 		return {
 			email: '',
 			password: '',
+			confirmPassword: '',
 			user: '',
-			company: ''
+			company: '',
+			passwordsMatch: true
 		}
 	},
 
@@ -18,6 +20,16 @@ var UserSignupData = React.createClass({
 
 	onPasswordChange: function(e){
 		this.setState({ password: e.target.value })
+	},
+
+	onConfirmPasswordChange: function(e){
+		this.setState({ confirmPassword: e.target.value })
+
+		if (this.state.password === e.target.value){
+			this.setState({ passwordsMatch: true })
+		} else {
+			this.setState({ passwordsMatch: false })
+		}
 	},
 
 	onUserChange: function(e){
@@ -32,19 +44,21 @@ var UserSignupData = React.createClass({
 	handleUserSignupSubmit: function(e){
 		e.preventDefault();
 
-		var user = {};
-		user.email = this.state.email;
-		user.password = this.state.password;
-		user.user = this.state.user;
-		user.company = this.state.company;
+			if (this.state.passwordsMatch){
+				var user = {};
+				user.email = this.state.email;
+				user.password = this.state.password;
+				user.user = this.state.user;
+				user.company = this.state.company;
 
-		this.props.signupUserFromServer(user);
-		this.setState({ 
-			email: '',
-		  password: '',
-			user: '',
-		  company: '' 
-		});
+				this.props.signupUserFromServer(user);
+				this.setState({ 
+				  email: '',
+				  password: '',
+					user: '',
+				  company: '' 
+				});
+			}
 	},
 
 	render: function(){
@@ -56,12 +70,15 @@ var UserSignupData = React.createClass({
 				setActiveComponent={ this.props.setActiveComponent }
 				onEmailChange={ this.onEmailChange }
 				onPasswordChange={ this.onPasswordChange }
+				onConfirmPasswordChange={ this.onConfirmPasswordChange }
 				onUserChange={ this.onUserChange }
 				onCompanyChange={ this.onCompanyChange }
 				email={ this.state.email }
 				password={ this.state.password }
+				confirmPassword={ this.state.confirmPassword }
 				user={ this.state.user }
 				company={ this.state.company }
+				passwordsMatch={ this.state.passwordsMatch }
 				/>
 			</div>
 			)
