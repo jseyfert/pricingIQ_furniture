@@ -10,7 +10,7 @@ var UserSignupData = React.createClass({
 			confirmPassword: '',
 			user: '',
 			company: '',
-			passwordsMatch: true
+			passwordsMatch: null
 		}
 	},
 
@@ -53,10 +53,7 @@ var UserSignupData = React.createClass({
 
 				this.props.signupUserFromServer(user);
 				this.setState({ 
-				  email: '',
-				  password: '',
-					user: '',
-				  company: '' 
+				  email: ''
 				});
 			}
 	},

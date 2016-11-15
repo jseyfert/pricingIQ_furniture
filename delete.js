@@ -4,13 +4,11 @@
 // console.log(midnight);
 // midnight.setHours(23,59,59,0);
 // console.log(midnight);
+test = "          jJeyfert df.. ergm     "
 
+var permalink = test.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
 
-body:
-   { user: { _id: '582147bfba2a5e1586b84541' },
-     newCanSubmitAfter: 'test'
-
-
+console.log(permalink);
 
 
 //===============================================================

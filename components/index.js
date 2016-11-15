@@ -195,7 +195,7 @@ var Index = React.createClass({
         }
       },
       error: function(xhr, status, err){
-        console.error('/signup', status, err)
+        // console.error('/signup', xhr, status, err)
         self.setState({ 
           errorMessage: 'That email is taken',
           activeComponent: 'signup'

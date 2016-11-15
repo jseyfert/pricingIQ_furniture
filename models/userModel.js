@@ -7,8 +7,13 @@ var UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   user: { type: String, required: true },
   company: { type: String, required: true },
-	canSubmitAfter: { type: Number },
-	loggedIn: { type: Boolean }
+	canSubmitAfter: { type: Number, required: true  },
+
+  permalink: { type: String, required: true },
+  verificationToken: { type: String, required: true },
+  verified: { type: Boolean, required: true  },
+
+	loggedIn: { type: Boolean } //get rid of at some point
 });
 
 UserSchema.methods.generateHash = function(password){

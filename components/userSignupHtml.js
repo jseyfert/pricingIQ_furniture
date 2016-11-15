@@ -3,35 +3,51 @@ var React = require('react');
 
 var UserSignupHtml = React.createClass({
 
-  showErrorMessage: function(){
+  showEmailInput: function(){
     var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
     if (errorMessage){
       return(
-        <div>
-      <div className="alert alert-danger" role="alert">
-        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span className="sr-only">Error: </span>
-          { errorMessage }
-      </div>
-      </div>
-        )
-    }
-  },
-  showErrorMessage2: function(){
-    var passwordsMatch = (this.props.passwordsMatch) 
-    console.log(passwordsMatch)
-    if (!this.props.passwordsMatch){
-      return(
-        <div>
-          <div className="alert alert-danger" role="alert">
-            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span className="sr-only">Error: </span>
-            Passwords do not match
-          </div>
+        <div className="form-group has-error">
+          <label className="control-label" for="inputError1">Email ({ errorMessage })</label>
+          <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } id="inputError1" required/>
         </div>
         )
     } else {
-      return null;
+      return(
+        <div className="form-group">
+          <label>Email</label>
+          <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } required/>
+        </div>
+        )
+    }
+  },  
+
+  showPasswordValidationInput: function(){
+    var passwordsMatch = this.props.passwordsMatch
+
+    if (passwordsMatch === null){
+      return(
+        <div className="form-group">
+          <label>Confirm Password</label>
+          <input type="password" className="form-control" name="confirmPassword" onChange={ this.props.onConfirmPasswordChange } value={ this.props.confirmPassword } required/>
+        </div>
+        )
+    } else if (passwordsMatch) {
+      return(
+
+
+        <div className="form-group has-success">
+          <label className="control-label" for="inputSuccess1">Confirm Password (Passwords match)</label>
+          <input type="password" className="form-control" id="inputSuccess1" aria-describedby="helpBlock2" onChange={ this.props.onConfirmPasswordChange } value={ this.props.confirmPassword } id="inputError1" required/>
+        </div>
+        )
+    } else {
+      return(
+        <div className="form-group has-error">
+          <label className="control-label" for="inputError1">Confirm Password (Passwords do not match)</label>
+          <input type="password" className="form-control" name="confirmPassword" onChange={ this.props.onConfirmPasswordChange } value={ this.props.confirmPassword } id="inputError1" required/>
+        </div>
+        )
     }
   },
 
@@ -41,8 +57,6 @@ var UserSignupHtml = React.createClass({
 			<div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-          {this.showErrorMessage()}
-          {this.showErrorMessage2()}
           <h1><span className="fa fa-sign-in"></span> Signup</h1>
             <form className="" onSubmit={ this.props.handleUserSignupSubmit }>
               <div className="form-group">
@@ -53,18 +67,12 @@ var UserSignupHtml = React.createClass({
                 <label>Company</label>
                 <input type="text" className="form-control" name="company" onChange={ this.props.onCompanyChange } value={ this.props.company } required/>
               </div>
-              <div classcompany="form-group">
-                <label>Email</label>
-                <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } required/>
-              </div>
+            {this.showEmailInput()}
               <div className="form-group">
                 <label>Password</label>
                 <input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password } required/>
               </div>
-              <div className="form-group">
-                <label>Confirm Password</label>
-                <input type="password" className="form-control" name="confirmPassword" onChange={ this.props.onConfirmPasswordChange } value={ this.props.confirmPassword } required/>
-              </div>
+            {this.showPasswordValidationInput()} 
                 <button className="btn btn-warning btn-lg">Sign up</button>
             </form>
             <hr/>

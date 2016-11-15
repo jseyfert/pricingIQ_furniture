@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
 var passport = require('passport'); //i dont think this needs to be here
+var randomstring = require("randomstring");
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
@@ -44,63 +45,34 @@ module.exports = function(passport){
 				if(err)
 					return done(err);
 				if(user) {
-					return done(null, false, { message: 'That email is already taken2' });
-				// if (req.body.password != req.body.confirm_password) {
-    //                 console.log('Passwords do not match');
-    //                 return done(null, false, { message: 'Passwords do not match' });
+					return done(null, false, { 
+            message: 'That email is already taken3' 
+          });
 				} else {
 					var newUser = new User();
+          var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
+          var verificationToken = randomstring.generate({ length: 64 });
 
-					newUser.email = email;
-					newUser.password = newUser.generateHash(password);
-					newUser.user = req.body.user;
-					newUser.company = req.body.company;
-					newUser.canSubmitAfter = 0;
+          newUser.email = email;
+          newUser.password = newUser.generateHash(password);
+          newUser.user = req.body.user;
+          newUser.company = req.body.company;
+          newUser.canSubmitAfter = 0;
 
-					newUser.save(function(err){
-						if(err)
-							throw err;
-						return done(null, newUser, { message: 'You successfully signed up.' });
-					})
-				}
-			});
-		});
-	}));			
+          newUser.permalink = permalink;
+          newUser.verificationToken = verificationToken;
+          newUser.verified = false;
 
-    //                         // create the user
-    //                         var newUser = new User();
-    //                         var permalink = req.body.username.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
-    //                         var verification_token = randomstring.generate({
-    //                             length: 64
-    //                         });
-
-    //                         newUser.local.email = email;
-    //                         newUser.local.password = newUser.generateHash(password);
-    //                         newUser.local.permalink = permalink;
-
-    //                         //Verified will get turned to true when they verify email address
-    //                         newUser.local.verified = false;
-    //                         newUser.local.verify_token = verification_token;
-
-    //                         try {
-    //                             newUser.save(function (err) {
-    //                                 if (err) {
-    //                                     throw err;
-    //                                 } else {
-    //                                     VerifyEmail.sendverification(email, verification_token, permalink);
-    //                                     return done(null, newUser);
-    //                                 }
-    //                             });
-    //                         } catch (err) {
-
-    //                         }
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     });
-    // }));
-
-
-
+          newUser.save(function(err){
+            if(err) {
+              throw err;
+            } else {
+            // VerifyEmail.sendverification(email, verification_token, permalink);
+            return done(null, newUser, { message: 'You successfully signed up.' });
+            }
+          })
+        }
+      });
+    });
+  }));      
 };
