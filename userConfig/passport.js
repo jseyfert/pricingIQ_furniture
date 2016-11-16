@@ -59,7 +59,7 @@ module.exports = function(passport){
 
           var mailOptions = {
             from: '"pricingIQ" <johnseyfert@gmail.com>', // sender address 
-            to: 'johnseyfert@gmail.com', // list of receivers 
+            to: email, // list of receivers 
             subject: 'Validate Your Email ✔', // Subject line 
             text: 'please use html format', // plaintext body 
             html : "Please Click the link to verify your email.<br><a href=" + link + ">" + link + "</a>" 

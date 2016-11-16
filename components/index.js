@@ -26,7 +26,6 @@ var Index = React.createClass({
 
 	getOneUserFromServer: function(){
 		var currentTime = new Date().getTime()
-
 		var self = this;
 
 		$.ajax({
@@ -41,11 +40,38 @@ var Index = React.createClass({
 		})
 	},
 
-  handleEmailConfirm: function(index){
+  handleEmailConfirm: function(){
+    var urls = this.state.allUrls
+    var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
+    var self = this;
 
-    this.getOneUserFromServer()
+    $.ajax({
+      method: 'GET', 
+      url: '/oneUser'
+    }).done(function(data){
+      var verified = data.verified
+      console.log('in it yo', verified);
+     
+      if (!verified) {
+        self.setState({ 
+          user: data,
+          errorMessage: 'Email has not been verified: Please check your email or ',
+          noActiveDomains: noActiveDomains,
+          activeComponent: 'errorConfirmEmail'
+        })
+      } else if (noActiveDomains){
+        self.setState({ 
+            activeComponent: 'noActiveDomains',
+            allUrls: urls
+        })
+      } else {
+        console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
+        console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
-    this.handleSubmitClick(this.state.allUrls)
+        self.updateUser(self.state.user, urls);
+      }
+      // console.log(this.state.errorMessage);
+    })
   },
 
   updateUser: function(user, urls){
@@ -53,13 +79,13 @@ var Index = React.createClass({
     var self = this;
     // console.log('whats the question',user);
 
-    console.log(user, urls);
+    // console.log(user, urls);
       $.ajax({
         method: 'PUT',
         url: '/updateUser',
         data: { user: user, canSubmitAfter: midnightTonight},
         success: function(data){
-          console.log("in update user CLIENT SIDE", data);
+          // console.log("in update user CLIENT SIDE", data);
           self.setState({ 
             user: data,
             errorMessage: null,
@@ -75,6 +101,7 @@ var Index = React.createClass({
   },  
 
   handleSubmitClick: function(urls){
+    console.log(this.state.user, 'four');
     var user = (this.state.user.user === 'anonymous') ? false : true;
     var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
     var errorNoUrls = (urls.length === 0) ? true : false;
