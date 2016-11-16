@@ -1,7 +1,10 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
 var passport = require('passport'); //i dont think this needs to be here
+var nodemailer = require('nodemailer');
 var randomstring = require("randomstring");
+
+var transporter = nodemailer.createTransport('smtps://johnseyfertfake%40gmail.com:1982johnfake@smtp.gmail.com');
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
@@ -52,6 +55,15 @@ module.exports = function(passport){
 					var newUser = new User();
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var verificationToken = randomstring.generate({ length: 64 });
+          var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
+
+          var mailOptions = {
+            from: '"pricingIQ" <johnseyfert@gmail.com>', // sender address 
+            to: 'johnseyfert@gmail.com', // list of receivers 
+            subject: 'Validate Your Email ✔', // Subject line 
+            text: 'please use html format', // plaintext body 
+            html : "Please Click the link to verify your email.<br><a href=" + link + ">" + link + "</a>" 
+          };
 
           newUser.email = email;
           newUser.password = newUser.generateHash(password);
@@ -68,6 +80,14 @@ module.exports = function(passport){
               throw err;
             } else {
             // VerifyEmail.sendverification(email, verification_token, permalink);
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                  return done(err);
+                    // return console.log(error);
+                }
+                console.log('Message sent: ' + info.response);
+            });
+
             return done(null, newUser, { message: 'You successfully signed up.' });
             }
           })

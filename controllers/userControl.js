@@ -113,7 +113,35 @@ module.exports = {
        			message: "could not update user"
      		})
    		}
-	}
+	},
+
+  verify: function(req, res){
+      var permalink = req.params.permalink;
+      var token = req.params.token;
+
+      UserModel.findOne({'permalink': permalink}, function (err, user) {
+          if(err){
+            return console.log('error', err);
+          } else if (user){
+            if (user.verificationToken == token) {
+                UserModel.findOneAndUpdate({'permalink': permalink}, {'verified': true}, function (err, resp) {
+                    console.log('The user has been verified!');
+                });
+                // res.redirect('/confirmed');
+                res.send('<div><strong>Success!</strong> You have confirmed your email - Please close this window</div>');
+                // res.json({message: 'The user has been verified'})
+            } else {
+                console.log('The token is wrong - User not verified');
+                res.json({message: 'The token is wrong - User not verified'})
+            }
+          } else {
+              console.log('The token is wrong - User not verified');
+              res.json({message: 'The permalink is wrong - User not verified'})
+
+          }
+
+      }); 
+  },
 
 };
 

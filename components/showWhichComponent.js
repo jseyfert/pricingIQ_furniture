@@ -3,6 +3,7 @@ var React = require('react');
 var LandingData = require('./landingData.js');
 var ErrorSubmittedToday = require('./errorSubmittedToday.js');
 var ErrorNoActiveDomains = require('./errorNoActiveDomains.js');
+var ErrorConfirmEmail = require('./errorConfirmEmail.js');
 var ConfirmData = require('./confirmData.js');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
@@ -69,6 +70,16 @@ var ShowWhichComponent = React.createClass({
           errorMessage={ this.props.errorMessage }
           signupUserFromServer={ this.props.signupUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
+          />
+        </div>
+        )
+    } else if(activeComponent === 'errorConfirmEmail'){
+      return (
+        <div>
+          <ErrorConfirmEmail
+          errorMessage={ this.props.errorMessage }
+          setActiveComponent={ this.props.setActiveComponent }
+          handleEmailConfirm={ this.props.handleEmailConfirm }
           />
         </div>
         )

@@ -26,6 +26,7 @@ var Index = React.createClass({
 
 	getOneUserFromServer: function(){
 		var currentTime = new Date().getTime()
+
 		var self = this;
 
 		$.ajax({
@@ -39,6 +40,13 @@ var Index = React.createClass({
 			});
 		})
 	},
+
+  handleEmailConfirm: function(index){
+
+    this.getOneUserFromServer()
+
+    this.handleSubmitClick(this.state.allUrls)
+  },
 
   updateUser: function(user, urls){
     var midnightTonight = new Date().setHours(23,59,59,0);
@@ -68,6 +76,7 @@ var Index = React.createClass({
 
   handleSubmitClick: function(urls){
     var user = (this.state.user.user === 'anonymous') ? false : true;
+    var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
     var errorNoUrls = (urls.length === 0) ? true : false;
     var submittedToday = this.state.submittedToday
     var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
@@ -77,6 +86,12 @@ var Index = React.createClass({
         this.setState({ 
           activeComponent: 'landing',
           errorMessage: 'Please submit at least one valid Url',
+          allUrls: urls
+        })
+      } else if(!verified) {
+        console.log('in else if verified');
+        this.setState({
+          activeComponent: 'errorConfirmEmail',
           allUrls: urls
         })
       } else if (submittedToday) {
@@ -90,8 +105,8 @@ var Index = React.createClass({
           allUrls: urls
       })
       } else {
-        console.log('#1 SUBMIT W/ USER-ID');                                            //submit with userID   #1
-        console.log('#1 UPDATE USER');                                                  //***UPDATE USER***
+        console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
+        console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
         this.updateUser(this.state.user, urls);
       }
@@ -103,7 +118,7 @@ var Index = React.createClass({
           allUrls: urls 
         })
       } else {
-        console.log('#2 SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
+        console.log('# SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
         this.setState({ 
           activeComponent: 'login', 
           noActiveDomains: noActiveDomains, 
@@ -124,11 +139,19 @@ var Index = React.createClass({
       url: '/login',
       data: user,
       success: function(data){
+        var verified = data.user.verified
         var submittedToday = (currentTime < data.user.canSubmitAfter);
         var noActiveDomains = self.state.noActiveDomains;
-        // console.log("in loginUserFromServer1", data);
-        // console.log("in loginUserFromServer1", self.state);
-        if (submittedToday) {
+
+        if (!verified) {
+          self.setState({ 
+            user: data.user,
+            errorMessage: null,
+            submittedToday: submittedToday,
+            noActiveDomains: noActiveDomains,
+            activeComponent: 'errorConfirmEmail'
+          })
+        } else if (submittedToday) {
           self.setState({ 
             user: data.user,
             errorMessage: null,
@@ -174,10 +197,19 @@ var Index = React.createClass({
       url: '/signup',
       data: user, 
       success: function(data){
+        var verified = data.user.verified
         var noActiveDomains = self.state.noActiveDomains;
         // console.log("in loginUserFromServer1", data);
         // console.log("in loginUserFromServer1", self.state);
-        if (noActiveDomains){
+        if (!verified) {
+          self.setState({ 
+            user: data.user,
+            errorMessage: null,
+            submittedToday: false,
+            noActiveDomains: noActiveDomains,
+            activeComponent: 'errorConfirmEmail'
+          })
+        } else if (noActiveDomains){
           self.setState({ 
             user: data.user,
             errorMessage: null,
@@ -187,8 +219,8 @@ var Index = React.createClass({
            
           })
         } else {
-          console.log('#4 SUBMIT W/ USER-ID');                                            //submit with userID #4
-          console.log('#4 UPDATE USER');                                                  //***UPDATE USER***
+          console.log('# SUBMIT W/ USER-ID');                                            //submit with userID #4
+          console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
           self.updateUser(data.user, urls);
 
@@ -218,7 +250,8 @@ var Index = React.createClass({
           self.setState({ 
             user: data,
             errorMessage: null,
-            submittedToday: null
+            submittedToday: null,
+            activeComponent: 'landing'
           });
         })
       }.bind(self),
@@ -258,6 +291,9 @@ var Index = React.createClass({
           setActiveComponent={ this.setActiveComponent } 
           loginUserFromServer={ this.loginUserFromServer } 
           signupUserFromServer={ this.signupUserFromServer }
+
+          handleEmailConfirm={ this.handleEmailConfirm }
+
           logoutUser={ this.logoutUser } 
           handleSubmitClick={ this.handleSubmitClick } 
           />

@@ -60,6 +60,7 @@ app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
 app.put('/updateUser', userControl.updateUser);
 app.get('/logout', userControl.logout);
+app.get('/verify/:permalink/:token', userControl.verify);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);
 app.get('/oneUser', userControl.getOneUser);
