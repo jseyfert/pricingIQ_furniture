@@ -35,8 +35,9 @@ var UserLoginHtml = React.createClass({
       					<label>Password</label>
       					<input type="password" className="form-control" name="password" onChange={ this.props.onPasswordChange } value={ this.props.password } required/>
       				</div>
-      					<button className="btn btn-warning btn-lg">Log in</button>
-      			</form>
+      					<button className="btn btn-warning btn-lg">Log in</button>&nbsp;&nbsp;
+                <a onClick={ this.props.setActiveComponent.bind(null, 'forgotPassword') } >Forgot your password?</a>
+            </form>
             <hr/>
             <p>Need an account? <a onClick={ this.props.setActiveComponent.bind(null, 'signup') } >Signup</a></p>
           </div>

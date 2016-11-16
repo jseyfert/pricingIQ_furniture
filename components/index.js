@@ -100,6 +100,42 @@ var Index = React.createClass({
       })
   },  
 
+
+
+
+
+
+  forgotPassword: function(user){
+    // console.log('in forgotPassword', user)
+    var self = this;
+
+      $.ajax({
+        method: 'POST',
+        url: '/forgot',
+        data: { user: user},
+        success: function(data){
+          console.log("in forgot password CLIENT SIDE", data);
+          // self.setState({ 
+          //   user: data,
+          //   errorMessage: null,
+          //   submittedToday: true,
+          //   activeComponent: 'confirm',
+          //   allUrls: urls
+          // });
+        },
+        error: function(xhr, status, err){
+          console.error('/forgot', status, err.toString())
+        }
+      })
+  },  
+
+
+
+
+
+
+
+
   handleSubmitClick: function(urls){
     console.log(this.state.user, 'four');
     var user = (this.state.user.user === 'anonymous') ? false : true;
@@ -289,6 +325,7 @@ var Index = React.createClass({
   },
 
   setActiveComponent: function(componentName) {
+    console.log('in setActiveComponent', componentName);
     this.setState({
       activeComponent: componentName,
       errorMessage: null,
@@ -318,9 +355,8 @@ var Index = React.createClass({
           setActiveComponent={ this.setActiveComponent } 
           loginUserFromServer={ this.loginUserFromServer } 
           signupUserFromServer={ this.signupUserFromServer }
-
+          forgotPassword={ this.forgotPassword }
           handleEmailConfirm={ this.handleEmailConfirm }
-
           logoutUser={ this.logoutUser } 
           handleSubmitClick={ this.handleSubmitClick } 
           />

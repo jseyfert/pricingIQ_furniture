@@ -1,4 +1,3 @@
-
 var React = require('react');
 var UserSignupHtml = require('./userSignupHtml.js');
 

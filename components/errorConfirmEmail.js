@@ -25,7 +25,7 @@ var ErrorConfirmEmail = React.createClass({
               <div className="alert alert-warning" role="alert">
                 <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span className="sr-only">Error: </span>
-                 &nbsp; To proceed check email and click the confimation link. 
+                 &nbsp; To proceed check your email and click the confimation link. 
                 <a className="alert-link" onClick={ handleEmailConfirm }> Click here once complete</a>
               </div>
 

@@ -3,9 +3,13 @@ var express = require('express');
 var app = express();
 var passport = require('passport');
 var mongoose = require('mongoose');
+var nodemailer = require('nodemailer');
+var randomstring = require("randomstring");
+var transporter = nodemailer.createTransport('smtps://johnseyfertfake%40gmail.com:1982johnfake@smtp.gmail.com');
 
 module.exports = {
-	login: function(req, res, next){
+	
+  login: function(req, res, next){
 			//console.log(req.body);
 		passport.authenticate('local-login', function(err, user, info){
 			//console.log('You logged in.', info);
@@ -142,6 +146,52 @@ module.exports = {
 
       }); 
   },
+
+  forgot: function(req, res){
+    var email = req.body.user.email;
+    var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
+    var resetToken = randomstring.generate({ length: 64 });
+    var passwordResetExpires = Date.now() + 3600000; // 1 hour
+
+    var link = "http://localhost:7070" + "/reset/" + permalink + "/" + resetToken;
+
+    var mailOptions = {
+      from: '"pricingIQ" <johnseyfert@gmail.com>', // sender address 
+      to: email, // list of receivers 
+      subject: 'Reset Your Password ✔', // Subject line 
+      text: 'please use html format', // plaintext body 
+      html : "Please Click the link to reset your password.<br><a href=" + link + ">" + link + "</a>" 
+    };
+
+      UserModel.findOne({email: email}, function (err, user) {
+
+        if (err) { 
+          return done(err); 
+        }
+
+        if (!user) {
+          res.json({message: 'Account with that email address does not exist.' })
+        }
+
+        if (user) {
+          user.passwordResetToken = resetToken;
+          user.passwordResetExpires = passwordResetExpires;
+          user.save((err) => {
+            res.json({message: 'reset token has been saved' })
+            // done(err, resetToken, user);
+          });
+
+          transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                console.log('userControls > forgot > sendmail',error);
+                return done(error);
+              }
+              console.log('Message sent: ' + info.response);
+          });
+        }
+      }); 
+  },
+
 
 };
 

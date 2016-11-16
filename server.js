@@ -58,6 +58,7 @@ var userControl = require('./controllers/userControl.js');
 
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
+app.post('/forgot', userControl.forgot);
 app.put('/updateUser', userControl.updateUser);
 app.get('/logout', userControl.logout);
 app.get('/verify/:permalink/:token', userControl.verify);

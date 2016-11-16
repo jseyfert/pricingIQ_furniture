@@ -5,6 +5,11 @@ var nodemailer = require('nodemailer');
 var randomstring = require("randomstring");
 
 var transporter = nodemailer.createTransport('smtps://johnseyfertfake%40gmail.com:1982johnfake@smtp.gmail.com');
+// var transporter = nodemailer.createTransport('smtps://' + process.env.GOOGLE_ID + '%40gmail.com:' + process.env.GOOGLE_SECRET + '@smtp.gmail.com');
+// console.log('in passport', process.env.GOOGLE_ID);
+// process.env.GOOGLE_ID
+// process.env.GOOGLE_SECRET
+// console.log(process.env.GOOGLE_ID, process.env.GOOGLE_ID);
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
@@ -75,6 +80,9 @@ module.exports = function(passport){
           newUser.verificationToken = verificationToken;
           newUser.verified = false;
 
+          newUser.passwordResetToken = null;
+          newUser.passwordResetExpires = null;
+
           newUser.save(function(err){
             if(err) {
               throw err;
@@ -83,7 +91,7 @@ module.exports = function(passport){
             transporter.sendMail(mailOptions, function(error, info){
                 if(error){
                   return done(err);
-                    // return console.log(error);
+                  console.log('passport > local-signup > sendmail',error);
                 }
                 console.log('Message sent: ' + info.response);
             });

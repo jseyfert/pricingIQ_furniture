@@ -1,4 +1,3 @@
-
 var React = require('react');
 
 var UserSignupHtml = React.createClass({
@@ -9,14 +8,14 @@ var UserSignupHtml = React.createClass({
       return(
         <div className="form-group has-error">
           <label className="control-label" for="inputError1">Email ({ errorMessage })</label>
-          <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } id="inputError1" required/>
+          <input type="email" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } id="inputError1" required/>
         </div>
         )
     } else {
       return(
         <div className="form-group">
           <label>Email</label>
-          <input type="text" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } required/>
+          <input type="email" className="form-control" name="email" onChange={ this.props.onEmailChange } value={ this.props.email } required/>
         </div>
         )
     }
@@ -51,10 +50,10 @@ var UserSignupHtml = React.createClass({
     }
   },
 
-	render: function(){
+  render: function(){
     
-		return (
-			<div>
+    return (
+      <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
           <h1><span className="fa fa-sign-in"></span> Signup</h1>
