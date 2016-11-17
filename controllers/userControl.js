@@ -148,19 +148,19 @@ module.exports = {
   },
 
   forgot: function(req, res){
+    // var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
     var email = req.body.user.email;
-    var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
     var resetToken = randomstring.generate({ length: 64 });
     var passwordResetExpires = Date.now() + 3600000; // 1 hour
 
-    var link = "http://localhost:7070" + "/reset/" + permalink + "/" + resetToken;
+    // var link = "http://localhost:7070" + "/reset/" + resetToken + '/';
 
     var mailOptions = {
       from: '"pricingIQ" <johnseyfert@gmail.com>', // sender address 
       to: email, // list of receivers 
       subject: 'Reset Your Password ✔', // Subject line 
       text: 'please use html format', // plaintext body 
-      html : "Please Click the link to reset your password.<br><a href=" + link + ">" + link + "</a>" 
+      html : "Please paste this token in the app to reset your password<br><br>" + resetToken 
     };
 
       UserModel.findOne({email: email}, function (err, user) {
@@ -170,15 +170,20 @@ module.exports = {
         }
 
         if (!user) {
-          res.json({message: 'Account with that email address does not exist.' })
+          res.json({
+            valid: false,
+            message: 'Account with that email address does not exist.' 
+          })
         }
 
         if (user) {
           user.passwordResetToken = resetToken;
           user.passwordResetExpires = passwordResetExpires;
           user.save((err) => {
-            res.json({message: 'reset token has been saved' })
-            // done(err, resetToken, user);
+            res.json({
+              valid: true,
+              message: 'Please check your email to recieve you token' 
+            })
           });
 
           transporter.sendMail(mailOptions, function(error, info){
@@ -192,6 +197,27 @@ module.exports = {
       }); 
   },
 
+  // reset: function(req, res){
+  //     var passwordResetToken = req.params.token;
+
+  //     UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
+  //         if(err){
+  //           return console.log('error', err);
+  //         } else if (user){
+  //           if (user.passwordResetExpires > Date.now()) {
+  //             console.log('password is ready to be updated');
+  //             // res.send('<div><strong>Success!</strong> Password is ready to be updated</div>');
+  //             // res.redirect('/reset');
+  //           } else {
+  //             console.log('The token is expired');
+  //             res.json({message: 'The token is expired'})
+  //           }
+  //         } else {
+  //             console.log('The token is wrong');
+  //             res.json({message: 'The token is wrong'})
+  //         }
+  //     }); 
+  // },
 
 };
 

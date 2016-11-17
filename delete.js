@@ -4,12 +4,13 @@
 // console.log(midnight);
 // midnight.setHours(23,59,59,0);
 // console.log(midnight);
-var passwordValidator = require('password-validator');
-var schema = new passwordValidator();
-schema.isMin(8)
-console.log(schema.validate('validPASS')); // true
-console.log(schema.validate('inval')); 
+// var passwordValidator = require('password-validator');
+// var schema = new passwordValidator();
+// schema.isMin(8)
+// console.log(schema.validate('validPASS')); // true
+// console.log(schema.validate('inval')); 
 
+console.log(Date.now() + 3600000 );
 
 //===============================================================
 // var validator = require('validator');

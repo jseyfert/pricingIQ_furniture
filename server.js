@@ -7,36 +7,6 @@ var session = require('express-session');
 // var cookieParser = require('cookie-parser')
 require('./userConfig/passport.js')(passport);
 
-//=============================================
-// var User = require('./models/userModel')
-// var nev = require('email-verification')(mongoose);
-
-// nev.configure({
-//     verificationURL: 'http://myawesomewebsite.com/email-verification/${URL}',
-//     persistentUserModel: User,
-//     tempUserCollection: 'myawesomewebsite_tempusers',
-
-//     transportOptions: {
-//         service: 'Gmail',
-//         auth: {
-//             user: 'johnseyfertfake@gmail.com',
-//             pass: '1982johnfake'
-//         }
-//     },
-//     verifyMailOptions: {
-//         from: 'Do Not Reply <johnseyfertfake@gmail.com>',
-//         subject: 'Please confirm account',
-//         html: 'Click the following link to confirm your account:</p><p>${URL}</p>',
-//         text: 'Please confirm your account by clicking the following link: ${URL}'
-//     }
-// }, function(error, options){
-// });
-
-// // generating the model, pass the User model defined earlier
-// nev.generateTempUserModel(User);
-
-//=============================================
-
 var app = express();
  
 //mounting all of your middleware
@@ -59,12 +29,13 @@ var userControl = require('./controllers/userControl.js');
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
 app.post('/forgot', userControl.forgot);
-app.put('/updateUser', userControl.updateUser);
-app.get('/logout', userControl.logout);
+// app.get('/reset/:token', userControl.reset);
 app.get('/verify/:permalink/:token', userControl.verify);
+app.get('/logout', userControl.logout);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);
 app.get('/oneUser', userControl.getOneUser);
+app.put('/updateUser', userControl.updateUser);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');

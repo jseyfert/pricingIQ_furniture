@@ -8,6 +8,7 @@ var ConfirmData = require('./confirmData.js');
 var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var ForgotPasswordData = require('./forgotPasswordData.js');
+var ResetTokenData = require('./resetTokenData.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -91,6 +92,16 @@ var ShowWhichComponent = React.createClass({
           errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           forgotPassword={ this.props.forgotPassword }
+          />
+        </div>
+        )
+    } else if(activeComponent === 'resetToken'){
+      return (
+        <div>
+          <ResetTokenData
+          errorMessage={ this.props.errorMessage }
+          setActiveComponent={ this.props.setActiveComponent }
+          resetToken={ this.props.resetToken }
           />
         </div>
         )

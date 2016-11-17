@@ -114,14 +114,27 @@ var Index = React.createClass({
         url: '/forgot',
         data: { user: user},
         success: function(data){
-          console.log("in forgot password CLIENT SIDE", data);
-          // self.setState({ 
-          //   user: data,
-          //   errorMessage: null,
-          //   submittedToday: true,
-          //   activeComponent: 'confirm',
-          //   allUrls: urls
-          // });
+          var valid = data.valid
+          var message = data.message
+          console.log("in forgot password CLIENT SIDE", valid, message);
+          if (valid) {
+            self.setState({ 
+              // user: data,
+              errorMessage: message,
+              // submittedToday: true,
+              activeComponent: 'resetToken',
+              // allUrls: urls
+          });
+          } else {
+            self.setState({ 
+                // user: data,
+                errorMessage: message,
+                // submittedToday: true,
+                activeComponent: 'forgotPassword',
+                // allUrls: urls
+            });
+          }
+
         },
         error: function(xhr, status, err){
           console.error('/forgot', status, err.toString())
