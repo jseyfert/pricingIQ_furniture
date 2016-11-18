@@ -11,7 +11,8 @@ var Index = React.createClass({
 	
   getInitialState: function(){
 		return {
-			user: null,
+      user: null,
+      passwordResetToken: null,
       errorMessage: null,
       submittedToday: null,
       noActiveDomains: null,
@@ -20,7 +21,7 @@ var Index = React.createClass({
 			allDomains: 
 			[{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
+			{domain: 'sears' ,  domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
 		}
 	},
 
@@ -50,7 +51,7 @@ var Index = React.createClass({
       url: '/oneUser'
     }).done(function(data){
       var verified = data.verified
-      console.log('in it yo', verified);
+      // console.log('in it yo', verified);
      
       if (!verified) {
         self.setState({ 
@@ -65,8 +66,9 @@ var Index = React.createClass({
             allUrls: urls
         })
       } else {
-        console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
-        console.log('# UPDATE USER');                                                  //***UPDATE USER***
+        this.helperConsoleLog('# SUBMIT W/ USER-ID')
+        // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
+        // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
         self.updateUser(self.state.user, urls);
       }
@@ -100,11 +102,6 @@ var Index = React.createClass({
       })
   },  
 
-
-
-
-
-
   forgotPassword: function(user){
     // console.log('in forgotPassword', user)
     var self = this;
@@ -114,12 +111,14 @@ var Index = React.createClass({
         url: '/forgot',
         data: { user: user},
         success: function(data){
+          console.log(data)
           var valid = data.valid
           var message = data.message
-          console.log("in forgot password CLIENT SIDE", valid, message);
+          // var userEmail = data.userEmail
+          // console.log("in forgot password CLIENT SIDE", data, user);
           if (valid) {
             self.setState({ 
-              // user: data,
+              // userEmail: userEmail,
               errorMessage: message,
               // submittedToday: true,
               activeComponent: 'resetToken',
@@ -127,7 +126,7 @@ var Index = React.createClass({
           });
           } else {
             self.setState({ 
-                // user: data,
+                // user: user,
                 errorMessage: message,
                 // submittedToday: true,
                 activeComponent: 'forgotPassword',
@@ -142,15 +141,8 @@ var Index = React.createClass({
       })
   },  
 
-
-
-
-
-
-
-
   handleSubmitClick: function(urls){
-    console.log(this.state.user, 'four');
+    // console.log(this.state.user, 'four');
     var user = (this.state.user.user === 'anonymous') ? false : true;
     var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
     var errorNoUrls = (urls.length === 0) ? true : false;
@@ -165,7 +157,7 @@ var Index = React.createClass({
           allUrls: urls
         })
       } else if(!verified) {
-        console.log('in else if verified');
+        // console.log('in else if verified');
         this.setState({
           activeComponent: 'errorConfirmEmail',
           allUrls: urls
@@ -181,8 +173,9 @@ var Index = React.createClass({
           allUrls: urls
       })
       } else {
-        console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
-        console.log('# UPDATE USER');                                                  //***UPDATE USER***
+        this.helperConsoleLog('# SUBMIT W/ USER-ID')
+        // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
+        // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
         this.updateUser(this.state.user, urls);
       }
@@ -194,7 +187,8 @@ var Index = React.createClass({
           allUrls: urls 
         })
       } else {
-        console.log('# SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
+        this.helperConsoleLog('# SUBMIT W/OUT USER-ID')
+        // console.log('# SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
         this.setState({ 
           activeComponent: 'login', 
           noActiveDomains: noActiveDomains, 
@@ -244,8 +238,9 @@ var Index = React.createClass({
             activeComponent: 'noActiveDomains'
           })
         } else {
-          console.log('#3 SUBMIT W/ USER-ID');                                            //submit with userID #3
-          console.log('#3 UPDATE USER');                                                  //***UPDATE USER***
+          this.helperConsoleLog('# SUBMIT W/ USER-ID')
+          // console.log('#3 SUBMIT W/ USER-ID');                                            //submit with userID #3
+          // console.log('#3 UPDATE USER');                                                  //***UPDATE USER***
           
           self.updateUser(data.user, urls);
 
@@ -295,8 +290,9 @@ var Index = React.createClass({
            
           })
         } else {
-          console.log('# SUBMIT W/ USER-ID');                                            //submit with userID #4
-          console.log('# UPDATE USER');                                                  //***UPDATE USER***
+          this.helperConsoleLog('# SUBMIT W/ USER-ID')
+          // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID #4
+          // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
           self.updateUser(data.user, urls);
 
@@ -338,16 +334,97 @@ var Index = React.createClass({
   },
 
   setActiveComponent: function(componentName) {
-    console.log('in setActiveComponent', componentName);
+    // console.log('in setActiveComponent', componentName);
     this.setState({
       activeComponent: componentName,
       errorMessage: null,
     })
   },
 
+  submitResetToken: function(token) {
+    // console.log('index > submitResetToken:', token);
+    var self = this;
+
+      $.ajax({
+        method: 'GET',
+        url: '/verifyReset/' + token,
+        data: { token: token},
+        success: function(data){
+          var activeComponent = data.activeComponent
+          var message = data.message
+          var passwordResetToken = data.passwordResetToken ? data.passwordResetToken : null;
+          console.log('index > submitresettoken > success', data);
+          // if (valid) {
+          //   self.setState({ 
+          //     // user: data,
+          //     errorMessage: message,
+          //     // submittedToday: true,
+          //     activeComponent: 'resetToken',
+          //     // allUrls: urls
+          // });
+          // } else {
+            self.setState({ 
+                // user: data,
+                errorMessage: message,
+                // submittedToday: true,
+                activeComponent: activeComponent,
+                // allUrls: urls
+                passwordResetToken: passwordResetToken
+            });
+          // }
+
+        },
+        error: function(xhr, status, err){
+          console.error('/verifyReset', status, err.toString())
+        }
+      })
+  }, 
+
+  submitNewPassword: function(password) {
+    var passwordResetToken = this.state.passwordResetToken
+    var self = this;
+
+      $.ajax({
+        method: 'PUT',
+        url: '/reset',
+        data: { password: password, passwordResetToken: passwordResetToken },
+        success: function(data){
+          var activeComponent = data.activeComponent
+          var message = data.message
+          var valid = data.valid
+          // console.log('index > submitNewPassword > success', data);
+          // if (valid) {
+          self.setState({ 
+              // user: data,
+              errorMessage: message,
+              // submittedToday: true,
+              activeComponent: activeComponent,
+              // allUrls: urls
+          });
+          // } else {
+          //   self.setState({ 
+          //       // user: data,
+          //       errorMessage: message,
+          //       // submittedToday: true,
+          //       activeComponent: activeComponent,
+          //       // allUrls: urls
+          //   });
+          // }
+
+        },
+        error: function(xhr, status, err){
+          console.error('/reset', status, err.toString())
+        }
+      })
+  },
+
 	componentDidMount: function(){
 		this.getOneUserFromServer();
 	},
+
+  helperConsoleLog: function(log){
+    // console.log('helper',log);
+  },
 
 	render: function(){
 			if (!this.state.user) {
@@ -372,6 +449,8 @@ var Index = React.createClass({
           handleEmailConfirm={ this.handleEmailConfirm }
           logoutUser={ this.logoutUser } 
           handleSubmitClick={ this.handleSubmitClick } 
+          submitResetToken={ this.submitResetToken } 
+          submitNewPassword={ this.submitNewPassword } 
           />
         </div>
 					// <Footer />

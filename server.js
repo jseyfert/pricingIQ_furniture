@@ -29,13 +29,14 @@ var userControl = require('./controllers/userControl.js');
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
 app.post('/forgot', userControl.forgot);
-// app.get('/reset/:token', userControl.reset);
+app.put('/updateUser', userControl.updateUser);
+app.put('/reset', userControl.reset);
+app.get('/verifyReset/:token', userControl.verifyReset);
 app.get('/verify/:permalink/:token', userControl.verify);
 app.get('/logout', userControl.logout);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);
 app.get('/oneUser', userControl.getOneUser);
-app.put('/updateUser', userControl.updateUser);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');
@@ -74,6 +75,12 @@ mongoose.connection.once('open', function(){ console.log('Connected to database'
 app.get('/', function(req, res){
  res.send('index');
 });
+
+// if (req.user) {
+//     // logged in
+// } else {
+//     // not logged in
+// }
 
 app.listen(7070, function(){
 	console.log('server on 7070');

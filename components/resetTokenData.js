@@ -9,23 +9,23 @@ var ResetTokenData = React.createClass({
 	},
 
 	onTokenChange: function(e){
-		console.log(e.target.value);
+		// console.log(e.target.value);
 		this.setState({ token: e.target.value })
 	},
 
 	handleTokenSubmit: function(e){
 		e.preventDefault();
 
-		console.log('in handleTokenSubmit', this.state.token);
+		// console.log('reserTokenData > handleTokenSubmit:', this.state.token);
 
-		// var user = {};
-		// user.email = this.state.email;
+		var token = this.state.token;
 
-		// this.props.ResetTokenData(user);
+		this.props.submitResetToken(token);
 
-		// this.setState({ 
-		//   email: ''
-		// });
+		this.setState({ 
+		  token: ''
+		});
+
 	},
 
 	render: function(){

@@ -19,7 +19,7 @@ var ForgotPasswordHtml = React.createClass({
   },
 
   render: function(){
-    console.log(this.props.errorMessage);
+    // console.log(this.props.errorMessage);
     return (
       <div>
         <div className="container">

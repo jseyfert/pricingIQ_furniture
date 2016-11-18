@@ -181,11 +181,11 @@ module.exports = {
           user.passwordResetExpires = passwordResetExpires;
           user.save((err) => {
             res.json({
+              // userEmail: user.email,
               valid: true,
               message: 'Please check your email to recieve you token' 
             })
           });
-
           transporter.sendMail(mailOptions, function(error, info){
               if(error){
                 console.log('userControls > forgot > sendmail',error);
@@ -197,27 +197,94 @@ module.exports = {
       }); 
   },
 
-  // reset: function(req, res){
-  //     var passwordResetToken = req.params.token;
+  verifyReset: function(req, res){
+      var passwordResetToken = req.params.token;
+      // console.log('SERVER > userControl > reset', passwordResetToken);
 
-  //     UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
-  //         if(err){
-  //           return console.log('error', err);
-  //         } else if (user){
-  //           if (user.passwordResetExpires > Date.now()) {
-  //             console.log('password is ready to be updated');
-  //             // res.send('<div><strong>Success!</strong> Password is ready to be updated</div>');
-  //             // res.redirect('/reset');
-  //           } else {
-  //             console.log('The token is expired');
-  //             res.json({message: 'The token is expired'})
-  //           }
-  //         } else {
-  //             console.log('The token is wrong');
-  //             res.json({message: 'The token is wrong'})
-  //         }
-  //     }); 
-  // },
+      UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
+          if(err){
+            return console.log('error', err);
+          } else if (user){
+            if (user.passwordResetExpires > Date.now()) {
+              console.log('password is ready to be updated');
+              res.json({
+                message: 'password is ready to be updated',
+                activeComponent: 'resetPassword',
+                passwordResetToken: passwordResetToken
+              })
+            } else {
+              console.log('The token is expired');
+              res.json({
+                message: 'The token is expired - click here to resend',
+                activeComponent: 'resetToken'
+              })
+            }
+          } else {
+              console.log('The token is wrong');
+              res.json({
+                message: 'The token is wrong',
+                activeComponent: 'resetToken',
+              })
+          }
+      }); 
+  },
+
+  reset: function(req, res){
+    var password = req.body.password;
+    var passwordResetToken = req.body.passwordResetToken;
+    
+    UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
+        if(err){
+          return console.log('error', err);
+        } else if (user){
+          if (user.passwordResetExpires > Date.now()) {
+
+            user.password = user.generateHash(password);
+            user.passwordResetToken = null;
+            user.passwordResetExpires = null;
+            
+            user.save((err) => {
+              res.json({
+                valid: true,
+                message: 'Success! Your password has been changed.',
+                activeComponent: 'resetPassword',
+              })
+            });
+
+            var mailOptions = {
+              from: '"pricingIQ" <johnseyfertfake@gmail.com>', // sender address 
+              to: user.email, // list of receivers 
+              subject: 'Your password has been reset ✔', // Subject line 
+              text: 'please use html format', // plaintext body 
+              html : "your password has been reset for pricingIQ" 
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                  console.log('userControls > forgot > sendmail',error);
+                  return done(error);
+                }
+                console.log('Message sent: ' + info.response);
+            });
+
+          } else {
+            console.log('The token is expired');
+            res.json({
+              valid: false,
+              message: 'The token is expired - click here to resend',
+              activeComponent: 'resetPassword'
+            })
+          }
+        } else {
+            console.log('The token is wrong');
+            res.json({
+              valid: false,
+              message: 'The token is wrong',
+              activeComponent: 'resetPassword',
+            })
+        }
+    }); 
+  },
 
 };
 

@@ -1,44 +1,58 @@
 var React = require('react');
-var ForgotPasswordHtml = require('./forgotPasswordHtml.js');
+var ResetPasswordHtml = require('./resetPasswordHtml.js');
 
-var ForgotPasswordData = React.createClass({
+var ResetPasswordData = React.createClass({
 	getInitialState: function(){
 		return {
-			email: ''
+			password: '',
+			confirmPassword: '',
+			passwordsMatch: null
 		}
 	},
 
-	onEmailChange: function(e){
-		// console.log(e.target.value);
-		this.setState({ email: e.target.value })
+	onPasswordChange: function(e){
+		this.setState({ password: e.target.value })
 	},
 
-	handlePasswordReset: function(e){
+	onConfirmPasswordChange: function(e){
+		this.setState({ confirmPassword: e.target.value })
+
+		if (this.state.password === e.target.value){
+			this.setState({ passwordsMatch: true })
+		} else {
+			this.setState({ passwordsMatch: false })
+		}
+	},
+
+	handlePasswordResetSubmit: function(e){
 		e.preventDefault();
+			if (this.state.passwordsMatch){
+				
+				var password = this.state.password;
+				this.props.submitNewPassword(password);
 
-		var user = {};
-		user.email = this.state.email;
-
-		this.props.forgotPassword(user);
-
-		// this.setState({ 
-		//   email: ''
-		// });
+				this.setState({ 
+				  password: '',
+				  confirmPassword: ''
+				});
+			}
 	},
 
 	render: function(){
 		return (
 			<div>
-				<ForgotPasswordHtml 
+				<ResetPasswordHtml 
 				errorMessage={ this.props.errorMessage }
-				handlePasswordReset={ this.handlePasswordReset }
-				setActiveComponent={ this.props.setActiveComponent }
-				onEmailChange={ this.onEmailChange }
-				email={ this.state.email }
+				handlePasswordResetSubmit={ this.handlePasswordResetSubmit }
+				onPasswordChange={ this.onPasswordChange }
+				password={ this.state.password }
+				onConfirmPasswordChange={ this.onConfirmPasswordChange }
+				confirmPassword={ this.state.confirmPassword }
+				passwordsMatch={ this.state.passwordsMatch }
 				/>
 			</div>
 			)
 	}
 });
 
-module.exports = ForgotPasswordData;
+module.exports = ResetPasswordData;

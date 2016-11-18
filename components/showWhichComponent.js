@@ -9,6 +9,7 @@ var UserLoginData = require('./userLoginData.js');
 var UserSignupData = require('./userSignupData.js');
 var ForgotPasswordData = require('./forgotPasswordData.js');
 var ResetTokenData = require('./resetTokenData.js');
+var ResetPasswordData = require('./resetPasswordData.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -101,6 +102,19 @@ var ShowWhichComponent = React.createClass({
           <ResetTokenData
           errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
+          submitResetToken={ this.props.submitResetToken }
+          resetToken={ this.props.resetToken }
+          />
+        </div>
+        )
+    } 
+    else if(activeComponent === 'resetPassword'){
+      return (
+        <div>
+          <ResetPasswordData
+          errorMessage={ this.props.errorMessage }
+          setActiveComponent={ this.props.setActiveComponent }
+          submitNewPassword={ this.props.submitNewPassword }
           resetToken={ this.props.resetToken }
           />
         </div>

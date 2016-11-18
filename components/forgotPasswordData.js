@@ -21,9 +21,9 @@ var ForgotPassword = React.createClass({
 
 		this.props.forgotPassword(user);
 
-		// this.setState({ 
-		//   email: ''
-		// });
+		this.setState({ 
+		  email: ''
+		});
 	},
 
 	render: function(){
