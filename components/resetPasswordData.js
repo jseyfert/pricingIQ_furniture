@@ -42,7 +42,7 @@ var ResetPasswordData = React.createClass({
 		return (
 			<div>
 				<ResetPasswordHtml 
-				errorMessage={ this.props.errorMessage }
+				message={ this.props.message }
 				handlePasswordResetSubmit={ this.handlePasswordResetSubmit }
 				onPasswordChange={ this.onPasswordChange }
 				password={ this.state.password }

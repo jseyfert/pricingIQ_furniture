@@ -1,4 +1,5 @@
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var ResetPasswordHtml = React.createClass({
 
@@ -34,6 +35,7 @@ var ResetPasswordHtml = React.createClass({
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
+          <ErrorMessage message={this.props.message} />
           <h1><span className="fa fa-sign-in"></span>Reset Password</h1>
             <form className="" onSubmit={ this.props.handlePasswordResetSubmit }>
              

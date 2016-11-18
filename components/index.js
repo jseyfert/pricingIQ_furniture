@@ -14,6 +14,7 @@ var Index = React.createClass({
       user: null,
       passwordResetToken: null,
       errorMessage: null,
+      message: null,
       submittedToday: null,
       noActiveDomains: null,
       activeComponent: 'landing',
@@ -36,6 +37,7 @@ var Index = React.createClass({
 			self.setState({ 
         user: data,
         errorMessage: null,
+        message: null,
         submittedToday: data.canSubmitAfter ? (currentTime < data.canSubmitAfter) : null
 			});
 		})
@@ -91,6 +93,7 @@ var Index = React.createClass({
           self.setState({ 
             user: data,
             errorMessage: null,
+            message: null,
             submittedToday: true,
             activeComponent: 'confirm',
             allUrls: urls
@@ -98,45 +101,6 @@ var Index = React.createClass({
         },
         error: function(xhr, status, err){
           console.error('/updateUser', status, err.toString())
-        }
-      })
-  },  
-
-  forgotPassword: function(user){
-    // console.log('in forgotPassword', user)
-    var self = this;
-
-      $.ajax({
-        method: 'POST',
-        url: '/forgot',
-        data: { user: user},
-        success: function(data){
-          console.log(data)
-          var valid = data.valid
-          var message = data.message
-          // var userEmail = data.userEmail
-          // console.log("in forgot password CLIENT SIDE", data, user);
-          if (valid) {
-            self.setState({ 
-              // userEmail: userEmail,
-              errorMessage: message,
-              // submittedToday: true,
-              activeComponent: 'resetToken',
-              // allUrls: urls
-          });
-          } else {
-            self.setState({ 
-                // user: user,
-                errorMessage: message,
-                // submittedToday: true,
-                activeComponent: 'forgotPassword',
-                // allUrls: urls
-            });
-          }
-
-        },
-        error: function(xhr, status, err){
-          console.error('/forgot', status, err.toString())
         }
       })
   },  
@@ -192,7 +156,7 @@ var Index = React.createClass({
         this.setState({ 
           activeComponent: 'login', 
           noActiveDomains: noActiveDomains, 
-          errorMessage: null,
+          message: null,
           allUrls: urls
         })
       }
@@ -209,6 +173,7 @@ var Index = React.createClass({
       url: '/login',
       data: user,
       success: function(data){
+        console.log('init', data)
         var verified = data.user.verified
         var submittedToday = (currentTime < data.user.canSubmitAfter);
         var noActiveDomains = self.state.noActiveDomains;
@@ -217,6 +182,7 @@ var Index = React.createClass({
           self.setState({ 
             user: data.user,
             errorMessage: null,
+            message: null,
             submittedToday: submittedToday,
             noActiveDomains: noActiveDomains,
             activeComponent: 'errorConfirmEmail'
@@ -225,6 +191,7 @@ var Index = React.createClass({
           self.setState({ 
             user: data.user,
             errorMessage: null,
+            message: null,
             submittedToday: submittedToday,
             noActiveDomains: noActiveDomains,
             activeComponent: 'submittedToday'
@@ -233,6 +200,7 @@ var Index = React.createClass({
           self.setState({ 
             user: data.user,
             errorMessage: null,
+            message: null,
             submittedToday: submittedToday, 
             noActiveDomains: noActiveDomains,
             activeComponent: 'noActiveDomains'
@@ -247,9 +215,9 @@ var Index = React.createClass({
         }
       },
       error: function(xhr, status, err){
-        console.error('/login', status, err)
+        // console.error('/login', status, err, xhr.responseJSON)
         self.setState({ 
-          errorMessage: 'Email or password incorrect',
+          message: {message: xhr.responseJSON, alert: 'alert alert-danger'},
           activeComponent: 'login'
         });
       }
@@ -270,7 +238,7 @@ var Index = React.createClass({
       success: function(data){
         var verified = data.user.verified
         var noActiveDomains = self.state.noActiveDomains;
-        // console.log("in loginUserFromServer1", data);
+        console.log("in loginUserFromServer1", data);
         // console.log("in loginUserFromServer1", self.state);
         if (!verified) {
           self.setState({ 
@@ -301,7 +269,7 @@ var Index = React.createClass({
       error: function(xhr, status, err){
         // console.error('/signup', xhr, status, err)
         self.setState({ 
-          errorMessage: 'That email is taken',
+          message: {message: xhr.responseJSON, alert: 'alert alert-danger'},
           activeComponent: 'signup'
         });
       }
@@ -321,7 +289,7 @@ var Index = React.createClass({
         }).done(function(data){
           self.setState({ 
             user: data,
-            errorMessage: null,
+            message: {message: 'You logged out', alert: 'alert alert-info'},
             submittedToday: null,
             activeComponent: 'landing'
           });
@@ -333,13 +301,44 @@ var Index = React.createClass({
     })
   },
 
-  setActiveComponent: function(componentName) {
-    // console.log('in setActiveComponent', componentName);
-    this.setState({
-      activeComponent: componentName,
-      errorMessage: null,
-    })
-  },
+  forgotPassword: function(user){
+    // console.log('in forgotPassword', user)
+    var self = this;
+
+      $.ajax({
+        method: 'POST',
+        url: '/forgot',
+        data: { user: user},
+        success: function(data){
+          console.log(data)
+          var valid = data.valid
+          var message = data.message
+          // var userEmail = data.userEmail
+          // console.log("in forgot password CLIENT SIDE", data, user);
+          if (valid) {
+            self.setState({ 
+              // userEmail: userEmail,
+              message: message,
+              // submittedToday: true,
+              activeComponent: 'resetToken',
+              // allUrls: urls
+          });
+          } else {
+            self.setState({ 
+                // user: user,
+                message: message,
+                // submittedToday: true,
+                activeComponent: 'forgotPassword',
+                // allUrls: urls
+            });
+          }
+
+        },
+        error: function(xhr, status, err){
+          console.error('/forgot', status, err.toString())
+        }
+      })
+  },  
 
   submitResetToken: function(token) {
     // console.log('index > submitResetToken:', token);
@@ -365,7 +364,7 @@ var Index = React.createClass({
           // } else {
             self.setState({ 
                 // user: data,
-                errorMessage: message,
+                message: message,
                 // submittedToday: true,
                 activeComponent: activeComponent,
                 // allUrls: urls
@@ -392,11 +391,11 @@ var Index = React.createClass({
           var activeComponent = data.activeComponent
           var message = data.message
           var valid = data.valid
-          // console.log('index > submitNewPassword > success', data);
+          console.log('index > submitNewPassword > success', message);
           // if (valid) {
           self.setState({ 
               // user: data,
-              errorMessage: message,
+              message: message,
               // submittedToday: true,
               activeComponent: activeComponent,
               // allUrls: urls
@@ -418,12 +417,61 @@ var Index = React.createClass({
       })
   },
 
+  resendVerifyToken: function() {
+    var user = this.state.user
+    // console.log('index > resendVerifyToken:', user);
+    var self = this;
+
+      $.ajax({
+        method: 'PUT',
+        url: '/verifyResend',
+        data: {user, user},
+        success: function(data){
+          // var activeComponent = data.activeComponent
+          var message = data.message
+          // var passwordResetToken = data.passwordResetToken ? data.passwordResetToken : null;
+          console.log(message, 'index > resendVerifyToken > success:', data);
+          // if (valid) {
+          //   self.setState({ 
+          //     // user: data,
+          //     errorMessage: message,
+          //     // submittedToday: true,
+          //     activeComponent: 'resetToken',
+          //     // allUrls: urls
+          // });
+          // } else {
+            self.setState({ 
+                // user: data,
+                message: message,
+                // submittedToday: true,
+                // activeComponent: activeComponent,
+                // allUrls: urls
+                // passwordResetToken: passwordResetToken
+            });
+          // }
+
+        },
+        error: function(xhr, status, err){
+          console.error('/verifyResend', status, err.toString())
+        }
+      })
+  }, 
+
 	componentDidMount: function(){
 		this.getOneUserFromServer();
 	},
 
   helperConsoleLog: function(log){
     // console.log('helper',log);
+  },
+
+  setActiveComponent: function(componentName) {
+    // console.log('in setActiveComponent', componentName);
+    this.setState({
+      activeComponent: componentName,
+      errorMessage: null,
+      message: null,
+    })
   },
 
 	render: function(){
@@ -439,6 +487,7 @@ var Index = React.createClass({
 					<ShowWhichComponent 
           user={ this.state.user } 
           errorMessage={ this.state.errorMessage } 
+          message={ this.state.message } 
           allDomains={ this.state.allDomains } 
           allUrls={ this.state.allUrls } 
           activeComponent={ this.state.activeComponent } 
@@ -451,6 +500,7 @@ var Index = React.createClass({
           handleSubmitClick={ this.handleSubmitClick } 
           submitResetToken={ this.submitResetToken } 
           submitNewPassword={ this.submitNewPassword } 
+          resendVerifyToken={ this.resendVerifyToken } 
           />
         </div>
 					// <Footer />

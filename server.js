@@ -32,7 +32,10 @@ app.post('/forgot', userControl.forgot);
 app.put('/updateUser', userControl.updateUser);
 app.put('/reset', userControl.reset);
 app.get('/verifyReset/:token', userControl.verifyReset);
+
+app.put('/verifyResend', userControl.verifyResend); // resend email verification token
 app.get('/verify/:permalink/:token', userControl.verify);
+
 app.get('/logout', userControl.logout);
 app.get('/user/:id', userControl.getUser);
 app.get('/users', userControl.getAllUsers);

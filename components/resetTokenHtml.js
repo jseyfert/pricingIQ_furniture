@@ -1,22 +1,23 @@
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var ResetTokenHtml = React.createClass({
 
-    showErrorMessage: function(){
-    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-    // console.log(errorMessage);
-    if (errorMessage){
-      return(
-        <div>
-          <div className="alert alert-info" role="alert">
-            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span className="sr-only">Error: </span>
-              { errorMessage }
-          </div>
-        </div>
-        )
-    }
-  },
+  //   showErrorMessage: function(){
+  //   var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
+  //   // console.log(errorMessage);
+  //   if (errorMessage){
+  //     return(
+  //       <div>
+  //         <div className="alert alert-info" role="alert">
+  //           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  //           <span className="sr-only">Error: </span>
+  //             { errorMessage }
+  //         </div>
+  //       </div>
+  //       )
+  //   }
+  // },
 
   render: function(){
     
@@ -24,7 +25,7 @@ var ResetTokenHtml = React.createClass({
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-          {this.showErrorMessage()}
+          <ErrorMessage message={this.props.message} />
           <h1><span className="fa fa-sign-in"></span>Enter Token</h1>
             <form className="" onSubmit={ this.props.handleTokenSubmit }>
               <div className="form-group">

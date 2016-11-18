@@ -31,7 +31,8 @@ var ResetTokenData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<ResetTokenHtml 
+				<ResetTokenHtml
+				message={ this.props.message } 
 				errorMessage={ this.props.errorMessage }
 				onTokenChange={ this.onTokenChange }
 				handleTokenSubmit={ this.handleTokenSubmit }

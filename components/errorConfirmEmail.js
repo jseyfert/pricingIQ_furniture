@@ -4,13 +4,14 @@ var React = require('react');
 var ErrorConfirmEmail = React.createClass({
 
   showError: function(){
+    var resendVerifyToken = this.props.resendVerifyToken;
     var errorMessage = this.props.errorMessage
     if (errorMessage)
     return (
         <div>
           <div className="alert alert-info">
             {errorMessage}
-            <a className="alert-link"> Click here to send another link</a>
+            <a className="alert-link" onClick={ resendVerifyToken }> Click here to send another link</a>
           </div>
         </div>
     )
@@ -18,7 +19,7 @@ var ErrorConfirmEmail = React.createClass({
 
   render: function(){
   var handleEmailConfirm = this.props.handleEmailConfirm;
-  console.log('in error message', this.props.errorMessage);
+  // console.log('in error message', this.props.errorMessage);
     return (
         <div>
           <div className="container">

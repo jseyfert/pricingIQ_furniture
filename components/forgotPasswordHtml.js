@@ -1,22 +1,23 @@
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var ForgotPasswordHtml = React.createClass({
 
-  showErrorMessage: function(){
-    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-    // console.log(errorMessage);
-    if (errorMessage){
-      return(
-        <div>
-          <div className="alert alert-danger" role="alert">
-            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span className="sr-only">Error: </span>
-              { errorMessage }
-          </div>
-        </div>
-        )
-    }
-  },
+  // showErrorMessage: function(){
+  //   var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
+  //   // console.log(errorMessage);
+  //   if (errorMessage){
+  //     return(
+  //       <div>
+  //         <div className="alert alert-danger" role="alert">
+  //           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  //           <span className="sr-only">Error: </span>
+  //             { errorMessage }
+  //         </div>
+  //       </div>
+  //       )
+  //   }
+  // },
 
   render: function(){
     // console.log(this.props.errorMessage);
@@ -24,7 +25,7 @@ var ForgotPasswordHtml = React.createClass({
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-          {this.showErrorMessage()}
+          <ErrorMessage message={this.props.message} />
           <h1><span className="fa fa-sign-in"></span> Forgot Password</h1>
             <form className="" onSubmit={ this.props.handlePasswordReset }>
               <div className="form-group">

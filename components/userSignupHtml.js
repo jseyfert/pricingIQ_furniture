@@ -1,4 +1,5 @@
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var UserSignupHtml = React.createClass({
 
@@ -56,6 +57,7 @@ var UserSignupHtml = React.createClass({
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
+          <ErrorMessage message={this.props.message} />
           <h1><span className="fa fa-sign-in"></span> Signup</h1>
             <form className="" onSubmit={ this.props.handleUserSignupSubmit }>
               <div className="form-group">

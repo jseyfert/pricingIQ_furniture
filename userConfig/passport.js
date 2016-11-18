@@ -1,24 +1,15 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
+var SendMail = require('./email.js');
 var passport = require('passport'); //i dont think this needs to be here
-var nodemailer = require('nodemailer');
 var randomstring = require("randomstring");
-
-var transporter = nodemailer.createTransport('smtps://johnseyfertfake%40gmail.com:1982johnfake@smtp.gmail.com');
-// var transporter = nodemailer.createTransport('smtps://' + process.env.GOOGLE_ID + '%40gmail.com:' + process.env.GOOGLE_SECRET + '@smtp.gmail.com');
-// console.log('in passport', process.env.GOOGLE_ID);
-// process.env.GOOGLE_ID
-// process.env.GOOGLE_SECRET
-// console.log(process.env.GOOGLE_ID, process.env.GOOGLE_ID);
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
 		done(null, user.id);
-		// console.log("This is the user: ", user);
 	});
 
 	passport.deserializeUser(function(id, done){
-		// console.log("This is the user ID: ", id);
 		User.findById(id, function(err, user){
 			done(err, user)
 		})
@@ -54,7 +45,7 @@ module.exports = function(passport){
 					return done(err);
 				if(user) {
 					return done(null, false, { 
-            message: 'That email is already taken3' 
+            message: 'That email is taken' 
           });
 				} else {
 					var newUser = new User();
@@ -62,13 +53,9 @@ module.exports = function(passport){
           var verificationToken = randomstring.generate({ length: 64 });
           var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
 
-          var mailOptions = {
-            from: '"pricingIQ" <johnseyfert@gmail.com>', // sender address 
-            to: email, // list of receivers 
-            subject: 'Validate Your Email ✔', // Subject line 
-            text: 'please use html format', // plaintext body 
-            html : "Please Click the link to verify your email.<br><a href=" + link + ">" + link + "</a>" 
-          };
+          newUser.permalink = permalink;
+          newUser.verificationToken = verificationToken;
+          newUser.verified = false;
 
           newUser.email = email;
           newUser.password = newUser.generateHash(password);
@@ -76,27 +63,12 @@ module.exports = function(passport){
           newUser.company = req.body.company;
           newUser.canSubmitAfter = 0;
 
-          newUser.permalink = permalink;
-          newUser.verificationToken = verificationToken;
-          newUser.verified = false;
-
-          newUser.passwordResetToken = null;
-          newUser.passwordResetExpires = null;
-
           newUser.save(function(err){
             if(err) {
               throw err;
             } else {
-            // VerifyEmail.sendverification(email, verification_token, permalink);
-            transporter.sendMail(mailOptions, function(error, info){
-                if(error){
-                  return done(err);
-                  console.log('passport > local-signup > sendmail',error);
-                }
-                console.log('Message sent: ' + info.response);
-            });
-
-            return done(null, newUser, { message: 'You successfully signed up.' });
+              SendMail(email, link, null)
+              return done(null, newUser, { message: 'You successfully signed up.' });
             }
           })
         }

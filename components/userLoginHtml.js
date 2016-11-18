@@ -1,30 +1,15 @@
 
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var UserLoginHtml = React.createClass({
-
-  showErrorMessage: function(){
-    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-    // console.log(errorMessage);
-    if (errorMessage){
-      return(
-        <div>
-          <div className="alert alert-danger" role="alert">
-            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span className="sr-only">Error: </span>
-              { errorMessage }
-          </div>
-        </div>
-        )
-    }
-  },
 
   render: function(){
     return (
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-            {this.showErrorMessage()}
+          <ErrorMessage message={this.props.message} />
             <h1><span className="fa fa-sign-in"></span> Login</h1>
       			<form className="" onSubmit={ this.props.handleUserLoginSubmit }>
       				<div className="form-group">

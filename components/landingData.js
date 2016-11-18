@@ -101,6 +101,7 @@ var LandingData = React.createClass({
 		return (
 			<div>
 				<LandingHtml 
+        message={this.props.message}
         errorMessage={ this.props.errorMessage }
         allDomains={ this.props.allDomains }
         allUrls={ this.state.allUrls } 

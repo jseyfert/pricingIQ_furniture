@@ -20,7 +20,8 @@ var ShowWhichComponent = React.createClass({
     if (activeComponent === 'landing'){
       return (
         <div>
-          <LandingData 
+          <LandingData
+          message={ this.props.message } 
           errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           handleSubmitClick={ this.props.handleSubmitClick }
@@ -31,6 +32,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ErrorSubmittedToday
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
@@ -41,6 +43,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ErrorNoActiveDomains
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
@@ -50,7 +53,8 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'confirm'){
       return (
         <div>
-          <ConfirmData 
+          <ConfirmData
+          message={ this.props.message } 
           allUrls = { this.props.allUrls }
           allDomains={ this.props.allDomains }
           />
@@ -59,7 +63,8 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'login'){
       return (
         <div>
-          <UserLoginData 
+          <UserLoginData
+          message={ this.props.message } 
           errorMessage={ this.props.errorMessage }
           loginUserFromServer={ this.props.loginUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
@@ -70,6 +75,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <UserSignupData
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           signupUserFromServer={ this.props.signupUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
@@ -80,9 +86,11 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ErrorConfirmEmail
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           handleEmailConfirm={ this.props.handleEmailConfirm }
+          resendVerifyToken={ this.props.resendVerifyToken }
           />
         </div>
         )
@@ -90,6 +98,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ForgotPasswordData
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           forgotPassword={ this.props.forgotPassword }
@@ -100,6 +109,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ResetTokenData
+          message={ this.props.message }
           errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           submitResetToken={ this.props.submitResetToken }
@@ -112,7 +122,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <ResetPasswordData
-          errorMessage={ this.props.errorMessage }
+          message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
           submitNewPassword={ this.props.submitNewPassword }
           resetToken={ this.props.resetToken }

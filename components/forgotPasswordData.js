@@ -30,6 +30,7 @@ var ForgotPassword = React.createClass({
 		return (
 			<div>
 				<ForgotPasswordHtml 
+				message={ this.props.message } 
 				errorMessage={ this.props.errorMessage }
 				handlePasswordReset={ this.handlePasswordReset }
 				setActiveComponent={ this.props.setActiveComponent }

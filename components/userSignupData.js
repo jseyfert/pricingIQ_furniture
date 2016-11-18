@@ -75,6 +75,7 @@ var UserSignupData = React.createClass({
 				user={ this.state.user }
 				company={ this.state.company }
 				passwordsMatch={ this.state.passwordsMatch }
+				message={this.props.message}
 				/>
 			</div>
 			)

@@ -1,4 +1,5 @@
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 var _ = require("underscore");
 
 var LandingHtml = React.createClass({
