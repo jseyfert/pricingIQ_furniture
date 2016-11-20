@@ -5,7 +5,7 @@ var LogoutUser = require('./userLogout.js');
 var Header = React.createClass({
 
   render: function(){
-    var isLoggedIn = (this.props.user.user === 'anonymous') ? null : <p className="navbar-text navbar-right">Welcome { this.props.user.user } - <LogoutUser logoutUser={ this.props.logoutUser } /></p>
+    var isLoggedIn = (this.props.user.user === 'anonymous') ? <p className="navbar-text navbar-right"><a className="navbar-link colorBlue" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p> : <p className="navbar-text navbar-right">Welcome { this.props.user.user } - <LogoutUser logoutUser={ this.props.logoutUser } /></p>
     return (
       <div>
         <nav className="navbar navbar-default">

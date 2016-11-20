@@ -1,40 +1,23 @@
 
 var React = require('react');
+var ErrorMessage = require('./errorMessage');
 
 var ErrorConfirmEmail = React.createClass({
 
-  showError: function(){
-    var resendVerifyToken = this.props.resendVerifyToken;
-    var errorMessage = this.props.errorMessage
-    if (errorMessage)
-    return (
-        <div>
-          <div className="alert alert-info">
-            {errorMessage}
-            <a className="alert-link" onClick={ resendVerifyToken }> Click here to send another link</a>
-          </div>
-        </div>
-    )
-  },
-
   render: function(){
-  var handleEmailConfirm = this.props.handleEmailConfirm;
-  // console.log('in error message', this.props.errorMessage);
-    return (
-        <div>
-          <div className="container">
-              <div className="alert alert-warning" role="alert">
-                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span className="sr-only">Error: </span>
-                 &nbsp; To proceed check your email and click the confimation link. 
-                <a className="alert-link" onClick={ handleEmailConfirm }> Click here once complete</a>
-              </div>
+    var handleEmailConfirm = this.props.handleEmailConfirm;
+    var resendVerifyToken = this.props.resendVerifyToken;
 
-              {this.showError()}
-
+    return(
+        <div className="container">
+          <div className="col-sm-6 col-sm-offset-3 text-center">
+            <ErrorMessage message={this.props.message} />
+            <button className="btn btn-info btn-lg btn-block" onClick={ handleEmailConfirm } >Click here after account verification</button>
+            <hr/>
+            <p>Did not get a email? <a onClick={ resendVerifyToken }> Send Another</a> </p>
           </div>
         </div>
-    )
+      )
   }
 });
 

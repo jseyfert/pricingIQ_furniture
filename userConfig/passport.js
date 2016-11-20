@@ -67,7 +67,7 @@ module.exports = function(passport){
             if(err) {
               throw err;
             } else {
-              SendMail(email, link, null)
+              SendMail(req.body.user, email, link, null)
               return done(null, newUser, { message: 'You successfully signed up.' });
             }
           })

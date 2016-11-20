@@ -160,11 +160,11 @@ module.exports = {
             res.json({
               // userEmail: user.email,
               valid: true,
-              message: {message: 'Please check your email to recieve you token' , alert: 'alert alert-info'},
+              message: {message: 'Please check your email to recieve your token' , alert: 'alert alert-info'},
             })
           });
 
-          SendMail(email, null, resetToken)
+          SendMail(user.user, email, null, resetToken)
 
         }
       }); 
@@ -181,7 +181,7 @@ module.exports = {
             if (user.passwordResetExpires > Date.now()) {
               console.log('password is ready to be updated');
               res.json({
-                message: {message: 'password is ready to be updated', alert: 'alert alert-success'},
+                message: {message: 'The token worked! Password is ready to be updated', alert: 'alert alert-success'},
                 activeComponent: 'resetPassword',
                 passwordResetToken: passwordResetToken
               })
@@ -224,7 +224,7 @@ module.exports = {
               })
             });
 
-            SendMail(user.email, null, null)
+            SendMail(user.user, user.email, null, null)
 
           } else {
             console.log('The token is expired');
@@ -266,10 +266,10 @@ module.exports = {
           if(err) {
             throw err;
           } else {
-            SendMail(email, link, null)
+            SendMail(user.user, email, link, null)
             res.json({
               message: {message: 'New email verification sent', alert: "alert alert-success"},
-              // activeComponent: 'login',
+              activeComponent: 'errorConfirmEmail',
             })
           }
         })
@@ -277,7 +277,7 @@ module.exports = {
           
           res.json({
             message: {message: 'Could not find user', alert: "alert alert-danger"},
-            // activeComponent: 'login',
+            activeComponent: 'errorConfirmEmail',
           })
 
       }

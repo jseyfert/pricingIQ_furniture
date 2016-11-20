@@ -6,7 +6,7 @@ var ShowWhichComponent = require('./showWhichComponent.js');
 var Header = require('./header.js');
 var Footer = require('./footer.js');
 var _ = require("underscore");
-
+console.log('process.env', process.env);
 var Index = React.createClass({
 	
   getInitialState: function(){
@@ -44,6 +44,7 @@ var Index = React.createClass({
 	},
 
   handleEmailConfirm: function(){
+    console.log('its working yo')
     var urls = this.state.allUrls
     var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
     var self = this;
@@ -58,17 +59,22 @@ var Index = React.createClass({
       if (!verified) {
         self.setState({ 
           user: data,
-          errorMessage: 'Email has not been verified: Please check your email or ',
+          message: {
+            message: 'User has not been verified. Please check your email.', 
+            alert: "alert alert-danger"
+          },
+          errorMessage: 'zzz',
           noActiveDomains: noActiveDomains,
           activeComponent: 'errorConfirmEmail'
         })
       } else if (noActiveDomains){
         self.setState({ 
             activeComponent: 'noActiveDomains',
+            message: null,
             allUrls: urls
         })
       } else {
-        this.helperConsoleLog('# SUBMIT W/ USER-ID')
+        // this.helperConsoleLog('# SUBMIT W/ USER-ID')
         // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
         // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
@@ -124,7 +130,11 @@ var Index = React.createClass({
         // console.log('in else if verified');
         this.setState({
           activeComponent: 'errorConfirmEmail',
-          allUrls: urls
+          allUrls: urls,
+          message: {
+            message: 'You have not yet verified your email. Please check your email.', 
+            alert: "alert alert-danger"
+          }
         })
       } else if (submittedToday) {
         this.setState({
@@ -137,7 +147,7 @@ var Index = React.createClass({
           allUrls: urls
       })
       } else {
-        this.helperConsoleLog('# SUBMIT W/ USER-ID')
+        // this.helperConsoleLog('# SUBMIT W/ USER-ID')
         // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
         // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
@@ -151,7 +161,7 @@ var Index = React.createClass({
           allUrls: urls 
         })
       } else {
-        this.helperConsoleLog('# SUBMIT W/OUT USER-ID')
+        // this.helperConsoleLog('# SUBMIT W/OUT USER-ID')
         // console.log('# SUBMIT W/OUT USER-ID');                                         //submit withOUT userID #2
         this.setState({ 
           activeComponent: 'login', 
@@ -182,7 +192,10 @@ var Index = React.createClass({
           self.setState({ 
             user: data.user,
             errorMessage: null,
-            message: null,
+            message: {
+              message: 'You have not yet verified your email. Please check your email.', 
+              alert: "alert alert-danger"
+            },
             submittedToday: submittedToday,
             noActiveDomains: noActiveDomains,
             activeComponent: 'errorConfirmEmail'
@@ -206,7 +219,7 @@ var Index = React.createClass({
             activeComponent: 'noActiveDomains'
           })
         } else {
-          this.helperConsoleLog('# SUBMIT W/ USER-ID')
+          // this.helperConsoleLog('# SUBMIT W/ USER-ID')
           // console.log('#3 SUBMIT W/ USER-ID');                                            //submit with userID #3
           // console.log('#3 UPDATE USER');                                                  //***UPDATE USER***
           
@@ -238,11 +251,15 @@ var Index = React.createClass({
       success: function(data){
         var verified = data.user.verified
         var noActiveDomains = self.state.noActiveDomains;
-        console.log("in loginUserFromServer1", data);
+        // console.log("in loginUserFromServer1", data);
         // console.log("in loginUserFromServer1", self.state);
         if (!verified) {
           self.setState({ 
             user: data.user,
+            message: {
+              message: 'Please check email to verify user.', 
+              alert: 'alert alert-info', 
+            },
             errorMessage: null,
             submittedToday: false,
             noActiveDomains: noActiveDomains,
@@ -258,7 +275,7 @@ var Index = React.createClass({
            
           })
         } else {
-          this.helperConsoleLog('# SUBMIT W/ USER-ID')
+          // this.helperConsoleLog('# SUBMIT W/ USER-ID')
           // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID #4
           // console.log('# UPDATE USER');                                                  //***UPDATE USER***
 
@@ -290,6 +307,7 @@ var Index = React.createClass({
           self.setState({ 
             user: data,
             message: {message: 'You logged out', alert: 'alert alert-info'},
+            errorMessage: null,
             submittedToday: null,
             activeComponent: 'landing'
           });
@@ -427,7 +445,7 @@ var Index = React.createClass({
         url: '/verifyResend',
         data: {user, user},
         success: function(data){
-          // var activeComponent = data.activeComponent
+          var activeComponent = data.activeComponent
           var message = data.message
           // var passwordResetToken = data.passwordResetToken ? data.passwordResetToken : null;
           console.log(message, 'index > resendVerifyToken > success:', data);
@@ -444,7 +462,7 @@ var Index = React.createClass({
                 // user: data,
                 message: message,
                 // submittedToday: true,
-                // activeComponent: activeComponent,
+                activeComponent: activeComponent,
                 // allUrls: urls
                 // passwordResetToken: passwordResetToken
             });
@@ -461,9 +479,9 @@ var Index = React.createClass({
 		this.getOneUserFromServer();
 	},
 
-  helperConsoleLog: function(log){
-    // console.log('helper',log);
-  },
+  // helperConsoleLog: function(log){
+  //   // console.log('helper',log);
+  // },
 
   setActiveComponent: function(componentName) {
     // console.log('in setActiveComponent', componentName);
@@ -483,6 +501,7 @@ var Index = React.createClass({
 					<Header 
           user={ this.state.user } 
           logoutUser={ this.logoutUser }
+          setActiveComponent={ this.setActiveComponent }
           />
 					<ShowWhichComponent 
           user={ this.state.user } 

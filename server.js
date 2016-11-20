@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
 // var cookieParser = require('cookie-parser')
+require('dotenv').config();
 require('./userConfig/passport.js')(passport);
 
 var app = express();
@@ -78,6 +79,8 @@ mongoose.connection.once('open', function(){ console.log('Connected to database'
 app.get('/', function(req, res){
  res.send('index');
 });
+
+// console.log('process.env', process.env.GOOGLE_ID);
 
 // if (req.user) {
 //     // logged in
