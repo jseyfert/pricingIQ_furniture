@@ -20,11 +20,16 @@ var UserLoginData = React.createClass({
 
 
 	handleUserLoginSubmit: function(e){
+		var currentTime = new Date().getTime()
+		var midnightTonight = new Date().setHours(23,59,59,0);
+
 		e.preventDefault();
 
 		var user = {};
 		user.email = this.state.email;
 		user.password = this.state.password;
+		user.currentTime = currentTime;
+		user.newResetCountAfter = midnightTonight;
 
 		this.props.loginUserFromServer(user);
 		this.setState({ email: '', password: '' });

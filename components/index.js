@@ -196,7 +196,7 @@ var Index = React.createClass({
     var suggest = this.state.suggest
     var urls = this.state.allUrls
     var self = this;
-
+    // console.log('in signupuser', user)
     $.ajax({
       method: 'POST',
       url: '/signup',
@@ -445,14 +445,16 @@ var Index = React.createClass({
   }, 
 
   submitUrlsID: function(user, urls){
-    var self = this;
-
+    var currentTime = new Date().getTime()
+    var resetCount = currentTime > user.resetCountAfter
     var countLeftToSubmit  = user.countLeftToSubmit
     var newCountLeftToSubmit =[]
-
     var potentialUrlsToSubmit = []
     var urlsToSubmit = []
 
+    var self = this;
+
+    // console.log('resetCount', resetCount)
     _.where(urls, {domainAvailable: true}).map(function(obj){
       // console.log(obj.domain, obj.urls.length, obj.urls  );
       potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
@@ -491,7 +493,9 @@ var Index = React.createClass({
         url: '/submitUrlsId',
         data: { 
           user: user, 
-          newCountLeftToSubmit: newCountLeftToSubmit},
+          newCountLeftToSubmit: newCountLeftToSubmit,
+          resetCount: resetCount
+        },
         success: function(data){
           // var activeComponent = data.activeComponent
           // console.log('in success', data)

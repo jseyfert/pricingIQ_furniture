@@ -41,6 +41,7 @@ var UserSignupData = React.createClass({
 
 
 	handleUserSignupSubmit: function(e){
+		var midnightTonight = new Date().setHours(23,59,59,0);
 		e.preventDefault();
 
 			if (this.state.passwordsMatch){
@@ -49,6 +50,7 @@ var UserSignupData = React.createClass({
 				user.password = this.state.password;
 				user.user = this.state.user;
 				user.company = this.state.company;
+				user.resetCountAfter = midnightTonight;
 
 				this.props.signupUserFromServer(user);
 				this.setState({ 

@@ -8,7 +8,9 @@ var UserSchema = new mongoose.Schema({
   user: { type: String, required: true },
   company: { type: String, required: true },
   
-  canSubmitAfter: { type: Number, required: true  }, // change to date at some point & restUrlCountAfter
+  canSubmitAfter: { type: Number, required: true  }, // DELETE
+
+  resetCountAfter: { type: Number},
   countLeftToSubmit: { type: Array},
   // urlsLeftToSubmit: { type: Array},
 

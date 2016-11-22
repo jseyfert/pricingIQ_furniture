@@ -27,12 +27,45 @@ module.exports = function(passport){
 	},
 	function(req, email, password, done){
 		User.findOne({ email: email }, function(err, user){
-			if(err)
+			if(err){
 				return done(err);
-			if(!user)
+      }
+			if(!user){
 				return done(null, false, { message: 'We could not find your email address.' });
-			if(!user.validPassword(password))
+      }
+			if(!user.validPassword(password)){
 				return done(null, false, { message: 'Wrong password. Try again.'});
+      }
+      var currentTime = req.body.currentTime
+      var resetCountAfter = user.resetCountAfter
+      var resetCount = currentTime > resetCountAfter
+      var newResetCountAfter = req.body.newResetCountAfter
+      
+      console.log('newResetCountAfter', newResetCountAfter);
+
+      if (resetCount){
+        // console.log('i am resetCount in this mo fo');
+        // console.log(user);
+        
+        user.countLeftToSubmit = countLeftToSubmit;
+        user.resetCountAfter = newResetCountAfter  
+
+        user.save(function(err) { // save the user
+            if (err) {
+              // console.log('in updateUser > mongoose > findById > save user with new info', err);
+              res.send(err);
+            } else {
+              console.log('user done been updated');
+              // res.json({ message: 'user updated!' });
+              // res.json(user)
+            }
+        });
+
+
+      }
+      // console.log('resetCountAfter', resetCountAfter);
+      // console.log('currentTime', currentTime);
+      // console.log('resetCount', resetCount);
 			return done(null, user, { message: 'You logged in successfully' });
 		});
 	}));	
@@ -66,8 +99,10 @@ module.exports = function(passport){
           newUser.password = newUser.generateHash(password);
           newUser.user = req.body.user;
           newUser.company = req.body.company;
+          
           newUser.canSubmitAfter = 0;
           newUser.countLeftToSubmit = countLeftToSubmit;
+          newUser.resetCountAfter = req.body.resetCountAfter;
 
           newUser.save(function(err){
             if(err) {

@@ -117,7 +117,9 @@ module.exports = {
     newCountLeftToSubmit = req.body.newCountLeftToSubmit
     user = req.body.user
     userId = req.body.user._id
-    console.log(user, newCountLeftToSubmit);
+    resetCount = req.body.resetCount
+    
+    console.log(newCountLeftToSubmit, resetCount);
 
     // if(user) {
     //   console.log('in user');
