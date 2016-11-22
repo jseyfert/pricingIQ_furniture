@@ -113,16 +113,19 @@ module.exports = {
 
   submitUrlsId: function(req, res){
     console.log('### SUBMIT URLS WITH ID ###');
-    console.log(req.body);
+
+    newCountLeftToSubmit = req.body.newCountLeftToSubmit
+    user = req.body.user
+    userId = req.body.user._id
+    console.log(user, newCountLeftToSubmit);
 
     // if(user) {
-    //  	mongoose.model('User').findById({
-    //    		_id: id
-    //  		},
-    //  		function(err, user) {
-    //    		if (err) {
-    //      		return console.log('in updateUser > mongoose > findById', err);
-    //    		} else {
+    //   console.log('in user');
+    //   mongoose.model('User').findById({ _id: userId },
+    //     function(err, user) {
+    //       if (err) {
+    //         return console.log('in updateUser > mongoose > findById', err);
+    //       } else {
     //         console.log('in mongoose', user);
     //         // user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
     //         // user.save(function(err) { // save the user
@@ -131,17 +134,19 @@ module.exports = {
     //         //       res.send(err);
     //         //     } else {
     //               res.json({ message: 'user updated!' });
-    //      		 //      res.json(user)
+    //          //      res.json(user)
     //         //     }
     //         // });
-    //    		}
-    //  		});
-   	// 	} else {
-    //  		res.json({
-    //    			message: { message: "could not submit urls"}
-    //  		})
-   	// 	}
-	},
+    //       }
+    //     });
+    //   } else {
+    //     console.log("could not submit urls");
+    //     res.json({
+    //         message: { message: "could not submit urls"}
+    //     })
+    //   }
+  },
+
 
   verify: function(req, res){
       var permalink = req.params.permalink;

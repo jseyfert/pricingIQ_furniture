@@ -446,45 +446,52 @@ var Index = React.createClass({
 
   submitUrlsID: function(user, urls){
     var self = this;
-    // console.log(user)
-    // var urlsLeftToSubmit  = [['amazon', 4],['sears', 2],['walmart', 1]]
-    var urlsLeftToSubmit  = user.urlsLeftToSubmit
+
+    var countLeftToSubmit  = user.countLeftToSubmit
+    var newCountLeftToSubmit =[]
+
     var potentialUrlsToSubmit = []
-    var urlsToSubmitNow = []
-    var newUrlsLeftToSubmit =[]
+    var urlsToSubmit = []
 
     _.where(urls, {domainAvailable: true}).map(function(obj){
-      // console.log(obj.domain, obj.urls.length );
-      potentialUrlsToSubmit.push([obj.domain, obj.urls.length])
+      // console.log(obj.domain, obj.urls.length, obj.urls  );
+      potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
     })
 
-    urlsLeftToSubmit.map(function(arr1){
+    countLeftToSubmit.map(function(arr1){
       potentialUrlsToSubmit.map(function(arr2){
         if (arr1[0] === arr2[0]){
-          var countToSubmitNow = ((arr1[1] - arr2[1]) >= 0) ? arr2[1] : 0
-          var countLeftToSubmit = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
+          var countToSubmitNow = arr1[1] >= arr2[1] ? arr2[1] : arr1[1]
+          var countLeftToSubmitNow = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
+          var urlsToSubmitNow = arr2[2].slice(0, countToSubmitNow)
           // console.log(
           //   arr1[0], 
-          //   'urlsLeftToSubmit ',arr1[1], 
-          //   'potentialUrlsToSubmit', arr2[1], 
-          //   'how many to submit now',  countToSubmitNow 
+          //   'countLeftToSubmit',arr1[1], 
+          //   ',potentialUrlsToSubmit', arr2[1], 
+          //   ',countToSubmitNow',  countToSubmitNow, 
+          //   ',NEWcountLeftToSubmitNow',  countLeftToSubmitNow, 
+          //   ',urlsToSubmitNow', urlsToSubmitNow
           // );
-          newUrlsLeftToSubmit.push([arr1[0], countLeftToSubmit ])
-          urlsToSubmitNow.push([ arr1[0], countToSubmitNow])
+          newCountLeftToSubmit.push([arr1[0], countLeftToSubmitNow ])
+          urlsToSubmit.push([ arr1[0], urlsToSubmitNow])
         }
       })
     })
 
-    // console.log('urlsLeftToSubmit',urlsLeftToSubmit);
-    console.log('potentialUrlsToSubmit',potentialUrlsToSubmit);
-    console.log('urlsToSubmitNow',urlsToSubmitNow);
-    console.log('newUrlsLeftToSubmit',newUrlsLeftToSubmit);
+    // console.log('countLeftToSubmit',countLeftToSubmit);
+    console.log('newCountLeftToSubmit',newCountLeftToSubmit);
+    // console.log('potentialUrlsToSubmit',potentialUrlsToSubmit);
+    console.log('urlsToSubmit',urlsToSubmit);
 
+
+    //START HERE TOMORROW, BY FIGURING OUT HOW TO SEND ONLY THE URLS WE WANT TO SUBMIT
 
       $.ajax({
         method: 'POST',
         url: '/submitUrlsId',
-        data: { user: user, newUrlsLeftToSubmit: newUrlsLeftToSubmit },
+        data: { 
+          user: user, 
+          newCountLeftToSubmit: newCountLeftToSubmit},
         success: function(data){
           // var activeComponent = data.activeComponent
           // console.log('in success', data)
