@@ -41,7 +41,6 @@ var UserLoginData = React.createClass({
 					email={ this.state.email }
 					password={ this.state.password }
 					setActiveComponent={ this.props.setActiveComponent }
-					errorMessage={ this.props.errorMessage }
 					message={this.props.message}
 					/>
 			</div>

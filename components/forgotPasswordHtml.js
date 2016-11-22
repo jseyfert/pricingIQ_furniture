@@ -3,24 +3,7 @@ var ErrorMessage = require('./errorMessage');
 
 var ForgotPasswordHtml = React.createClass({
 
-  // showErrorMessage: function(){
-  //   var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-  //   // console.log(errorMessage);
-  //   if (errorMessage){
-  //     return(
-  //       <div>
-  //         <div className="alert alert-danger" role="alert">
-  //           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  //           <span className="sr-only">Error: </span>
-  //             { errorMessage }
-  //         </div>
-  //       </div>
-  //       )
-  //   }
-  // },
-
   render: function(){
-    // console.log(this.props.errorMessage);
     return (
       <div>
         <div className="container">

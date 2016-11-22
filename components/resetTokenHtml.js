@@ -3,22 +3,6 @@ var ErrorMessage = require('./errorMessage');
 
 var ResetTokenHtml = React.createClass({
 
-  //   showErrorMessage: function(){
-  //   var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-  //   // console.log(errorMessage);
-  //   if (errorMessage){
-  //     return(
-  //       <div>
-  //         <div className="alert alert-info" role="alert">
-  //           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  //           <span className="sr-only">Error: </span>
-  //             { errorMessage }
-  //         </div>
-  //       </div>
-  //       )
-  //   }
-  // },
-
   render: function(){
     
     return (

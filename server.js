@@ -30,6 +30,7 @@ var userControl = require('./controllers/userControl.js');
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
 app.post('/forgot', userControl.forgot);
+app.post('/suggest', userControl.suggest);
 app.put('/updateUser', userControl.updateUser);
 app.put('/reset', userControl.reset);
 app.get('/verifyReset/:token', userControl.verifyReset);
@@ -77,16 +78,20 @@ mongoose.connect('mongodb://localhost:27017/pricingIQ');
 mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 app.get('/', function(req, res){
+ 
  res.send('index');
+  
+  // if (req.user) {
+  //     console.log('server.js > logged in');
+  // } else {
+  //     console.log('server.js > NOT logged in');
+  // }
+
+
 });
 
 // console.log('process.env', process.env.GOOGLE_ID);
 
-// if (req.user) {
-//     // logged in
-// } else {
-//     // not logged in
-// }
 
 app.listen(7070, function(){
 	console.log('server on 7070');

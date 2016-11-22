@@ -284,5 +284,57 @@ module.exports = {
     });
   },
 
+  suggest: function(req, res){
+
+    // if (req.user) {
+    //     console.log('userControls > logged in');
+    // } else {
+    //     console.log('userControls > NOT logged in');
+    // }
+
+
+    var domains = req.body.domains;
+    console.log('in server - these domains have been sent to the server\n', domains);
+
+      res.json({
+              // message: {message: 'New email verification sent', alert: "alert alert-success"},
+              activeComponent: 'landing',
+            })
+
+    // UserModel.findOne({ email: email }, function(err, user){
+    //   if(err)
+    //     return done(err);
+    //   if(user) {
+
+    //     var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
+    //     var verificationToken = randomstring.generate({ length: 64 });
+    //     var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
+
+    //     user.permalink = permalink;
+    //     user.verificationToken = verificationToken;
+    //     user.verified = false;
+
+    //     user.save(function(err){
+    //       if(err) {
+    //         throw err;
+    //       } else {
+    //         SendMail(user.user, email, link, null)
+    //         res.json({
+    //           message: {message: 'New email verification sent', alert: "alert alert-success"},
+    //           activeComponent: 'errorConfirmEmail',
+    //         })
+    //       }
+    //     })
+    //   } else {
+          
+    //       res.json({
+    //         message: {message: 'Could not find user', alert: "alert alert-danger"},
+    //         activeComponent: 'errorConfirmEmail',
+    //       })
+
+    //   }
+    // });
+  },
+
 };
 

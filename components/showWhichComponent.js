@@ -10,6 +10,7 @@ var UserSignupData = require('./userSignupData.js');
 var ForgotPasswordData = require('./forgotPasswordData.js');
 var ResetTokenData = require('./resetTokenData.js');
 var ResetPasswordData = require('./resetPasswordData.js');
+var SuggestData = require('./suggestData.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -22,9 +23,9 @@ var ShowWhichComponent = React.createClass({
         <div>
           <LandingData
           message={ this.props.message } 
-          errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           handleSubmitClick={ this.props.handleSubmitClick }
+          setActiveComponent={ this.props.setActiveComponent }
           />
         </div>
         )
@@ -33,7 +34,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ErrorSubmittedToday
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
           />
@@ -44,7 +44,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ErrorNoActiveDomains
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
           />
@@ -55,8 +54,8 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ConfirmData
           message={ this.props.message } 
-          allUrls = { this.props.allUrls }
           allDomains={ this.props.allDomains }
+          allUrls = { this.props.allUrls }
           />
         </div>
         )
@@ -65,7 +64,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <UserLoginData
           message={ this.props.message } 
-          errorMessage={ this.props.errorMessage }
           loginUserFromServer={ this.props.loginUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
           />
@@ -76,7 +74,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <UserSignupData
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           signupUserFromServer={ this.props.signupUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
           />
@@ -87,7 +84,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ErrorConfirmEmail
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           handleEmailConfirm={ this.props.handleEmailConfirm }
           resendVerifyToken={ this.props.resendVerifyToken }
@@ -99,7 +95,6 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ForgotPasswordData
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           forgotPassword={ this.props.forgotPassword }
           />
@@ -110,15 +105,13 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ResetTokenData
           message={ this.props.message }
-          errorMessage={ this.props.errorMessage }
           setActiveComponent={ this.props.setActiveComponent }
           submitResetToken={ this.props.submitResetToken }
           resetToken={ this.props.resetToken }
           />
         </div>
         )
-    } 
-    else if(activeComponent === 'resetPassword'){
+    } else if(activeComponent === 'resetPassword'){
       return (
         <div>
           <ResetPasswordData
@@ -126,6 +119,16 @@ var ShowWhichComponent = React.createClass({
           setActiveComponent={ this.props.setActiveComponent }
           submitNewPassword={ this.props.submitNewPassword }
           resetToken={ this.props.resetToken }
+          />
+        </div>
+        )
+    } else if(activeComponent === 'suggest'){
+      return (
+        <div>
+          <SuggestData
+          message={ this.props.message }
+          setActiveComponent={ this.props.setActiveComponent }
+          submitSuggestedDomains={ this.props.submitSuggestedDomains }
           />
         </div>
         )

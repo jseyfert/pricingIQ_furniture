@@ -11,7 +11,6 @@ var ErrorNoActiveDomains = React.createClass({
     allDomains.map(function(obj){
       var domain = obj.domain
       if (obj.domainAvailable === true) {
-        // console.log(domain);
         rows.push( <li className="list-group-item text-success text-center greenHover">{ domain }</li> )
       }
     })
@@ -63,9 +62,7 @@ var ErrorNoActiveDomains = React.createClass({
           </div>
         </div>
       </div>
-               // <p className="text-danger">{ errorMessage }</p>
-               // <p>domains:</p>
-                // { this.displayRow() }
+
     )
   }
 });

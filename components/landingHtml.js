@@ -36,16 +36,12 @@ var LandingHtml = React.createClass({
   },
 
   showErrorMessage: function(){
-    var errorMessage = (this.props.errorMessage) ? this.props.errorMessage : null;
-    // var errorMessage = (this.props.errorMessage[0] === 'index') ? this.props.errorMessage[1] : null;
-    // console.log(errorMessage);
-    // if (errorMessage){
+    var errorMessage = (this.props.message) ? this.props.message.message : null;
       return(
             <div>
               <p className="text-danger">{errorMessage}</p>
             </div>
         )
-    // }
   },
 
   render: function(){
@@ -69,7 +65,7 @@ var LandingHtml = React.createClass({
               { this.displayWhichDomain() }
             </div>
             <div className="col-lg-12 col-md-12 col-xs-12">
-              <p className="text-center">Dont see your domain? <a >Vote for yours.</a></p>
+              <p className="text-center">Dont see your domain? <a onClick={ this.props.setActiveComponent.bind(null, 'suggest') }>Suggest one.</a></p>
             </div>
           </div>
         </div>
