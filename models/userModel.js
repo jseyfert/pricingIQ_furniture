@@ -7,7 +7,9 @@ var UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   user: { type: String, required: true },
   company: { type: String, required: true },
-	canSubmitAfter: { type: Number, required: true  }, // change to date at some point
+  
+  canSubmitAfter: { type: Number, required: true  }, // change to date at some point & restUrlCountAfter
+  urlsLeftToSubmit: { type: Array},
 
   permalink: { type: String, required: true },
   verificationToken: { type: String, required: true },

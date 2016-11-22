@@ -4,6 +4,11 @@ var SendMail = require('./email.js');
 var passport = require('passport'); //i dont think this needs to be here
 var randomstring = require("randomstring");
 
+var activeDomains = ['amazon', 'sears', 'walmart']
+var urlsLeftToSubmit = activeDomains.map(function(item){return [item, 15]})
+
+
+
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
 		done(null, user.id);
@@ -62,6 +67,7 @@ module.exports = function(passport){
           newUser.user = req.body.user;
           newUser.company = req.body.company;
           newUser.canSubmitAfter = 0;
+          newUser.urlsLeftToSubmit = urlsLeftToSubmit;
 
           newUser.save(function(err){
             if(err) {

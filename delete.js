@@ -10,7 +10,7 @@
 // console.log(schema.validate('validPASS')); // true
 // console.log(schema.validate('inval')); 
 
-console.log(Date.now() + 3600000 );
+// console.log(Date.now() + 3600000 );
 
 //===============================================================
 // var validator = require('validator');
@@ -103,6 +103,61 @@ console.log(Date.now() + 3600000 );
 // var facebook = getTop15(domainsAndUrls, 'www.facebook.com' )
 // console.log(facebook);
 ////////////////////////////////////////////////////////////////////////
+var _ = require("underscore");
+var urlsLeftToSubmit  = [['amazon', 4],['sears', 2],['walmart', 1]]
+var urls = 
+[
+  {domain: 'amazon',
+  domainAvailable: true, 
+  urls: ['https://www.amazon.com/1', 'https://www.amazon.com/2', 'https://www.amazon.com/3']},
+  {domain: 'sears',
+  domainAvailable: true, 
+  urls: ['https://www.sears.com/1', 'https://www.sears.com/2']},
+  {domain: 'walmart',
+  domainAvailable: true,
+  urls: ['https://www.walmart.com/1']},
+]
+
+var potentialUrlsToSubmit = []
+var urlsToSubmitNow = []
+var newUrlsLeftToSubmit =[]
+
+_.where(urls, {domainAvailable: true}).map(function(obj){
+  // console.log(obj.domain, obj.urls.length );
+  potentialUrlsToSubmit.push([obj.domain, obj.urls.length])
+})
+
+urlsLeftToSubmit.map(function(arr1){
+  potentialUrlsToSubmit.map(function(arr2){
+    if (arr1[0] === arr2[0]){
+      var countToSubmitNow = ((arr1[1] - arr2[1]) >= 0) ? arr2[1] : 0
+      var countLeftToSubmit = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
+      // console.log(
+      //   arr1[0], 
+      //   'urlsLeftToSubmit ',arr1[1], 
+      //   'potentialUrlsToSubmit', arr2[1], 
+      //   'how many to submit now',  countToSubmitNow 
+      // );
+      newUrlsLeftToSubmit.push([arr1[0], countLeftToSubmit ])
+      urlsToSubmitNow.push([ arr1[0], countToSubmitNow])
+    }
+  })
+})
+
+console.log('urlsLeftToSubmit',urlsLeftToSubmit);
+console.log('potentialUrlsToSubmit',potentialUrlsToSubmit);
+console.log('urlsToSubmitNow',urlsToSubmitNow);
+console.log('newUrlsLeftToSubmit',newUrlsLeftToSubmit);
+
+////////////////////////////////////////////////////////////////////////
+
+
+// var activeDomains = ['amazon', 'sears', 'walmart']
+// var urlsLeftToSubmit = activeDomains.map(function(item){return [item, 15]})
+
+// console.log(urlsLeftToSubmit);
+
+
 
 
 

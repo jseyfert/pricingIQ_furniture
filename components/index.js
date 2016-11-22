@@ -22,8 +22,8 @@ var Index = React.createClass({
 			allUrls: [],
 			allDomains: 
 			[{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
-			{domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			{domain: 'sears' ,  domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
+			{domain: 'walmart', domainAvailable: false, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
+			{domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
 		}
 
 	},
@@ -46,30 +46,7 @@ var Index = React.createClass({
 
 	},
 
-  updateUser: function(user, urls){
-    var midnightTonight = new Date().setHours(23,59,59,0);
-    var self = this;
 
-      $.ajax({
-        method: 'PUT',
-        url: '/updateUser',
-        data: { user: user, canSubmitAfter: midnightTonight},
-        success: function(data){
-          self.setState({ 
-            user: data,
-            suggest: null,
-            activeComponent: 'confirm',
-            submittedToday: true,
-            allUrls: urls,
-            message: null,
-          });
-        },
-        error: function(xhr, status, err){
-          console.error('/updateUser', status, err.toString())
-        }
-      })
-
-  }, 
 
   handleEmailConfirm: function(){
     var urls = this.state.allUrls
@@ -442,6 +419,88 @@ var Index = React.createClass({
 
   ////non user/// 
 
+  updateUser: function(user, urls){
+    var midnightTonight = new Date().setHours(23,59,59,0);
+    var self = this;
+
+      $.ajax({
+        method: 'PUT',
+        url: '/updateUser',
+        data: { user: user, canSubmitAfter: midnightTonight, urls: urls},
+        success: function(data){
+          self.setState({ 
+            user: data,
+            suggest: null,
+            activeComponent: 'confirm',
+            submittedToday: true,
+            allUrls: urls,
+            message: null,
+          });
+        },
+        error: function(xhr, status, err){
+          console.error('/updateUser', status, err.toString())
+        }
+      })
+
+  }, 
+
+  submitUrlsID: function(user, urls){
+    var self = this;
+    // console.log(user)
+    // var urlsLeftToSubmit  = [['amazon', 4],['sears', 2],['walmart', 1]]
+    var urlsLeftToSubmit  = user.urlsLeftToSubmit
+    var potentialUrlsToSubmit = []
+    var urlsToSubmitNow = []
+    var newUrlsLeftToSubmit =[]
+
+    _.where(urls, {domainAvailable: true}).map(function(obj){
+      // console.log(obj.domain, obj.urls.length );
+      potentialUrlsToSubmit.push([obj.domain, obj.urls.length])
+    })
+
+    urlsLeftToSubmit.map(function(arr1){
+      potentialUrlsToSubmit.map(function(arr2){
+        if (arr1[0] === arr2[0]){
+          var countToSubmitNow = ((arr1[1] - arr2[1]) >= 0) ? arr2[1] : 0
+          var countLeftToSubmit = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
+          // console.log(
+          //   arr1[0], 
+          //   'urlsLeftToSubmit ',arr1[1], 
+          //   'potentialUrlsToSubmit', arr2[1], 
+          //   'how many to submit now',  countToSubmitNow 
+          // );
+          newUrlsLeftToSubmit.push([arr1[0], countLeftToSubmit ])
+          urlsToSubmitNow.push([ arr1[0], countToSubmitNow])
+        }
+      })
+    })
+
+    // console.log('urlsLeftToSubmit',urlsLeftToSubmit);
+    console.log('potentialUrlsToSubmit',potentialUrlsToSubmit);
+    console.log('urlsToSubmitNow',urlsToSubmitNow);
+    console.log('newUrlsLeftToSubmit',newUrlsLeftToSubmit);
+
+
+      $.ajax({
+        method: 'POST',
+        url: '/submitUrlsId',
+        data: { user: user, newUrlsLeftToSubmit: newUrlsLeftToSubmit },
+        success: function(data){
+          // var activeComponent = data.activeComponent
+          // console.log('in success', data)
+          // self.setState({ 
+          //     activeComponent: activeComponent,
+          //     suggest: null,
+          //     // message: message,
+          // });
+        },
+        error: function(xhr, status, err){
+          console.error('/submitUrlsId', status, err.toString())
+        }
+      })
+
+  },
+
   handleSubmitClick: function(urls){
     var user = (this.state.user.user === 'anonymous') ? false : true;
     var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
@@ -477,9 +536,9 @@ var Index = React.createClass({
           allUrls: urls
       })
       } else {
-        // console.log('# SUBMIT W/ USER-ID');                                            //submit with userID   #1
-        // console.log('# UPDATE USER');                                                  //***UPDATE USER***
-        this.updateUser(this.state.user, urls);
+        // console.log(Object.prototype.toString.call(urls[0].domainAvailable))
+        this.submitUrlsID(this.state.user, urls);
+        // this.updateUser(this.state.user, urls);
       }
     } else if (!user) {   
       if (errorNoUrls) {
