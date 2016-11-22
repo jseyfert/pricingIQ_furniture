@@ -445,16 +445,17 @@ var Index = React.createClass({
   }, 
 
   submitUrlsID: function(user, urls){
-    var currentTime = new Date().getTime()
-    var resetCount = currentTime > user.resetCountAfter
+    // var currentTime = new Date().getTime()
+    // var resetCount = currentTime > user.resetCountAfter
+
     var countLeftToSubmit  = user.countLeftToSubmit
     var newCountLeftToSubmit =[]
     var potentialUrlsToSubmit = []
     var urlsToSubmit = []
 
     var self = this;
-
     // console.log('resetCount', resetCount)
+
     _.where(urls, {domainAvailable: true}).map(function(obj){
       // console.log(obj.domain, obj.urls.length, obj.urls  );
       potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
@@ -466,14 +467,14 @@ var Index = React.createClass({
           var countToSubmitNow = arr1[1] >= arr2[1] ? arr2[1] : arr1[1]
           var countLeftToSubmitNow = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
           var urlsToSubmitNow = arr2[2].slice(0, countToSubmitNow)
-          // console.log(
-          //   arr1[0], 
-          //   'countLeftToSubmit',arr1[1], 
-          //   ',potentialUrlsToSubmit', arr2[1], 
-          //   ',countToSubmitNow',  countToSubmitNow, 
-          //   ',NEWcountLeftToSubmitNow',  countLeftToSubmitNow, 
-          //   ',urlsToSubmitNow', urlsToSubmitNow
-          // );
+          console.log(
+            arr1[0], 
+            'countLeftToSubmit',arr1[1], 
+            ',potentialUrlsToSubmit', arr2[1], 
+            ',countToSubmitNow',  countToSubmitNow, 
+            ',NEWcountLeftToSubmitNow',  countLeftToSubmitNow, 
+            ',urlsToSubmitNow', urlsToSubmitNow
+          );
           newCountLeftToSubmit.push([arr1[0], countLeftToSubmitNow ])
           urlsToSubmit.push([ arr1[0], urlsToSubmitNow])
         }
@@ -481,12 +482,10 @@ var Index = React.createClass({
     })
 
     // console.log('countLeftToSubmit',countLeftToSubmit);
-    console.log('newCountLeftToSubmit',newCountLeftToSubmit);
+    // console.log('newCountLeftToSubmit',newCountLeftToSubmit);
     // console.log('potentialUrlsToSubmit',potentialUrlsToSubmit);
-    console.log('urlsToSubmit',urlsToSubmit);
+    // console.log('urlsToSubmit',urlsToSubmit);
 
-
-    //START HERE TOMORROW, BY FIGURING OUT HOW TO SEND ONLY THE URLS WE WANT TO SUBMIT
 
       $.ajax({
         method: 'POST',
@@ -494,7 +493,7 @@ var Index = React.createClass({
         data: { 
           user: user, 
           newCountLeftToSubmit: newCountLeftToSubmit,
-          resetCount: resetCount
+          // resetCount: resetCount
         },
         success: function(data){
           // var activeComponent = data.activeComponent

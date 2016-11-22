@@ -4,9 +4,10 @@ var SendMail = require('./email.js');
 var passport = require('passport'); //i dont think this needs to be here
 var randomstring = require("randomstring");
 
+////////we will make this dynamic once hooked up to SQL server///////
 var activeDomains = ['amazon', 'sears', 'walmart']
 var countLeftToSubmit = activeDomains.map(function(item){return [item, 15]})
-
+/////////////////////////////////////////////////////////////////////
 
 
 module.exports = function(passport){
@@ -41,31 +42,18 @@ module.exports = function(passport){
       var resetCount = currentTime > resetCountAfter
       var newResetCountAfter = req.body.newResetCountAfter
       
-      console.log('newResetCountAfter', newResetCountAfter);
-
       if (resetCount){
-        // console.log('i am resetCount in this mo fo');
-        // console.log(user);
-        
         user.countLeftToSubmit = countLeftToSubmit;
         user.resetCountAfter = newResetCountAfter  
-
         user.save(function(err) { // save the user
             if (err) {
-              // console.log('in updateUser > mongoose > findById > save user with new info', err);
-              res.send(err);
+              return done(err);
             } else {
               console.log('user done been updated');
               // res.json({ message: 'user updated!' });
-              // res.json(user)
             }
         });
-
-
       }
-      // console.log('resetCountAfter', resetCountAfter);
-      // console.log('currentTime', currentTime);
-      // console.log('resetCount', resetCount);
 			return done(null, user, { message: 'You logged in successfully' });
 		});
 	}));	
@@ -100,9 +88,10 @@ module.exports = function(passport){
           newUser.user = req.body.user;
           newUser.company = req.body.company;
           
-          newUser.canSubmitAfter = 0;
-          newUser.countLeftToSubmit = countLeftToSubmit;
+          newUser.canSubmitAfter = 0; // DELETE
+
           newUser.resetCountAfter = req.body.resetCountAfter;
+          newUser.countLeftToSubmit = countLeftToSubmit;
 
           newUser.save(function(err){
             if(err) {

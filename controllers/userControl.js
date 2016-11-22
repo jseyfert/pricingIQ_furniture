@@ -114,39 +114,40 @@ module.exports = {
   submitUrlsId: function(req, res){
     console.log('### SUBMIT URLS WITH ID ###');
 
-    newCountLeftToSubmit = req.body.newCountLeftToSubmit
     user = req.body.user
     userId = req.body.user._id
-    resetCount = req.body.resetCount
-    
-    console.log(newCountLeftToSubmit, resetCount);
 
-    // if(user) {
-    //   console.log('in user');
-    //   mongoose.model('User').findById({ _id: userId },
-    //     function(err, user) {
-    //       if (err) {
-    //         return console.log('in updateUser > mongoose > findById', err);
-    //       } else {
-    //         console.log('in mongoose', user);
-    //         // user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
-    //         // user.save(function(err) { // save the user
-    //         //     if (err) {
-    //         //       // console.log('in updateUser > mongoose > findById > save user with new info', err);
-    //         //       res.send(err);
-    //         //     } else {
-    //               res.json({ message: 'user updated!' });
-    //          //      res.json(user)
-    //         //     }
-    //         // });
-    //       }
-    //     });
-    //   } else {
-    //     console.log("could not submit urls");
-    //     res.json({
-    //         message: { message: "could not submit urls"}
-    //     })
-    //   }
+    newCountLeftToSubmit = req.body.newCountLeftToSubmit
+    // resetCount = req.body.resetCount
+
+    console.log(newCountLeftToSubmit);
+
+    if(user) {
+      console.log('in user', userId);
+      // mongoose.model('User').findById({ _id: userId },
+      //   function(err, user) {
+      //     if (err) {
+      //       return console.log('in updateUser > mongoose > findById', err);
+      //     } else {
+      //       console.log('in mongoose', user);
+      //       // user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
+      //       // user.save(function(err) { // save the user
+      //       //     if (err) {
+      //       //       // console.log('in updateUser > mongoose > findById > save user with new info', err);
+      //       //       res.send(err);
+      //       //     } else {
+      //             res.json({ message: 'user updated!' });
+      //        //      res.json(user)
+      //       //     }
+      //       // });
+      //     }
+      //   });
+      // } else {
+      //   console.log("could not submit urls");
+      //   res.json({
+      //       message: { message: "could not submit urls"}
+      //   })
+      }
   },
 
 
