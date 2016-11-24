@@ -4,12 +4,6 @@ var SendMail = require('./email.js');
 var passport = require('passport'); //i dont think this needs to be here
 var randomstring = require("randomstring");
 
-////////we will make this dynamic once hooked up to SQL server///////
-var activeDomains = ['amazon', 'sears', 'walmart']
-var countLeftToSubmit = activeDomains.map(function(item){return [item, 15]})
-/////////////////////////////////////////////////////////////////////
-
-
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
 		done(null, user.id);
@@ -37,12 +31,16 @@ module.exports = function(passport){
 			if(!user.validPassword(password)){
 				return done(null, false, { message: 'Wrong password. Try again.'});
       }
+      
+      var allDomains = req.body.allDomains
       var currentTime = req.body.currentTime
       var resetCountAfter = user.resetCountAfter
       var resetCount = currentTime > resetCountAfter
       var newResetCountAfter = req.body.newResetCountAfter
       
+      //reset count if its a new day
       if (resetCount){
+        var countLeftToSubmit = allDomains.map(function(arr){ return [arr[0], 15]})
         user.countLeftToSubmit = countLeftToSubmit;
         user.resetCountAfter = newResetCountAfter  
         user.save(function(err) { // save the user
@@ -54,6 +52,30 @@ module.exports = function(passport){
             }
         });
       }
+
+      //check for new domains if its the same day
+      if (!resetCount){
+        var countLeftToSubmit = user.countLeftToSubmit
+        var allDomainsOnlyName = allDomains.map(function(arr){ return arr[0] })
+        var userCountLeftToSubmitOnlyName = countLeftToSubmit.map(function(arr){ return arr[0] })
+        var newDomains = allDomainsOnlyName.filter(function(arr) { return userCountLeftToSubmitOnlyName.indexOf(arr) == -1; });
+        var addNewDomains = function(newDomains){
+          newDomains.map(function(domain){
+            countLeftToSubmit.push([domain, 15])
+          })
+        }(newDomains)
+
+        user.countLeftToSubmit = countLeftToSubmit;
+        user.save(function(err) { // save the user
+            if (err) {
+              return done(err);
+            } else {
+              console.log('countLeftToSubmit updated');
+              // res.json({ message: 'user updated!' });
+            }
+        });
+      }
+
 			return done(null, user, { message: 'You logged in successfully' });
 		});
 	}));	
@@ -75,10 +97,14 @@ module.exports = function(passport){
           });
 				} else {
 					var newUser = new User();
+
+          var allDomains = req.body.allDomains
+          console.log('allDomains signup', allDomains);
+          var countLeftToSubmit = allDomains.map(function(arr){ return [arr[0], 15]})
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var verificationToken = randomstring.generate({ length: 64 });
           var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
-
+          
           newUser.permalink = permalink;
           newUser.verificationToken = verificationToken;
           newUser.verified = false;

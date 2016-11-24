@@ -51,6 +51,7 @@ var UserSignupData = React.createClass({
 				user.user = this.state.user;
 				user.company = this.state.company;
 				user.resetCountAfter = midnightTonight;
+				user.allDomains = this.props.allDomains
 
 				this.props.signupUserFromServer(user);
 				this.setState({ 

@@ -95,10 +95,11 @@ var LandingData = React.createClass({
     // this.setState({ 
     //   allUrls: []
     // });
-	},
+  },
 
-	render: function(){
-    // console.log('here we go', this.props.message);
+  render: function(){
+    // console.log(this.props.onUrlChange);
+    // console.log('here we go', this.props.onUrlChange);
 		return (
 			<div>
 				<LandingHtml 
@@ -107,7 +108,7 @@ var LandingData = React.createClass({
         allDomains={ this.props.allDomains }
         allUrls={ this.state.allUrls } 
 				handleUrlSubmit={ this.handleUrlSubmit }
-				onUrlChange={ this.onUrlChange }
+				onUrlChange={ this.props.onUrlChange }
 				/>
 			</div>
 			)

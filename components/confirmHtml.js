@@ -9,7 +9,7 @@ var ConfirmHtml = React.createClass({
     var allUrls = this.props.allUrls;
     var allDomains = this.props.allDomains;
 
-    console.log('in confirm html', allUrls);
+    // console.log('in confirm html', allUrls);
 
 
 

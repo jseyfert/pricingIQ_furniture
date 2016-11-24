@@ -30,6 +30,7 @@ var UserLoginData = React.createClass({
 		user.password = this.state.password;
 		user.currentTime = currentTime;
 		user.newResetCountAfter = midnightTonight;
+		user.allDomains = this.props.allDomains
 
 		this.props.loginUserFromServer(user);
 		this.setState({ email: '', password: '' });

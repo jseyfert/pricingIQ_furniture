@@ -78,76 +78,78 @@ module.exports = {
       }
   },
 
-  updateUser: function(req, res){
-    var canSubmitAfter = req.body.canSubmitAfter
-    var urls = req.body.urls
-    console.log('in updateUser', canSubmitAfter, urls)
+  // updateUser: function(req, res){
+  //   var canSubmitAfter = req.body.canSubmitAfter
+  //   var urls = req.body.urls
+  //   console.log('in updateUser', canSubmitAfter, urls)
 
-    if(req.user) {
-        // console.log('in req.user', req.user)
-        mongoose.model('User').findById({
-            _id: req.user._id
-          },
-          function(err, user) {
-            if (err) {
-              return console.log('in updateUser > mongoose > findById', err);
-            } else {
-              user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
-              user.save(function(err) { // save the user
-                  if (err) {
-                    // console.log('in updateUser > mongoose > findById > save user with new info', err);
-                    res.send(err);
-                  } else {
-                    // res.json({ message: 'user updated!' });
-                    res.json(user)
-                  }
-              });
-            }
-          });
-      } else {
-        res.json({
-            message: "could not update user"
-        })
-      }
-  },
+  //   if(req.user) {
+  //       // console.log('in req.user', req.user)
+  //       mongoose.model('User').findById({
+  //           _id: req.user._id
+  //         },
+  //         function(err, user) {
+  //           if (err) {
+  //             return console.log('in updateUser > mongoose > findById', err);
+  //           } else {
+  //             user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
+  //             user.save(function(err) { // save the user
+  //                 if (err) {
+  //                   // console.log('in updateUser > mongoose > findById > save user with new info', err);
+  //                   res.send(err);
+  //                 } else {
+  //                   // res.json({ message: 'user updated!' });
+  //                   res.json(user)
+  //                 }
+  //             });
+  //           }
+  //         });
+  //     } else {
+  //       res.json({
+  //           message: "could not update user"
+  //       })
+  //     }
+  // },
 
   submitUrlsId: function(req, res){
     console.log('### SUBMIT URLS WITH ID ###');
 
     user = req.body.user
     userId = req.body.user._id
-
+    urlsToSubmit = req.body.urlsToSubmit
     newCountLeftToSubmit = req.body.newCountLeftToSubmit
-    // resetCount = req.body.resetCount
-
-    console.log(newCountLeftToSubmit);
-
+    console.log('urlsToSubmit', urlsToSubmit);
+   
     if(user) {
-      console.log('in user', userId);
-      // mongoose.model('User').findById({ _id: userId },
-      //   function(err, user) {
-      //     if (err) {
-      //       return console.log('in updateUser > mongoose > findById', err);
-      //     } else {
-      //       console.log('in mongoose', user);
-      //       // user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
-      //       // user.save(function(err) { // save the user
-      //       //     if (err) {
-      //       //       // console.log('in updateUser > mongoose > findById > save user with new info', err);
-      //       //       res.send(err);
-      //       //     } else {
-      //             res.json({ message: 'user updated!' });
-      //        //      res.json(user)
-      //       //     }
-      //       // });
-      //     }
-      //   });
-      // } else {
-      //   console.log("could not submit urls");
-      //   res.json({
-      //       message: { message: "could not submit urls"}
-      //   })
+      mongoose.model('User').findById({ _id: userId },
+        function(err, user) {
+          if (err) {
+            return console.log('in updateUser > mongoose > findById', err);
+          } else {
+            // console.log('countLeftToSubmit', user.countLeftToSubmit);
+            user.countLeftToSubmit = newCountLeftToSubmit
+            user.save(function(err) { 
+                if (err) {
+                  res.send(err);
+                } else {
+                  // console.log('success!!!!!!!!');
+                  res.json({
+                    user: user,
+                    activeComponent: 'confirm'
+                  })
+                }
+            });
+          }
+        });
+      } else {
+        console.log("could not submit urls");
+        res.json({ message: { message: "could not submit urls"} })
       }
+  },
+
+  submitUrlsNoId: function(req, res){
+    console.log('*** submit urls witout id ***', req.body);
+    res.json({ activeComponent: 'login' })
   },
 
 
@@ -329,55 +331,12 @@ module.exports = {
   },
 
   suggest: function(req, res){
-
-    // if (req.user) {
-    //     console.log('userControls > logged in');
-    // } else {
-    //     console.log('userControls > NOT logged in');
-    // }
-
-
     var domains = req.body.domains;
     console.log('in server - these domains have been sent to the server\n', domains);
-
-      res.json({
-              // message: {message: 'New email verification sent', alert: "alert alert-success"},
-              activeComponent: 'landing',
-            })
-
-    // UserModel.findOne({ email: email }, function(err, user){
-    //   if(err)
-    //     return done(err);
-    //   if(user) {
-
-    //     var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
-    //     var verificationToken = randomstring.generate({ length: 64 });
-    //     var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
-
-    //     user.permalink = permalink;
-    //     user.verificationToken = verificationToken;
-    //     user.verified = false;
-
-    //     user.save(function(err){
-    //       if(err) {
-    //         throw err;
-    //       } else {
-    //         SendMail(user.user, email, link, null)
-    //         res.json({
-    //           message: {message: 'New email verification sent', alert: "alert alert-success"},
-    //           activeComponent: 'errorConfirmEmail',
-    //         })
-    //       }
-    //     })
-    //   } else {
-          
-    //       res.json({
-    //         message: {message: 'Could not find user', alert: "alert alert-danger"},
-    //         activeComponent: 'errorConfirmEmail',
-    //       })
-
-    //   }
-    // });
+    res.json({
+      message: {message: 'Your domain suggestions were sent', alert: "alert alert-success"},
+      activeComponent: 'landing',
+    })
   },
 
 };

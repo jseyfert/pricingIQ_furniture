@@ -25,6 +25,7 @@ var ShowWhichComponent = React.createClass({
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           handleSubmitClick={ this.props.handleSubmitClick }
+          onUrlChange={ this.props.onUrlChange }
           setActiveComponent={ this.props.setActiveComponent }
           />
         </div>
@@ -64,6 +65,7 @@ var ShowWhichComponent = React.createClass({
         <div>
           <UserLoginData
           message={ this.props.message } 
+          allDomains={ this.props.allDomains }
           loginUserFromServer={ this.props.loginUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
           />
@@ -74,6 +76,7 @@ var ShowWhichComponent = React.createClass({
         <div>
           <UserSignupData
           message={ this.props.message }
+          allDomains={ this.props.allDomains }
           signupUserFromServer={ this.props.signupUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
           />

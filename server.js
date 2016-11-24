@@ -32,8 +32,9 @@ app.post('/signup', userControl.signup);
 app.post('/forgot', userControl.forgot);
 app.post('/suggest', userControl.suggest);
 app.post('/submitUrlsId', userControl.submitUrlsId);
+app.post('/submitUrlsNoId', userControl.submitUrlsNoId);
 
-app.put('/updateUser', userControl.updateUser);
+// app.put('/updateUser', userControl.updateUser); //DELETE
 app.put('/reset', userControl.reset);
 app.get('/verifyReset/:token', userControl.verifyReset);
 
