@@ -22,8 +22,9 @@ var Index = React.createClass({
       noActiveDomains: null,
       activeComponent: 'landing',
 
-      // urlsUser: [],
-      // urlsNoUser: [],
+      urlsUser: [],
+      urlsNoUser: [],
+      rawRext: '',
 
 			allUrls: [],
       allDomains: [['amazon', true ],['walmart', false ],['sears', false]],
@@ -34,7 +35,7 @@ var Index = React.createClass({
 		}
 	},
 
-  creatUrlObj: function(text){
+  createUrlObjWithUser: function(text){
     var allDomains = this.state.allDomains;
     var countLeftToSubmit = this.state.user.countLeftToSubmit;
     var urlArray = text.split("\n");
@@ -117,23 +118,80 @@ var Index = React.createClass({
 
     createObjPerDomain(distinctDomains)
 
-    // console.log(arrOfObj);
+    return arrOfObj;
+
+  },  
+
+  createUrlObjWithoutUser: function(text){
+    var allDomains = this.state.allDomains;
+    var urlArray = text.split("\n");
+    var domains = [];
+    var distinctDomains = [];
+    var domainsAndUrls = [];
+    var arrOfObj = [];
+
+    urlArray.map(function(url){
+        if (validator.isURL(url) && parseDomain(url)){
+          var getDomain = parseDomain(url).domain
+          domains.push(getDomain)
+          domainsAndUrls.push([getDomain, url])
+        } else {
+          return null;
+        }
+    })
+
+    // use underscore to select only unique domains
+    distinctDomains = _.uniq(domains) 
+
+    // url object factory
+    var newObj = function(index, domain){
+      var temp ={}
+
+      temp.domain = domain
+
+      temp.urls = function(){
+        var urlArr =  [];
+        for(var i = 0; i < domainsAndUrls.length ; i++) {
+          if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
+        }
+        return urlArr;
+      }()
+
+      temp.urlsCount = temp.urls.length
+
+      return temp;
+    }
+
+    // create a url obj for each distinct domain
+    var createObjPerDomain = function(distinctDomains){
+        for(var j = 0; j < distinctDomains.length ; j++) {
+          // console.log('test', distinctDomains[i]);
+          arrOfObj.push(newObj(j, distinctDomains[j]))
+        }
+      }
+
+    createObjPerDomain(distinctDomains)
 
     return arrOfObj;
 
   },  
 
   onUrlChange: function(e){ 
-    var allUrls = this.creatUrlObj(e.target.value);
-    // console.log('allUrls', allUrls)
-    // var urlsUser =  (this.state.user.user !== 'anonymous') ? this.addAvailableSubmits(urlsNoUser) : null
-    // console.log(this.state.user)
-    // this.setState({ 
-    //   allUrls: validatedUrlArray
-    // })
-    this.setState({ 
-      allUrls: allUrls,
-    })
+    var user =  (this.state.user.user !== 'anonymous') ? true : false
+
+    if(user){
+      var urlsUser = this.createUrlObjWithUser(e.target.value);
+      this.setState({ 
+        urlsUser: urlsUser,
+        rawText: e.target.value
+      })
+    } else {
+      var urlsNoUser = this.createUrlObjWithoutUser(e.target.value);
+      this.setState({ 
+        urlsNoUser: urlsNoUser,
+        rawRext: e.target.value
+      })
+    }
   },
 
 
@@ -473,7 +531,9 @@ var Index = React.createClass({
         suggest: null,
         submittedToday: data.canSubmitAfter ? (currentTime < data.canSubmitAfter) : null,
         message: null,
-
+        urlsUser: [],
+        urlsNoUser: [],
+        rawText: null,
       });
     })
   },
@@ -493,7 +553,9 @@ var Index = React.createClass({
             suggest: null,
             activeComponent: 'landing',
             submittedToday: null,
-            allUrls: [],
+            urlsUser: [],
+            urlsNoUser: [],
+            rawText: null,
             message: null,
           });
         })
@@ -696,7 +758,7 @@ var Index = React.createClass({
           allUrls={ this.state.allUrls } 
           activeComponent={ this.state.activeComponent } 
 
-          creatUrlObj={ this.creatUrlObj } 
+          createUrlObjWithUser={ this.createUrlObjWithUser } 
           onUrlChange={ this.onUrlChange }
 
           setActiveComponent={ this.setActiveComponent } 
