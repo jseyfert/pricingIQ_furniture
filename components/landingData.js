@@ -79,12 +79,12 @@ var LandingData = React.createClass({
     return arrOfObj;
 	},
 
-	onUrlChange: function(e){    
-		var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
-		this.setState({ 
-      allUrls: validatedUrlArray
-    })
-	},
+	// onTextChange: function(e){    
+	// 	var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
+	// 	this.setState({ 
+ //      allUrls: validatedUrlArray
+ //    })
+	// },
 
 	handleUrlSubmit: function(e){
     e.preventDefault();
@@ -98,17 +98,22 @@ var LandingData = React.createClass({
   },
 
   render: function(){
-    // console.log(this.props.onUrlChange);
-    // console.log('here we go', this.props.onUrlChange);
+    // console.log(this.props.urlsNoUser);
+    // console.log('here we go', this.props.onTextChange);
 		return (
 			<div>
 				<LandingHtml 
+        user={ this.props.user }
         message={this.props.message}
         setActiveComponent={ this.props.setActiveComponent }
         allDomains={ this.props.allDomains }
         allUrls={ this.state.allUrls } 
-				handleUrlSubmit={ this.handleUrlSubmit }
-				onUrlChange={ this.props.onUrlChange }
+        handleUrlSubmit={ this.handleUrlSubmit }
+        rawText={ this.props.rawText } 
+
+        urlsNoUser={ this.props.urlsNoUser } 
+        urlsUser={ this.props.urlsUser } 
+				onTextChange={ this.props.onTextChange }
 				/>
 			</div>
 			)

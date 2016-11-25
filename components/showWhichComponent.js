@@ -17,7 +17,7 @@ var ShowWhichComponent = React.createClass({
   
   setActiveComponent: function() {
     var activeComponent = this.props.activeComponent
-
+    // console.log(this.props.urlsNoUser);
     if (activeComponent === 'landing'){
       return (
         <div>
@@ -25,8 +25,12 @@ var ShowWhichComponent = React.createClass({
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           handleSubmitClick={ this.props.handleSubmitClick }
-          onUrlChange={ this.props.onUrlChange }
+          onTextChange={ this.props.onTextChange }
           setActiveComponent={ this.props.setActiveComponent }
+          urlsNoUser = { this.props.urlsNoUser }
+          urlsUser = { this.props.urlsUser }
+          user={ this.props.user }
+          rawText={ this.props.rawText } 
           />
         </div>
         )
@@ -37,6 +41,7 @@ var ShowWhichComponent = React.createClass({
           message={ this.props.message }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
+          urlsNoUser = { this.props.urlsNoUser }
           />
         </div>
         )

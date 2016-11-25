@@ -24,14 +24,14 @@ var Index = React.createClass({
 
       urlsUser: [],
       urlsNoUser: [],
-      rawRext: '',
+      rawText: '',
 
 			allUrls: [],
-      allDomains: [['amazon', true ],['walmart', false ],['sears', false]],
+      allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
 			// allDomainsOLD: 
-			// [{domain: 'amazon' , domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
-			// {domain: 'walmart', domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			// {domain: 'sears' ,  domainAvailable: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
+			// [{domain: 'amazon' , domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
+			// {domain: 'walmart', domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
+			// {domain: 'sears' ,  domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
 		}
 	},
 
@@ -39,7 +39,7 @@ var Index = React.createClass({
     var allDomains = this.state.allDomains;
     var countLeftToSubmit = this.state.user.countLeftToSubmit;
     var urlArray = text.split("\n");
-    var domains = [];
+    var domains = allDomains.map(function(arr){ return arr[0]})
     var distinctDomains = [];
     var domainsAndUrls = [];
     var arrOfObj = [];
@@ -66,7 +66,7 @@ var Index = React.createClass({
 
       temp.domain = domain
 
-      temp.domainAvailable = function(){
+      temp.domainActive = function(){
         for(var i = 0; i < allDomains.length ; i++) {
           if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
           if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
@@ -89,17 +89,19 @@ var Index = React.createClass({
 
       temp.urlsCount = temp.urls.length
 
-      if (temp.domainAvailable === true || temp.domainAvailable === false ){
-        if (temp.domainAvailable){ 
+      if (temp.domainActive === true || temp.domainActive === false ){
+        temp.domainOffered = true;
+        if (temp.domainActive){ 
           temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
           temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
         }
-        if (!temp.domainAvailable){ 
+        if (!temp.domainActive){ 
           temp.countLeftToSubmitNow = temp.countLeftToSubmit 
           temp.countToSubmitNow = 0
         }
       } else {
-        temp.domainAvailable = null;
+        temp.domainOffered = false;
+        temp.domainActive = null;
         temp.countLeftToSubmit = null;
         temp.countLeftToSubmitNow = null;
         temp.countToSubmitNow = null;
@@ -176,7 +178,7 @@ var Index = React.createClass({
 
   },  
 
-  onUrlChange: function(e){ 
+  onTextChange: function(e){ 
     var user =  (this.state.user.user !== 'anonymous') ? true : false
 
     if(user){
@@ -189,10 +191,14 @@ var Index = React.createClass({
       var urlsNoUser = this.createUrlObjWithoutUser(e.target.value);
       this.setState({ 
         urlsNoUser: urlsNoUser,
-        rawRext: e.target.value
+        rawText: e.target.value
       })
     }
   },
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   submitUrlsID: function(user, urls){
@@ -202,7 +208,7 @@ var Index = React.createClass({
     var urlsToSubmit = []
     var self = this;
 
-    _.where(urls, {domainAvailable: true}).map(function(obj){
+    _.where(urls, {domainActive: true}).map(function(obj){
       potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
     })
 
@@ -243,7 +249,7 @@ var Index = React.createClass({
   },  
 
   submitUrlsNoID: function(urls){
-    var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
+    var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
     var self = this;
     console.log('urls2', urls)
     $.ajax({
@@ -266,13 +272,17 @@ var Index = React.createClass({
     })
   },
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
   handleSubmitClick: function(urls){
     var user = (this.state.user.user === 'anonymous') ? false : true;
     var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
     var errorNoUrls = (urls.length === 0) ? true : false;
     var submittedToday = this.state.submittedToday
-    var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
+    var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
     if(user){
       if (errorNoUrls) {
         this.setState({ 
@@ -322,7 +332,7 @@ var Index = React.createClass({
   handleEmailConfirm: function(){
     var urls = this.state.allUrls
     var suggest = this.state.suggest
-    var noActiveDomains = (_.where(urls, {domainAvailable: true}).length === 0) ? true : false
+    var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
     var urlsSubmitted = (this.state.allUrls.length > 0)
     var self = this;
 
@@ -756,10 +766,13 @@ var Index = React.createClass({
           message={ this.state.message } 
           allDomains={ this.state.allDomains } 
           allUrls={ this.state.allUrls } 
+          urlsNoUser={ this.state.urlsNoUser } 
+          urlsUser={ this.state.urlsUser } 
           activeComponent={ this.state.activeComponent } 
-
+          
+          rawText={ this.state.rawText } 
           createUrlObjWithUser={ this.createUrlObjWithUser } 
-          onUrlChange={ this.onUrlChange }
+          onTextChange={ this.onTextChange }
 
           setActiveComponent={ this.setActiveComponent } 
           loginUserFromServer={ this.loginUserFromServer } 

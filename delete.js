@@ -3,12 +3,13 @@ var validator = require('validator');
 var parseDomain = require("parse-domain");
 
 var allDomains = [['amazon', true ],['sears', false],['walmart', true ]]
-// var countLeftToSubmit = [['amazon', 0 ],['walmart',1 ],['sears', 3]]
+var countLeftToSubmit = [['amazon', 10 ],['sears', 3],['walmart',0 ]]
 // var urlArray = ['','qwerqwer','amazon.com/1','amazon.com/2','walmart.com/1', 'http://www.codewars.com/1', 'http://www.codewars.com/2', 'http://www.facebook.com/1','http://www.facebook.com/2', 'http://www.facebook.com/3']
-// var urlArray = ['walmart.com/1', 'walmart.com/2']
-var urlArray = ['amazon.com/1','amazon.com/2', 'amazon.com/3','amazon.com/4','walmart.com/1', 'http://www.codewars.com/1']
+var urlArray = ['amazon.com/1', 'sears.com/2', 'asdf.com']
+// var urlArray = ['amazon.com/1','amazon.com/2', 'amazon.com/3','amazon.com/4','walmart.com/1', 'http://www.codewars.com/1']
 
-var domains = []
+var domains = allDomains.map(function(arr){ return arr[0]})
+
 var distinctDomains = []
 var domainsAndUrls = []
 var arrOfObj = [];
@@ -25,6 +26,8 @@ urlArray.map(function(url){
 
 // use underscore to select only unique domains
 distinctDomains = _.uniq(domains) 
+// console.log(domains)
+// console.log(distinctDomains)
 
 // url object factory
 var newObj = function(index, domain){
@@ -32,18 +35,18 @@ var newObj = function(index, domain){
 
   temp.domain = domain
 
-  // temp.domainAvailable = function(){
-  //   for(i = 0; i < allDomains.length ; i++) {
-  //     if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
-  //     if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
-  //   }
-  // }()
+  temp.domainActive = function(){
+    for(i = 0; i < allDomains.length ; i++) {
+      if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
+      if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
+    }
+  }()
 
-  // temp.countLeftToSubmit = function(){
-  //   for(i = 0; i < countLeftToSubmit.length ; i++) {
-  //     if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
-  //   }
-  // }()
+  temp.countLeftToSubmit = function(){
+    for(i = 0; i < countLeftToSubmit.length ; i++) {
+      if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
+    }
+  }()
 
   temp.urls = function(){
     var urlArr =  [];
@@ -55,27 +58,29 @@ var newObj = function(index, domain){
 
   temp.urlsCount = temp.urls.length
 
-  // if (temp.domainAvailable === true || temp.domainAvailable === false ){
-  //   if (temp.domainAvailable){ 
-  //     temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
-  //     temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
-  //   }
-  //   if (!temp.domainAvailable){ 
-  //     temp.countLeftToSubmitNow = temp.countLeftToSubmit 
-  //     temp.countToSubmitNow = 0
-  //   }
-  // } else {
-    // temp.domainAvailable = null;
-    // temp.countLeftToSubmit = null;
-    // temp.countLeftToSubmitNow = null;
-    // temp.countToSubmitNow = null;
-  // }
+  if (temp.domainActive === true || temp.domainActive === false ){
+    temp.domainOffered = true;
+    if (temp.domainActive){ 
+      temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
+      temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
+    }
+    if (!temp.domainActive){ 
+      temp.countLeftToSubmitNow = temp.countLeftToSubmit 
+      temp.countToSubmitNow = 0
+    }
+  } else {
+    temp.domainOffered = false;
+    temp.domainActive = null;
+    temp.countLeftToSubmit = null;
+    temp.countLeftToSubmitNow = null;
+    temp.countToSubmitNow = null;
+  }
 
   return temp;
 }
 
 
-creatObjPerDomain = function(distinctDomains){
+  creatObjPerDomain = function(distinctDomains){
     for(j = 0; j < distinctDomains.length ; j++) {
       // console.log('test', distinctDomains[i]);
       arrOfObj.push(newObj(j, distinctDomains[j]))
