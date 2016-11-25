@@ -22,8 +22,6 @@ var Index = React.createClass({
       noActiveDomains: null,
       activeComponent: 'landing',
 
-      urlsUser: [],
-      urlsNoUser: [],
       rawText: '',
 
 			allUrls: [],
@@ -35,7 +33,8 @@ var Index = React.createClass({
 		}
 	},
 
-  createUrlObjWithUser: function(text){
+  createUrlObj: function(text){
+    var user = (this.state.user.user !== 'anonymous') ? this.state.user : false
     var allDomains = this.state.allDomains;
     var countLeftToSubmit = this.state.user.countLeftToSubmit;
     var urlArray = text.split("\n");
@@ -61,7 +60,8 @@ var Index = React.createClass({
     distinctDomains = _.uniq(domains) 
 
     // url object factory
-    var newObj = function(index, domain){
+    var newObj = function(domain){
+
       var temp ={}
 
       temp.domain = domain
@@ -73,11 +73,7 @@ var Index = React.createClass({
         }
       }()
 
-      temp.countLeftToSubmit = function(){
-        for(var i = 0; i < countLeftToSubmit.length ; i++) {
-          if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
-        }
-      }()
+      temp.domainOffered = (temp.domainActive === true || temp.domainActive === false );
 
       temp.urls = function(){
         var urlArr =  [];
@@ -87,23 +83,33 @@ var Index = React.createClass({
         return urlArr;
       }()
 
-      temp.urlsCount = temp.urls.length
+      temp.urlCount = temp.urls.length
 
-      if (temp.domainActive === true || temp.domainActive === false ){
-        temp.domainOffered = true;
-        if (temp.domainActive){ 
-          temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
-          temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
-        }
-        if (!temp.domainActive){ 
-          temp.countLeftToSubmitNow = temp.countLeftToSubmit 
-          temp.countToSubmitNow = 0
+      if (temp.domainOffered){
+        if(user){
+          temp.countLeftToSubmit = function(){
+            for(var i = 0; i < countLeftToSubmit.length ; i++) {
+              if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
+            }
+          }()
+          if (temp.domainActive){ 
+            temp.countLeftAfterSubmit = temp.countLeftToSubmit - temp.urlCount <= 0 ? 0 : temp.countLeftToSubmit - temp.urlCount 
+            temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urlCount ? temp.urlCount : temp.countLeftToSubmit
+          }
+          if (!temp.domainActive){ 
+            temp.countLeftAfterSubmit = temp.countLeftToSubmit 
+            temp.countToSubmitNow = 0
+          }
+        } else {
+          temp.countLeftToSubmit = null;
+          temp.countLeftAfterSubmit = null;
+          temp.countToSubmitNow = null;
         }
       } else {
         temp.domainOffered = false;
         temp.domainActive = null;
         temp.countLeftToSubmit = null;
-        temp.countLeftToSubmitNow = null;
+        temp.countLeftAfterSubmit = null;
         temp.countToSubmitNow = null;
       }
 
@@ -114,7 +120,7 @@ var Index = React.createClass({
     var createObjPerDomain = function(distinctDomains){
         for(var j = 0; j < distinctDomains.length ; j++) {
           // console.log('test', distinctDomains[i]);
-          arrOfObj.push(newObj(j, distinctDomains[j]))
+          arrOfObj.push(newObj(distinctDomains[j]))
         }
       }
 
@@ -124,76 +130,76 @@ var Index = React.createClass({
 
   },  
 
-  createUrlObjWithoutUser: function(text){
-    var allDomains = this.state.allDomains;
-    var urlArray = text.split("\n");
-    var domains = [];
-    var distinctDomains = [];
-    var domainsAndUrls = [];
-    var arrOfObj = [];
+  // createUrlObjWithoutUser: function(text){
+  //   var allDomains = this.state.allDomains;
+  //   var urlArray = text.split("\n");
+  //   var domains = [];
+  //   var distinctDomains = [];
+  //   var domainsAndUrls = [];
+  //   var arrOfObj = [];
 
-    urlArray.map(function(url){
-        if (validator.isURL(url) && parseDomain(url)){
-          var getDomain = parseDomain(url).domain
-          domains.push(getDomain)
-          domainsAndUrls.push([getDomain, url])
-        } else {
-          return null;
-        }
-    })
+  //   urlArray.map(function(url){
+  //       if (validator.isURL(url) && parseDomain(url)){
+  //         var getDomain = parseDomain(url).domain
+  //         domains.push(getDomain)
+  //         domainsAndUrls.push([getDomain, url])
+  //       } else {
+  //         return null;
+  //       }
+  //   })
 
-    // use underscore to select only unique domains
-    distinctDomains = _.uniq(domains) 
+  //   // use underscore to select only unique domains
+  //   distinctDomains = _.uniq(domains) 
 
-    // url object factory
-    var newObj = function(index, domain){
-      var temp ={}
+  //   // url object factory
+  //   var newObj = function(index, domain){
+  //     var temp ={}
 
-      temp.domain = domain
+  //     temp.domain = domain
 
-      temp.urls = function(){
-        var urlArr =  [];
-        for(var i = 0; i < domainsAndUrls.length ; i++) {
-          if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
-        }
-        return urlArr;
-      }()
+  //     temp.urls = function(){
+  //       var urlArr =  [];
+  //       for(var i = 0; i < domainsAndUrls.length ; i++) {
+  //         if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
+  //       }
+  //       return urlArr;
+  //     }()
 
-      temp.urlsCount = temp.urls.length
+  //     temp.urlCount = temp.urls.length
 
-      return temp;
-    }
+  //     return temp;
+  //   }
 
-    // create a url obj for each distinct domain
-    var createObjPerDomain = function(distinctDomains){
-        for(var j = 0; j < distinctDomains.length ; j++) {
-          // console.log('test', distinctDomains[i]);
-          arrOfObj.push(newObj(j, distinctDomains[j]))
-        }
-      }
+  //   // create a url obj for each distinct domain
+  //   var createObjPerDomain = function(distinctDomains){
+  //       for(var j = 0; j < distinctDomains.length ; j++) {
+  //         // console.log('test', distinctDomains[i]);
+  //         arrOfObj.push(newObj(j, distinctDomains[j]))
+  //       }
+  //     }
 
-    createObjPerDomain(distinctDomains)
+  //   createObjPerDomain(distinctDomains)
 
-    return arrOfObj;
+  //   return arrOfObj;
 
-  },  
+  // },  
 
   onTextChange: function(e){ 
-    var user =  (this.state.user.user !== 'anonymous') ? true : false
+    // var user =  (this.state.user.user !== 'anonymous') ? true : false
+    var allUrls = this.createUrlObj(e.target.value);
+    this.setState({ 
+      allUrls: allUrls,
+      rawText: e.target.value
+    })
 
-    if(user){
-      var urlsUser = this.createUrlObjWithUser(e.target.value);
-      this.setState({ 
-        urlsUser: urlsUser,
-        rawText: e.target.value
-      })
-    } else {
-      var urlsNoUser = this.createUrlObjWithoutUser(e.target.value);
-      this.setState({ 
-        urlsNoUser: urlsNoUser,
-        rawText: e.target.value
-      })
-    }
+    // if(user){
+    // } else {
+    //   var urlsNoUser = this.createUrlObjWithoutUser(e.target.value);
+    //   this.setState({ 
+    //     urlsNoUser: urlsNoUser,
+    //     rawText: e.target.value
+    //   })
+    // }
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,50 +208,50 @@ var Index = React.createClass({
 
 
   submitUrlsID: function(user, urls){
-    var countLeftToSubmit  = user.countLeftToSubmit
-    var newCountLeftToSubmit =[]
-    var potentialUrlsToSubmit = []
-    var urlsToSubmit = []
-    var self = this;
+    // var countLeftToSubmit  = user.countLeftToSubmit
+    // var newCountLeftToSubmit =[]
+    // var potentialUrlsToSubmit = []
+    // var urlsToSubmit = []
+    // var self = this;
 
-    _.where(urls, {domainActive: true}).map(function(obj){
-      potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
-    })
+    // _.where(urls, {domainActive: true}).map(function(obj){
+    //   potentialUrlsToSubmit.push([obj.domain, obj.urls.length, obj.urls])
+    // })
 
-    countLeftToSubmit.map(function(arr1){
-      potentialUrlsToSubmit.map(function(arr2){
-        var countToSubmitNow = arr1[1] >= arr2[1] ? arr2[1] : arr1[1]
-        var countLeftToSubmitNow = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
-        var urlsToSubmitNow = arr2[2].slice(0, countToSubmitNow)
-        if (arr1[0] === arr2[0]){
-          newCountLeftToSubmit.push([arr1[0], countLeftToSubmitNow ])
-          urlsToSubmit.push([ arr1[0], urlsToSubmitNow])
-          // console.log( arr1[0], 'countLeftToSubmit',arr1[1], ',potentialUrlsToSubmit', arr2[1], ',countToSubmitNow',  countToSubmitNow, ',NEWcountLeftToSubmitNow',  countLeftToSubmitNow, ',urlsToSubmitNow', urlsToSubmitNow );
-        } 
-      })
-    })
+    // countLeftToSubmit.map(function(arr1){
+    //   potentialUrlsToSubmit.map(function(arr2){
+    //     var countToSubmitNow = arr1[1] >= arr2[1] ? arr2[1] : arr1[1]
+    //     var countLeftAfterSubmit = (arr1[1] - arr2[1] < 0) ? 0 : arr1[1] - arr2[1]
+    //     var urlsToSubmitNow = arr2[2].slice(0, countToSubmitNow)
+    //     if (arr1[0] === arr2[0]){
+    //       newCountLeftToSubmit.push([arr1[0], countLeftAfterSubmit ])
+    //       urlsToSubmit.push([ arr1[0], urlsToSubmitNow])
+    //       // console.log( arr1[0], 'countLeftToSubmit',arr1[1], ',potentialUrlsToSubmit', arr2[1], ',countToSubmitNow',  countToSubmitNow, ',NEWcountLeftAfterSubmit',  countLeftAfterSubmit, ',urlsToSubmitNow', urlsToSubmitNow );
+    //     } 
+    //   })
+    // })
     
-    // console.log('countLeftToSubmit',countLeftToSubmit)
-    // console.log('newCountLeftToSubmit',newCountLeftToSubmit)
+    // // console.log('countLeftToSubmit',countLeftToSubmit)
+    // // console.log('newCountLeftToSubmit',newCountLeftToSubmit)
 
-    $.ajax({
-      method: 'POST',
-      url: '/submitUrlsId',
-      data: { user: user, newCountLeftToSubmit: newCountLeftToSubmit, urlsToSubmit: urlsToSubmit },
-      success: function(data){
-        var activeComponent = data.activeComponent
-        var user = data.user
-        self.setState({ 
-          user: user,
-          activeComponent: activeComponent,
-          // suggest: null,
-          // message: message,
-        });
-      },
-      error: function(xhr, status, err){
-        console.error('/submitUrlsId', status, err.toString())
-      }
-    })
+    // $.ajax({
+    //   method: 'POST',
+    //   url: '/submitUrlsId',
+    //   data: { user: user, newCountLeftToSubmit: newCountLeftToSubmit, urlsToSubmit: urlsToSubmit },
+    //   success: function(data){
+    //     var activeComponent = data.activeComponent
+    //     var user = data.user
+    //     self.setState({ 
+    //       user: user,
+    //       activeComponent: activeComponent,
+    //       // suggest: null,
+    //       // message: message,
+    //     });
+    //   },
+    //   error: function(xhr, status, err){
+    //     console.error('/submitUrlsId', status, err.toString())
+    //   }
+    // })
   },  
 
   submitUrlsNoID: function(urls){
@@ -541,7 +547,7 @@ var Index = React.createClass({
         suggest: null,
         submittedToday: data.canSubmitAfter ? (currentTime < data.canSubmitAfter) : null,
         message: null,
-        urlsUser: [],
+        allUrls: [],
         urlsNoUser: [],
         rawText: null,
       });
@@ -563,7 +569,7 @@ var Index = React.createClass({
             suggest: null,
             activeComponent: 'landing',
             submittedToday: null,
-            urlsUser: [],
+            allUrls: [],
             urlsNoUser: [],
             rawText: null,
             message: null,
@@ -766,12 +772,10 @@ var Index = React.createClass({
           message={ this.state.message } 
           allDomains={ this.state.allDomains } 
           allUrls={ this.state.allUrls } 
-          urlsNoUser={ this.state.urlsNoUser } 
-          urlsUser={ this.state.urlsUser } 
           activeComponent={ this.state.activeComponent } 
           
           rawText={ this.state.rawText } 
-          createUrlObjWithUser={ this.createUrlObjWithUser } 
+          createUrlObj={ this.createUrlObj } 
           onTextChange={ this.onTextChange }
 
           setActiveComponent={ this.setActiveComponent } 

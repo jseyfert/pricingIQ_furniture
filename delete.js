@@ -42,12 +42,8 @@ var newObj = function(index, domain){
     }
   }()
 
-  temp.countLeftToSubmit = function(){
-    for(i = 0; i < countLeftToSubmit.length ; i++) {
-      if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
-    }
-  }()
-
+  temp.domainOffered = (temp.domainActive === true || temp.domainActive === false );
+  
   temp.urls = function(){
     var urlArr =  [];
     for(i = 0; i < domainsAndUrls.length ; i++) {
@@ -58,8 +54,13 @@ var newObj = function(index, domain){
 
   temp.urlsCount = temp.urls.length
 
-  if (temp.domainActive === true || temp.domainActive === false ){
-    temp.domainOffered = true;
+  if (temp.domainOffered){
+    temp.countLeftToSubmit = function(){
+      for(i = 0; i < countLeftToSubmit.length ; i++) {
+        if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
+      }
+    }()
+
     if (temp.domainActive){ 
       temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
       temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit

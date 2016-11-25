@@ -107,12 +107,10 @@ var LandingData = React.createClass({
         message={this.props.message}
         setActiveComponent={ this.props.setActiveComponent }
         allDomains={ this.props.allDomains }
-        allUrls={ this.state.allUrls } 
         handleUrlSubmit={ this.handleUrlSubmit }
         rawText={ this.props.rawText } 
 
-        urlsNoUser={ this.props.urlsNoUser } 
-        urlsUser={ this.props.urlsUser } 
+        allUrls={ this.props.allUrls } 
 				onTextChange={ this.props.onTextChange }
 				/>
 			</div>
