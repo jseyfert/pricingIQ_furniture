@@ -22,9 +22,11 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <LandingData
+          domainsLoading={ this.props.domainsLoading } 
+          userLoading={ this.props.userLoading } 
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
-          handleSubmitClick={ this.props.handleSubmitClick }
+          handleUrlSubmit={ this.props.handleUrlSubmit }
           onTextChange={ this.props.onTextChange }
           setActiveComponent={ this.props.setActiveComponent }
           allUrls = { this.props.allUrls }

@@ -15,17 +15,21 @@ var Index = React.createClass({
   getInitialState: function(){
 		return {
       user: null,
-      passwordResetToken: null,
       message: null,
-      suggest: null,
-      submittedToday: null,
-      noActiveDomains: null,
+      passwordResetToken: null,
       activeComponent: 'landing',
 
-      rawText: '',
+      submittedToday: null, //maybe remove
+      suggest: null,
+      noActiveDomains: null,
+      urlsSubmitted: false,
 
+      userLoading: true,
+      domainsLoading: true,
+
+      rawText: '',
 			allUrls: [],
-      allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
+      allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
 			// allDomainsOLD: 
 			// [{domain: 'amazon' , domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			// {domain: 'walmart', domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
@@ -34,6 +38,7 @@ var Index = React.createClass({
 	},
 
   createUrlObj: function(text){
+    // console.log('this.state', this.state)
     var user = (this.state.user.user !== 'anonymous') ? this.state.user : false
     var allDomains = this.state.allDomains;
     var countLeftToSubmit = this.state.user.countLeftToSubmit;
@@ -181,12 +186,12 @@ var Index = React.createClass({
   //   createObjPerDomain(distinctDomains)
 
   //   return arrOfObj;
-
   // },  
 
   onTextChange: function(e){ 
     // var user =  (this.state.user.user !== 'anonymous') ? true : false
     var allUrls = this.createUrlObj(e.target.value);
+
     this.setState({ 
       allUrls: allUrls,
       rawText: e.target.value
@@ -202,12 +207,23 @@ var Index = React.createClass({
     // }
   },
 
+  setInitialUrls: function(){
+
+    var allUrls = this.createUrlObj('text');
+
+    this.setState({ 
+      allUrls: allUrls,
+    })
+
+  },
+
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   submitUrlsID: function(user, urls){
+    console.log('in submitUrlsID which does nothing right now')
     // var countLeftToSubmit  = user.countLeftToSubmit
     // var newCountLeftToSubmit =[]
     // var potentialUrlsToSubmit = []
@@ -255,27 +271,28 @@ var Index = React.createClass({
   },  
 
   submitUrlsNoID: function(urls){
-    var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
-    var self = this;
-    console.log('urls2', urls)
-    $.ajax({
-      method: 'POST',
-      url: '/submitUrlsNoId',
-      data: {urls: urls},
-      success: function(data){
-        var activeComponent = data.activeComponent
-        self.setState({ 
-          activeComponent: 'login', 
-          suggest: null,
-          noActiveDomains: noActiveDomains, 
-          allUrls: urls,
-          message: null,
-        })
-      },
-      error: function(xhr, status, err){
-        console.error('/submitUrlsNoId', status, err.toString())
-      }
-    })
+     console.log('in submitUrlsNONONONONONID which does nothing right now')
+    // var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
+    // var self = this;
+    // console.log('urls2', urls)
+    // $.ajax({
+    //   method: 'POST',
+    //   url: '/submitUrlsNoId',
+    //   data: {urls: urls},
+    //   success: function(data){
+    //     var activeComponent = data.activeComponent
+    //     self.setState({ 
+    //       activeComponent: 'login', 
+    //       suggest: null,
+    //       noActiveDomains: noActiveDomains, 
+    //       allUrls: urls,
+    //       message: null,
+    //     })
+    //   },
+    //   error: function(xhr, status, err){
+    //     console.error('/submitUrlsNoId', status, err.toString())
+    //   }
+    // })
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,41 +300,58 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  handleSubmitClick: function(urls){
+  handleUrlSubmit: function(e){
+    e.preventDefault();
+
+    var allUrls = this.state.allUrls
     var user = (this.state.user.user === 'anonymous') ? false : true;
     var verified = (this.state.user.user === 'anonymous') ? null : this.state.user.verified
-    var errorNoUrls = (urls.length === 0) ? true : false;
-    var submittedToday = this.state.submittedToday
-    var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
+    var submittedToday = (this.state.user.user === 'anonymous') ? null : this.state.user.submittedToday
+
+    var countUrls = 0
+    var countActiveDomains = 0
+    allUrls.map(function(obj){
+      countUrls += obj.urlCount
+      if(obj.domainActive){countActiveDomains += obj.urlCount}
+    })
+    var errorNoUrls = (countUrls <= 0)
+    var noActiveDomains = (countActiveDomains <= 0)
+
+    // console.log('errorNoUrls', errorNoUrls)
+    // console.log('noActiveDomains', noActiveDomains)
+
     if(user){
       if (errorNoUrls) {
         this.setState({ 
           activeComponent: 'landing',
           suggest: null,
-          allUrls: urls,
+          allUrls: allUrls,
           message: { message: 'Please submit at least one valid Url',  alert: null }
         })
       } else if(!verified) {
         this.setState({
           activeComponent: 'errorConfirmEmail',
+          urlsSubmitted: true,
           suggest: null,
-          allUrls: urls,
+          allUrls: allUrls,
           message: { message: 'You have not yet verified your email. Please check your email.',  alert: "alert alert-danger" }
         })
       } else if (submittedToday) {
         this.setState({
           activeComponent: 'submittedToday',
+          urlsSubmitted: true,
           suggest: null,
-          allUrls: urls
+          allUrls: allUrls
         })
       } else if (noActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
+          urlsSubmitted: true,
           suggest: null,
-          allUrls: urls
+          allUrls: allUrls
       })
       } else {
-        this.submitUrlsID(this.state.user, urls);  /////////////////////////////////////////////////////////
+        this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
         // this.updateUser(this.state.user, urls);
       }
     } else if (!user) {   
@@ -325,12 +359,12 @@ var Index = React.createClass({
         this.setState({ 
           activeComponent: 'landing',
           suggest: null, 
-          allUrls: urls, 
+          allUrls: allUrls, 
           message: { message: 'Please submit at least one valid Url',  alert: null }
         })
       } else {
-        console.log('urls', urls)
-        this.submitUrlsNoID(urls) // *******************************************************************************
+        console.log('urls', allUrls)
+        this.submitUrlsNoID(allUrls) // *******************************************************************************
       }
     }
   },
@@ -395,17 +429,21 @@ var Index = React.createClass({
     var urls = this.state.allUrls
     var currentTime = new Date().getTime()
     var self = this;
-
+    // console.log('user',user)
     $.ajax({
       method: 'POST',
       url: '/login',
       data: user,
       success: function(data){
+
+        console.log('data',data)
+
         var verified = data.user.verified
-        var submittedToday = (currentTime < data.user.canSubmitAfter);
+        var countLeftToSubmit = data.user.countLeftToSubmit.reduce(function(a, b) { return a + b[1]; }, 0);
+        var submittedToday = (countLeftToSubmit == 0)
         var suggest = self.state.suggest
         var noActiveDomains = self.state.noActiveDomains;
-        var urlsSubmitted = (self.state.allUrls.length > 0)
+        var urlsSubmitted = self.state.urlsSubmitted;
         
         if (!verified) {
           self.setState({ 
@@ -547,10 +585,14 @@ var Index = React.createClass({
         suggest: null,
         submittedToday: data.canSubmitAfter ? (currentTime < data.canSubmitAfter) : null,
         message: null,
-        allUrls: [],
-        urlsNoUser: [],
-        rawText: null,
+        // allUrls: [],
+        // urlsNoUser: [],
+        // rawText: null,
+        userLoading: false,
       });
+      if(!self.state.domainsLoading){
+        self.setInitialUrls();
+      }
     })
   },
 
@@ -569,9 +611,9 @@ var Index = React.createClass({
             suggest: null,
             activeComponent: 'landing',
             submittedToday: null,
-            allUrls: [],
-            urlsNoUser: [],
-            rawText: null,
+            // allUrls: [],
+            // urlsNoUser: [],
+            // rawText: null,
             message: null,
           });
         })
@@ -727,7 +769,6 @@ var Index = React.createClass({
     }
   },
 
-
   // updateUser: function(user, urls){
   //   var midnightTonight = new Date().setHours(23,59,59,0);
   //   var self = this;
@@ -751,49 +792,59 @@ var Index = React.createClass({
   //     })
   // }, 
 
+  componentWillMount: function(){
 
-	componentDidMount: function(){
-		this.getOneUserFromServer();
-	},
+    // setTimeout(() => {
+      this.setState({  
+        allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
+        domainsLoading: false
+      });
+      if(!this.state.userLoading){
+        this.setInitialUrls();
+      }
+    // }, 100);
+
+    // setTimeout(() => {
+      this.getOneUserFromServer();
+    // }, 600);
+  },
+
 
 	render: function(){
-			if (!this.state.user) {
-				return null;
-			} else {
-			return (
-				<div>
-					<Header 
-          user={ this.state.user } 
-          logoutUser={ this.logoutUser }
-          setActiveComponent={ this.setActiveComponent }
-          />
-					<ShowWhichComponent 
-          user={ this.state.user } 
-          message={ this.state.message } 
-          allDomains={ this.state.allDomains } 
-          allUrls={ this.state.allUrls } 
-          activeComponent={ this.state.activeComponent } 
-          
-          rawText={ this.state.rawText } 
-          createUrlObj={ this.createUrlObj } 
-          onTextChange={ this.onTextChange }
+  	return (
+  		<div>
+  			<Header 
+        user={ this.state.user } 
+        logoutUser={ this.logoutUser }
+        setActiveComponent={ this.setActiveComponent }
+        userLoading={ this.state.userLoading } 
+        />
+        <ShowWhichComponent 
+        userLoading={ this.state.userLoading } 
+        domainsLoading={ this.state.domainsLoading } 
+        createUrlObj={ this.createUrlObj } 
 
-          setActiveComponent={ this.setActiveComponent } 
-          loginUserFromServer={ this.loginUserFromServer } 
-          signupUserFromServer={ this.signupUserFromServer }
-          forgotPassword={ this.forgotPassword }
-          handleEmailConfirm={ this.handleEmailConfirm }
-          logoutUser={ this.logoutUser } 
-          handleSubmitClick={ this.handleSubmitClick } 
-          submitResetToken={ this.submitResetToken } 
-          submitNewPassword={ this.submitNewPassword } 
-          submitSuggestedDomains={ this.submitSuggestedDomains } 
-          resendVerifyToken={ this.resendVerifyToken } 
-          />
-        </div>
-					// <Footer />
-			)
-			}
+        user={ this.state.user } 
+        message={ this.state.message } 
+        allDomains={ this.state.allDomains } 
+        allUrls={ this.state.allUrls } 
+        activeComponent={ this.state.activeComponent } 
+        rawText={ this.state.rawText } 
+        onTextChange={ this.onTextChange }
+        setActiveComponent={ this.setActiveComponent } 
+        loginUserFromServer={ this.loginUserFromServer } 
+        signupUserFromServer={ this.signupUserFromServer }
+        forgotPassword={ this.forgotPassword }
+        handleEmailConfirm={ this.handleEmailConfirm }
+        logoutUser={ this.logoutUser } 
+        handleUrlSubmit={ this.handleUrlSubmit } 
+        submitResetToken={ this.submitResetToken } 
+        submitNewPassword={ this.submitNewPassword } 
+        submitSuggestedDomains={ this.submitSuggestedDomains } 
+        resendVerifyToken={ this.resendVerifyToken } 
+        />
+      </div>
+  	)
 	}
 });
 

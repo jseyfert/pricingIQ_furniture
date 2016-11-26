@@ -1,95 +1,95 @@
-var _ = require("underscore");
-var validator = require('validator');
-var parseDomain = require("parse-domain");
+// var _ = require("underscore");
+// var validator = require('validator');
+// var parseDomain = require("parse-domain");
 
-var allDomains = [['amazon', true ],['sears', false],['walmart', true ]]
-var countLeftToSubmit = [['amazon', 10 ],['sears', 3],['walmart',0 ]]
-// var urlArray = ['','qwerqwer','amazon.com/1','amazon.com/2','walmart.com/1', 'http://www.codewars.com/1', 'http://www.codewars.com/2', 'http://www.facebook.com/1','http://www.facebook.com/2', 'http://www.facebook.com/3']
-var urlArray = ['amazon.com/1', 'sears.com/2', 'asdf.com']
-// var urlArray = ['amazon.com/1','amazon.com/2', 'amazon.com/3','amazon.com/4','walmart.com/1', 'http://www.codewars.com/1']
+// var allDomains = [['amazon', true ],['sears', false],['walmart', true ]]
+// var countLeftToSubmit = [['amazon', 10 ],['sears', 3],['walmart',0 ]]
+// // var urlArray = ['','qwerqwer','amazon.com/1','amazon.com/2','walmart.com/1', 'http://www.codewars.com/1', 'http://www.codewars.com/2', 'http://www.facebook.com/1','http://www.facebook.com/2', 'http://www.facebook.com/3']
+// var urlArray = ['amazon.com/1', 'sears.com/2', 'asdf.com']
+// // var urlArray = ['amazon.com/1','amazon.com/2', 'amazon.com/3','amazon.com/4','walmart.com/1', 'http://www.codewars.com/1']
 
-var domains = allDomains.map(function(arr){ return arr[0]})
+// var domains = allDomains.map(function(arr){ return arr[0]})
 
-var distinctDomains = []
-var domainsAndUrls = []
-var arrOfObj = [];
+// var distinctDomains = []
+// var domainsAndUrls = []
+// var arrOfObj = [];
 
-urlArray.map(function(url){
-    if (validator.isURL(url) && parseDomain(url)){
-      var getDomain = parseDomain(url).domain
-      domains.push(getDomain)
-      domainsAndUrls.push([getDomain, url])
-    } else {
-      return null;
-    }
-})
+// urlArray.map(function(url){
+//     if (validator.isURL(url) && parseDomain(url)){
+//       var getDomain = parseDomain(url).domain
+//       domains.push(getDomain)
+//       domainsAndUrls.push([getDomain, url])
+//     } else {
+//       return null;
+//     }
+// })
 
-// use underscore to select only unique domains
-distinctDomains = _.uniq(domains) 
-// console.log(domains)
-// console.log(distinctDomains)
+// // use underscore to select only unique domains
+// distinctDomains = _.uniq(domains) 
+// // console.log(domains)
+// // console.log(distinctDomains)
 
-// url object factory
-var newObj = function(index, domain){
-  var temp ={}
+// // url object factory
+// var newObj = function(index, domain){
+//   var temp ={}
 
-  temp.domain = domain
+//   temp.domain = domain
 
-  temp.domainActive = function(){
-    for(i = 0; i < allDomains.length ; i++) {
-      if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
-      if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
-    }
-  }()
+//   temp.domainActive = function(){
+//     for(i = 0; i < allDomains.length ; i++) {
+//       if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
+//       if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
+//     }
+//   }()
 
-  temp.domainOffered = (temp.domainActive === true || temp.domainActive === false );
+//   temp.domainOffered = (temp.domainActive === true || temp.domainActive === false );
   
-  temp.urls = function(){
-    var urlArr =  [];
-    for(i = 0; i < domainsAndUrls.length ; i++) {
-      if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
-    }
-    return urlArr;
-  }()
+//   temp.urls = function(){
+//     var urlArr =  [];
+//     for(i = 0; i < domainsAndUrls.length ; i++) {
+//       if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
+//     }
+//     return urlArr;
+//   }()
 
-  temp.urlsCount = temp.urls.length
+//   temp.urlsCount = temp.urls.length
 
-  if (temp.domainOffered){
-    temp.countLeftToSubmit = function(){
-      for(i = 0; i < countLeftToSubmit.length ; i++) {
-        if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
-      }
-    }()
+//   if (temp.domainOffered){
+//     temp.countLeftToSubmit = function(){
+//       for(i = 0; i < countLeftToSubmit.length ; i++) {
+//         if (domain === countLeftToSubmit[i][0]){ return countLeftToSubmit[i][1] } 
+//       }
+//     }()
 
-    if (temp.domainActive){ 
-      temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
-      temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
-    }
-    if (!temp.domainActive){ 
-      temp.countLeftToSubmitNow = temp.countLeftToSubmit 
-      temp.countToSubmitNow = 0
-    }
-  } else {
-    temp.domainOffered = false;
-    temp.domainActive = null;
-    temp.countLeftToSubmit = null;
-    temp.countLeftToSubmitNow = null;
-    temp.countToSubmitNow = null;
-  }
+//     if (temp.domainActive){ 
+//       temp.countLeftToSubmitNow = temp.countLeftToSubmit - temp.urls.length <= 0 ? 0 : temp.countLeftToSubmit - temp.urls.length 
+//       temp.countToSubmitNow = temp.countLeftToSubmit >= temp.urls.length ? temp.urls.length : temp.countLeftToSubmit
+//     }
+//     if (!temp.domainActive){ 
+//       temp.countLeftToSubmitNow = temp.countLeftToSubmit 
+//       temp.countToSubmitNow = 0
+//     }
+//   } else {
+//     temp.domainOffered = false;
+//     temp.domainActive = null;
+//     temp.countLeftToSubmit = null;
+//     temp.countLeftToSubmitNow = null;
+//     temp.countToSubmitNow = null;
+//   }
 
-  return temp;
-}
-
-
-  creatObjPerDomain = function(distinctDomains){
-    for(j = 0; j < distinctDomains.length ; j++) {
-      // console.log('test', distinctDomains[i]);
-      arrOfObj.push(newObj(j, distinctDomains[j]))
-    }
-  }(distinctDomains)
+//   return temp;
+// }
 
 
-console.log(arrOfObj);
+//   creatObjPerDomain = function(distinctDomains){
+//     for(j = 0; j < distinctDomains.length ; j++) {
+//       // console.log('test', distinctDomains[i]);
+//       arrOfObj.push(newObj(j, distinctDomains[j]))
+//     }
+//   }(distinctDomains)
+
+
+// console.log(arrOfObj);
 
 
 
@@ -296,8 +296,10 @@ console.log(arrOfObj);
   //   }() === true || false ? true : false)
   ////////////////////////////////////
 
+var countLeftToSubmit = [['amazon', 01 ],['sears', 0],['walmart',0 ]]
+var sum = countLeftToSubmit.reduce(function(a, b) { return a + b[1]; }, 0);
 
-
+console.log(sum)
 
 
 

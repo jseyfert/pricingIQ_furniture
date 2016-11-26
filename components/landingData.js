@@ -8,76 +8,7 @@ var LandingHtml = require('./landingHtml.js');
 
 var LandingData = React.createClass({
 
-  getInitialState: function(){
-		return {
-			allUrls: []
-		}
-	},
 
-	parseAndValidateUrls: function(text){
-    var urlArray = text.split("\n");
-    var domains = [];
-    var domainsAndUrls = [];
-    var distinctDomains = [];
-    var arrOfObj = [];
-    var allDomains = this.props.allDomains;
-    // console.log(allDomains, 'in allDomains');
-    var availableDomains = []
-
-    allDomains.map(function(obj){
-      // console.log(obj);
-      if (obj.domainAvailable){
-        availableDomains.push(obj.domain)
-      }
-    })
-    // console.log(availableDomains, 'in availableDomains');
-
-    // validate urls and parse domain
-    urlArray.map(function(url){
-        if (validator.isURL(url) && parseDomain(url)){
-          var getDomain = parseDomain(url).domain
-          domains.push(getDomain)
-          domainsAndUrls.push([getDomain, url])
-        } else {
-          return null;
-        }
-    })
-      
-    // use underscore to select only unique domains
-    distinctDomains = _.uniq(domains) 
-
-    // creat json obj
-    var createObj = function(arr, domain, index) {
-      var setDomain = '';
-      var array = [];
-      var domainAvailable = false;
-      for(var i = 0; i < arr.length ; i++) {
-        if(arr[i][0] === domain){
-          setDomain = domain;
-          array.push(arr[i][1])        
-          domainAvailable = _.include(availableDomains, domain);
-          // console.log(domainAvailable, availableDomains, 'in domainAvailable');
-        } else {
-          null;
-        }
-        arrOfObj[index] = {
-          domain: setDomain,
-          urls: array,
-          domainAvailable: domainAvailable
-        }
-      }
-    }
-
-    // call createOb for each distinct domain
-    var runPerDomain = function(arr, domainsAndUrls){
-      for(var i = 0; i < arr.length ; i++) {
-        createObj(domainsAndUrls, arr[i], i)
-      }
-    }(distinctDomains, domainsAndUrls)
-
-    // console.log('end of function', arrOfObj);
-    return arrOfObj;
-	},
 
 	// onTextChange: function(e){    
 	// 	var validatedUrlArray = this.parseAndValidateUrls(e.target.value);
@@ -86,16 +17,16 @@ var LandingData = React.createClass({
  //    })
 	// },
 
-	handleUrlSubmit: function(e){
-    e.preventDefault();
-    var urls = [];
-    urls = this.state.allUrls;
+	// handleUrlSubmit: function(e){
+ //    e.preventDefault();
+ //    var urls = [];
+ //    urls = this.state.allUrls;
 
-    this.props.handleSubmitClick(urls);
-    // this.setState({ 
-    //   allUrls: []
-    // });
-  },
+ //    this.props.handleSubmitClick(urls);
+ //    // this.setState({ 
+ //    //   allUrls: []
+ //    // });
+ //  },
 
   render: function(){
     // console.log(this.props.urlsNoUser);
@@ -103,15 +34,17 @@ var LandingData = React.createClass({
 		return (
 			<div>
 				<LandingHtml 
+        domainsLoading={ this.props.domainsLoading } 
+        userLoading={ this.props.userLoading } 
         user={ this.props.user }
         message={this.props.message}
         setActiveComponent={ this.props.setActiveComponent }
         allDomains={ this.props.allDomains }
-        handleUrlSubmit={ this.handleUrlSubmit }
-        rawText={ this.props.rawText } 
-
         allUrls={ this.props.allUrls } 
+
+        handleUrlSubmit={ this.props.handleUrlSubmit }
 				onTextChange={ this.props.onTextChange }
+        rawText={ this.props.rawText } 
 				/>
 			</div>
 			)
