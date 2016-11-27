@@ -29,7 +29,7 @@ var Index = React.createClass({
 
       rawText: '',
 			allUrls: [],
-      allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
+      allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
 			// allDomainsOLD: 
 			// [{domain: 'amazon' , domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
 			// {domain: 'walmart', domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
@@ -46,9 +46,9 @@ var Index = React.createClass({
       var userLoggedIn = false
     }
     // console.log('userLoggedIn', userLoggedIn)
-
-    var allDomains = this.state.allDomains;
+    // var text2 = (text) ? text : 'dummy'
     var urlArray = text.split("\n");
+    var allDomains = this.state.allDomains;
     var domains = allDomains.map(function(arr){ return arr[0]})
     var distinctDomains = [];
     var domainsAndUrls = [];
@@ -140,30 +140,19 @@ var Index = React.createClass({
   },   
 
   onTextChange: function(e){ 
-    // var user =  (this.state.user.user !== 'anonymous') ? true : false
-    var allUrls = this.createUrlObj(e.target.value);
-
+    var text = e.target.value;
+    var allUrls = this.createUrlObj(text);
     this.setState({ 
       allUrls: allUrls,
-      rawText: e.target.value
+      rawText: text
     })
-
-    // if(user){
-    // } else {
-    //   var urlsNoUser = this.createUrlObjWithoutUser(e.target.value);
-    //   this.setState({ 
-    //     urlsNoUser: urlsNoUser,
-    //     rawText: e.target.value
-    //   })
-    // }
   },
 
-  setInitialUrls: function(){
-
-    var allUrls = this.createUrlObj('text');
-
+  runCreateUrlObj: function(text){
+    var allUrls = this.createUrlObj(text);
     this.setState({ 
       allUrls: allUrls,
+      // rawText: text
     })
   },
 
@@ -176,24 +165,22 @@ var Index = React.createClass({
     var self = this;
     // console.log('in submitUrlsID', user, allUrls)
 
+    // var submit = false;
     var urlsToSubmit = [];
     var newCountLeftToSubmit = [];
 
     allUrls.filter(function(obj){
-      if (obj.domainActive === true && obj.urlCount > 0){
-
-        *********Startwoking here when i return**********
-        // console.log('countToSubmitNow', obj.countToSubmitNow, 'urls',  obj.urls.splice(obj.countToSubmitNow, obj.urlCount))
-        console.log(obj)
+      if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
+        obj.urls = obj.urls.slice(0, obj.countToSubmitNow)
         urlsToSubmit.push(obj)
+        // submit = true
       }
       if (obj.domainOffered === true){
         newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
       }
     })
 
-
-
+    console.log('urlsToSubmit', urlsToSubmit )
     // console.log(urlsToSubmit, 'urlsToSubmit', newCountLeftToSubmit, 'newCountLeftToSubmit')
 
     $.ajax({
@@ -263,30 +250,43 @@ var Index = React.createClass({
 
   handleUrlSubmit: function(e){
     e.preventDefault();
-
     var allUrls = this.state.allUrls
-
-    var countUrls = 0
-    var countActiveDomains = 0
-    allUrls.map(function(obj){
-      countUrls += obj.urlCount;
-      if(obj.domainActive){countActiveDomains += obj.urlCount};
-    })
-    var noUrls = (countUrls <= 0)
-    var noActiveDomains = (countActiveDomains <= 0)
 
     if (this.state.user.user !== 'anonymous'){
       var userLoggedIn = true
       var verified = this.state.user.verified
-      var countLeftToSubmit = this.state.user.countLeftToSubmit.reduce(function(a, b) { return a + b.count; }, 0);
-      var submittedToday = (countLeftToSubmit == 0)
+  
+      var countUrls = 0;
+      var countLeftToSubmit = 0;
+      var countActiveDomains = 0;
+      var countUrlFromActiveDomains = 0;
+ 
+      allUrls.map(function(obj){
+        // console.log(obj)
+        countUrls += obj.urlCount;
+        if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
+        if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
+        if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
+      })
+ 
+      var noUrls = (countUrls <= 0)
+      var submittedToday = (countLeftToSubmit === 0)
+      var noActiveDomains = (countActiveDomains <= 0)
+      var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
+  
+      console.log('noUrls', noUrls)
+      console.log('submittedToday', submittedToday)
+      console.log('noActiveDomains', noActiveDomains)
+      console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
     } else {
       var userLoggedIn = false
+      var countUrls = 0
+      allUrls.map(function(obj){
+        countUrls += obj.urlCount;
+      })
+      var noUrls = (countUrls <= 0)
     }
 
-    // console.log('userLoggedIn', userLoggedIn)
-    // console.log('countLeftToSubmit', countLeftToSubmit)
-    // console.log('submittedToday', submittedToday)
 
     if(userLoggedIn){
       if (noUrls) {
@@ -316,7 +316,16 @@ var Index = React.createClass({
           activeComponent: 'noActiveDomains',
           urlsSubmitted: true,
           suggest: null,
-          allUrls: allUrls
+          allUrls: allUrls,
+          message: { message: 'You did not submit any active domains',  alert: "alert alert-info" }
+      })
+      } else if (noUrlsFromActiveDomains){
+        this.setState({ 
+          activeComponent: 'noActiveDomains',
+          urlsSubmitted: true,
+          suggest: null,
+          allUrls: allUrls,
+          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-info" }
       })
       } else {
         this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
@@ -338,17 +347,18 @@ var Index = React.createClass({
   },
 
   signupUserFromServer: function(user){
-    var suggest = this.state.suggest
-    var urls = this.state.allUrls
     var self = this;
+    var text = this.state.rawText
+    // var allUrls = self.state.allUrls
+    // var suggest = this.state.suggest
     // console.log('in signupuser', user)
     $.ajax({
       method: 'POST',
       url: '/signup',
       data: user, 
       success: function(data){
-        // console.log('inSSSSuccess', data.user)
-        var data = data.user
+        console.log('inSSSSuccess', data.user)
+        var user = data.user
         // var verified = data.user.verified
         // console.log('data', data, 'verifieeddd', verified)
         // var noActiveDomains = self.state.noActiveDomains;
@@ -356,13 +366,16 @@ var Index = React.createClass({
         // console.log('in user sign up data',data)
         // // if (!verified) {
           self.setState({ 
-            user: data,
+            user: user,
             // suggest: null,
             activeComponent: 'errorConfirmEmail',
             // submittedToday: false,
             // noActiveDomains: noActiveDomains,
             message: { message: 'Please check email to verify user.', alert: 'alert alert-info' },
           })
+
+          self.runCreateUrlObj(text)
+
         // } else if (suggest){
         //   self.setState({ 
         //     user: data.user,
@@ -407,70 +420,95 @@ var Index = React.createClass({
   handleEmailConfirm: function(){
     var allUrls = this.state.allUrls
     var suggest = this.state.suggest
-    // console.log(this.state.user.countLeftToSubmit)
-    var countLeftToSubmit = this.state.user.countLeftToSubmit.reduce(function(a, b) { return a + b.count; }, 0);
-    var submittedToday = (countLeftToSubmit == 0)
 
-    var countUrls = 0
-    var countActiveDomains = 0
+    var countUrls = 0;
+    var countLeftToSubmit = 0;
+    var countActiveDomains = 0;
+    var countUrlFromActiveDomains = 0;
+
     allUrls.map(function(obj){
-      countUrls += obj.urlCount
-      if(obj.domainActive){countActiveDomains += obj.urlCount}
+      // console.log(obj)
+      countUrls += obj.urlCount;
+      if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
+      if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
+      if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
     })
+
     var noUrls = (countUrls <= 0)
+    var submittedToday = (countLeftToSubmit === 0)
     var noActiveDomains = (countActiveDomains <= 0)
-    // console.log(noUrls, 'noUrls zzz')    
+    var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0) 
 
-    var self = this;
+    console.log('noUrls', noUrls)
+    console.log('submittedToday', submittedToday)
+    console.log('noActiveDomains', noActiveDomains)
+    console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
 
-    $.ajax({
-      method: 'GET', 
-      url: '/oneUser'
-    }).done(function(data){
-      var verified = data.verified
-      // console.log(data,'in  handleEmailConfirm')
+
+    ***continue from herer***
+          // console.log(this.state.user.countLeftToSubmit)
+          // var countLeftToSubmit = this.state.user.countLeftToSubmit.reduce(function(a, b) { return a + b.count; }, 0);
+          // var submittedToday = (countLeftToSubmit == 0)
+          // var countUrls = 0
+          // var countActiveDomains = 0
+          // allUrls.map(function(obj){
+          //   // countUrls += obj.urlCount
+          //   if(obj.domainActive){countActiveDomains += obj.urlCount}
+          // })
+          // var noUrls = (countUrls <= 0)
+          // var noActiveDomains = (countActiveDomains <= 0)
+          // console.log(noUrls, 'noUrls zzz')   
+
+    // var self = this;
+
+    // $.ajax({
+    //   method: 'GET', 
+    //   url: '/oneUser'
+    // }).done(function(data){
+    //   var verified = data.verified
+    //   // console.log(data,'in  handleEmailConfirm')
      
-      if (!verified) {
-        self.setState({ 
-          user: data,
-          // suggest: null,
-          activeComponent: 'errorConfirmEmail',
-          noActiveDomains: noActiveDomains,
-          allUrls: allUrls,
-          message: { message: 'User has not been verified. Please check your email.', alert: "alert alert-danger" },
-        })
-      } else if (noUrls) {
-        self.setState({ 
-          user: data,
-          // suggest: null,
-          activeComponent: 'landing',
-          noActiveDomains: noActiveDomains,
-          allUrls: allUrls,
-          message: null,
-        })
-      } else if (suggest){
-        self.setState({ 
-          user: data,
-          suggest: null,
-          activeComponent: 'suggest',
-          noActiveDomains: noActiveDomains,
-          allUrls: allUrls,
-          message: null
-        })
-      }else if (noActiveDomains){
-        self.setState({ 
-          user: data,
-          // suggest: null,
-          activeComponent: 'noActiveDomains',
-          noActiveDomains: noActiveDomains,
-          allUrls: allUrls,
-          message: null,
-        })
-      } else {
-        self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
-        // self.updateUser(self.state.user, urls);
-      }
-    })
+    //   if (!verified) {
+    //     self.setState({ 
+    //       user: data,
+    //       // suggest: null,
+    //       activeComponent: 'errorConfirmEmail',
+    //       noActiveDomains: noActiveDomains,
+    //       allUrls: allUrls,
+    //       message: { message: 'User has not been verified. Please check your email.', alert: "alert alert-danger" },
+    //     })
+    //   } else if (noUrls) {
+    //     self.setState({ 
+    //       user: data,
+    //       // suggest: null,
+    //       activeComponent: 'landing',
+    //       noActiveDomains: noActiveDomains,
+    //       allUrls: allUrls,
+    //       message: null,
+    //     })
+    //   } else if (suggest){
+    //     self.setState({ 
+    //       user: data,
+    //       suggest: null,
+    //       activeComponent: 'suggest',
+    //       noActiveDomains: noActiveDomains,
+    //       allUrls: allUrls,
+    //       message: null
+    //     })
+    //   }else if (noActiveDomains){
+    //     self.setState({ 
+    //       user: data,
+    //       // suggest: null,
+    //       activeComponent: 'noActiveDomains',
+    //       noActiveDomains: noActiveDomains,
+    //       allUrls: allUrls,
+    //       message: null,
+    //     })
+    //   } else {
+    //     self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
+    //     // self.updateUser(self.state.user, urls);
+    //   }
+    // })
   },
 
   loginUserFromServer: function(user){
@@ -588,7 +626,7 @@ var Index = React.createClass({
         userLoading: false,
       });
       if(!self.state.domainsLoading){
-        self.setInitialUrls();
+        self.runCreateUrlObj('dummy');
       }
     })
   },
@@ -797,7 +835,7 @@ var Index = React.createClass({
         domainsLoading: false
       });
       if(!this.state.userLoading){
-        this.setInitialUrls();
+        this.runCreateUrlObj('dummy');
       }
     // }, 100);
 

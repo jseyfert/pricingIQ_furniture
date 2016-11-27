@@ -41,6 +41,7 @@ module.exports = function(passport){
       //reset count if its a new day
       if (resetCount){
         var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
+        // console.log('countLeftToSubmit',countLeftToSubmit)
         user.countLeftToSubmit = countLeftToSubmit;
         user.resetCountAfter = newResetCountAfter  
         user.save(function(err) { // save the user
@@ -100,7 +101,7 @@ module.exports = function(passport){
 					var newUser = new User();
 
           var allDomains = req.body.allDomains
-          // console.log('allDomains signup', allDomains);
+          console.log('allDomains signup', allDomains);
           var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var verificationToken = randomstring.generate({ length: 64 });

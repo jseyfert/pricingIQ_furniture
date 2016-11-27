@@ -1,6 +1,7 @@
 
 var React = require('react');
 var _ = require("underscore");
+var ErrorMessage = require('./errorMessage');
 
 var ErrorNoActiveDomains = React.createClass({
 
@@ -37,11 +38,7 @@ var ErrorNoActiveDomains = React.createClass({
       <div>
         <div className="container">
           <div className="jumbotron">
-            <div className="alert alert-danger" role="alert">
-              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-              <span className="sr-only">Error: </span>
-               &nbsp; You did not submit any active domains
-            </div>
+          <ErrorMessage message={this.props.message} />
             <hr className="showHr"/>
             <div className="container-fluid">
               <div className="row">
