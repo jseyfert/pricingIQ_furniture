@@ -29,8 +29,8 @@ var LandingHtml = React.createClass({
                <h3> {arr.domain}</h3>
               <ul>
                 <li>domainActive: {arr.domainActive.toString()}</li>
-                <li>current url count: </li>
                 <li>count left to submit: </li>
+                <li>current url count: </li>
                 <li>count we will submit now: </li>
                 <li>count after this submit: </li>
               </ul>
@@ -42,8 +42,8 @@ var LandingHtml = React.createClass({
              <h3> {arr.domain}</h3>
               <ul>
                 <li>domainActive: {arr.domainActive.toString()}</li>
-                <li>current url count: {arr.urlCount}</li>
                 <li>count left to submit: {arr.countLeftToSubmit}</li>
+                <li>current url count: {arr.urlCount}</li>
                 <li>count to submit now: {arr.countToSubmitNow}</li>
                 <li>count after this submit: {arr.countLeftAfterSubmit}</li>
               </ul>

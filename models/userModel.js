@@ -11,7 +11,10 @@ var UserSchema = new mongoose.Schema({
   canSubmitAfter: { type: Number, required: true  }, // DELETE
 
   resetCountAfter: { type: Number},
-  countLeftToSubmit: { type: Array},
+  countLeftToSubmit: [{ domain : String, count : Number }],
+
+
+
   // urlsLeftToSubmit: { type: Array},
 
   permalink: { type: String, required: true },

@@ -40,7 +40,7 @@ module.exports = function(passport){
       
       //reset count if its a new day
       if (resetCount){
-        var countLeftToSubmit = allDomains.map(function(arr){ return [arr[0], 15]})
+        var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
         user.countLeftToSubmit = countLeftToSubmit;
         user.resetCountAfter = newResetCountAfter  
         user.save(function(err) { // save the user
@@ -57,11 +57,13 @@ module.exports = function(passport){
       if (!resetCount){
         var countLeftToSubmit = user.countLeftToSubmit
         var allDomainsOnlyName = allDomains.map(function(arr){ return arr[0] })
-        var userCountLeftToSubmitOnlyName = countLeftToSubmit.map(function(arr){ return arr[0] })
+        var userCountLeftToSubmitOnlyName = countLeftToSubmit.map(function(obj){ return obj.domain })
+        // console.log('countLeftToSubmit',countLeftToSubmit, 'allDomainsOnlyName', allDomainsOnlyName, 'userCountLeftToSubmitOnlyName', userCountLeftToSubmitOnlyName);
         var newDomains = allDomainsOnlyName.filter(function(arr) { return userCountLeftToSubmitOnlyName.indexOf(arr) == -1; });
+        // console.log('newDomains',newDomains);
         var addNewDomains = function(newDomains){
           newDomains.map(function(domain){
-            countLeftToSubmit.push([domain, 15])
+            countLeftToSubmit.push({domain: domain, count: 15})
           })
         }(newDomains)
 
@@ -75,7 +77,6 @@ module.exports = function(passport){
             }
         });
       }
-
 			return done(null, user, { message: 'You logged in successfully' });
 		});
 	}));	
@@ -99,8 +100,8 @@ module.exports = function(passport){
 					var newUser = new User();
 
           var allDomains = req.body.allDomains
-          console.log('allDomains signup', allDomains);
-          var countLeftToSubmit = allDomains.map(function(arr){ return [arr[0], 15]})
+          // console.log('allDomains signup', allDomains);
+          var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var verificationToken = randomstring.generate({ length: 64 });
           var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;

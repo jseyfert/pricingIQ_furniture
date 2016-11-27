@@ -118,13 +118,13 @@ module.exports = {
     userId = req.body.user._id
     urlsToSubmit = req.body.urlsToSubmit
     newCountLeftToSubmit = req.body.newCountLeftToSubmit
-    console.log('urlsToSubmit', urlsToSubmit);
+    console.log('urlsToSubmit', urlsToSubmit, 'newCountLeftToSubmit', newCountLeftToSubmit);
    
     if(user) {
       mongoose.model('User').findById({ _id: userId },
         function(err, user) {
           if (err) {
-            return console.log('in updateUser > mongoose > findById', err);
+            // return console.log('in updateUser > mongoose > findById', err);
           } else {
             // console.log('countLeftToSubmit', user.countLeftToSubmit);
             user.countLeftToSubmit = newCountLeftToSubmit
