@@ -148,7 +148,7 @@ module.exports = {
   },
 
   submitUrlsNoId: function(req, res){
-    console.log('*** submit urls witout id ***', req.body);
+    console.log('*** submit urls witout id ***', req.body.urls);
     res.json({ activeComponent: 'login' })
   },
 

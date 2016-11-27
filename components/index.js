@@ -137,60 +137,7 @@ var Index = React.createClass({
     createObjPerDomain(distinctDomains)
 
     return arrOfObj;
-  },  
-
-  // createUrlObjWithoutUser: function(text){
-  //   var allDomains = this.state.allDomains;
-  //   var urlArray = text.split("\n");
-  //   var domains = [];
-  //   var distinctDomains = [];
-  //   var domainsAndUrls = [];
-  //   var arrOfObj = [];
-
-  //   urlArray.map(function(url){
-  //       if (validator.isURL(url) && parseDomain(url)){
-  //         var getDomain = parseDomain(url).domain
-  //         domains.push(getDomain)
-  //         domainsAndUrls.push([getDomain, url])
-  //       } else {
-  //         return null;
-  //       }
-  //   })
-
-  //   // use underscore to select only unique domains
-  //   distinctDomains = _.uniq(domains) 
-
-  //   // url object factory
-  //   var newObj = function(index, domain){
-  //     var temp ={}
-
-  //     temp.domain = domain
-
-  //     temp.urls = function(){
-  //       var urlArr =  [];
-  //       for(var i = 0; i < domainsAndUrls.length ; i++) {
-  //         if (domain === domainsAndUrls[i][0]){ urlArr.push(domainsAndUrls[i][1]) } 
-  //       }
-  //       return urlArr;
-  //     }()
-
-  //     temp.urlCount = temp.urls.length
-
-  //     return temp;
-  //   }
-
-  //   // create a url obj for each distinct domain
-  //   var createObjPerDomain = function(distinctDomains){
-  //       for(var j = 0; j < distinctDomains.length ; j++) {
-  //         // console.log('test', distinctDomains[i]);
-  //         arrOfObj.push(newObj(j, distinctDomains[j]))
-  //       }
-  //     }
-
-  //   createObjPerDomain(distinctDomains)
-
-  //   return arrOfObj;
-  // },  
+  },   
 
   onTextChange: function(e){ 
     // var user =  (this.state.user.user !== 'anonymous') ? true : false
@@ -227,65 +174,86 @@ var Index = React.createClass({
 
   submitUrlsID: function(user, allUrls){
     var self = this;
-    console.log('in submitUrlsID', user, allUrls)
+    // console.log('in submitUrlsID', user, allUrls)
 
-    // var urlsToSubmit = [];
-    // var newCountLeftToSubmit = [];
+    var urlsToSubmit = [];
+    var newCountLeftToSubmit = [];
 
-    // allUrls.filter(function(obj){
-    //   if (obj.domainActive === true && obj.urlCount > 0){
-    //     urlsToSubmit.push(obj)
-    //   }
-    //   if (obj.domainOffered === true){
-    //     newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
-    //   }
-    // })
+    allUrls.filter(function(obj){
+      if (obj.domainActive === true && obj.urlCount > 0){
+
+        *********Startwoking here when i return**********
+        // console.log('countToSubmitNow', obj.countToSubmitNow, 'urls',  obj.urls.splice(obj.countToSubmitNow, obj.urlCount))
+        console.log(obj)
+        urlsToSubmit.push(obj)
+      }
+      if (obj.domainOffered === true){
+        newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
+      }
+    })
+
+
 
     // console.log(urlsToSubmit, 'urlsToSubmit', newCountLeftToSubmit, 'newCountLeftToSubmit')
 
-    // $.ajax({
-    //   method: 'POST',
-    //   url: '/submitUrlsId',
-    //   data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: newCountLeftToSubmit },
-    //   success: function(data){
-    //     var activeComponent = data.activeComponent
-    //     var user = data.user
-    //     self.setState({ 
-    //       user: user,
-    //       activeComponent: activeComponent,
-    //       // suggest: null,
-    //       // message: message,
-    //     });
-    //   },
-    //   error: function(xhr, status, err){
-    //     console.error('/submitUrlsId', status, err.toString())
-    //   }
-    // })
+    $.ajax({
+      method: 'POST',
+      url: '/submitUrlsId',
+      data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: newCountLeftToSubmit },
+      success: function(data){
+        var activeComponent = data.activeComponent
+        var user = data.user
+        self.setState({ 
+          user: user,
+          activeComponent: activeComponent,
+          // suggest: null,
+          // message: message,
+        });
+      },
+      error: function(xhr, status, err){
+        console.error('/submitUrlsId', status, err.toString())
+      }
+    })
   },  
 
-  submitUrlsNoID: function(urls){
-    console.log('in submitUrlsNONONONONONID which does nothing right now')
-    // *UPDATE* var noActiveDomains = (_.where(urls, {domainActive: true}).length === 0) ? true : false
-    // var self = this;
-    // console.log('urls2', urls)
-    // $.ajax({
-    //   method: 'POST',
-    //   url: '/submitUrlsNoId',
-    //   data: {urls: urls},
-    //   success: function(data){
-    //     var activeComponent = data.activeComponent
-    //     self.setState({ 
-    //       activeComponent: 'login', 
-    //       suggest: null,
-    //       noActiveDomains: noActiveDomains, 
-    //       allUrls: urls,
-    //       message: null,
-    //     })
-    //   },
-    //   error: function(xhr, status, err){
-    //     console.error('/submitUrlsNoId', status, err.toString())
-    //   }
-    // })
+  submitUrlsNoID: function(allUrls){
+    console.log('in submitUrlsNONONONONONID')
+
+    var countActiveDomains = 0
+    allUrls.map(function(obj){
+      if(obj.domainActive){countActiveDomains += obj.urlCount};
+    })
+    var noActiveDomains = (countActiveDomains <= 0)
+
+    var urlsToSubmit = [];
+
+    allUrls.filter(function(obj){
+      if (obj.urlCount > 0){
+        urlsToSubmit.push(obj)
+      }
+    })
+
+    // console.log('urlsToSubmit', urlsToSubmit)
+    var self = this;
+    $.ajax({
+      method: 'POST',
+      url: '/submitUrlsNoId',
+      data: {urls: urlsToSubmit},
+      success: function(data){
+        console.log(data, 'in success')
+        var activeComponent = data.activeComponent
+        self.setState({ 
+          activeComponent: activeComponent, 
+          suggest: null,
+          noActiveDomains: noActiveDomains, 
+          allUrls: allUrls,
+          message: null,
+        })
+      },
+      error: function(xhr, status, err){
+        console.error('/submitUrlsNoId', status, err.toString())
+      }
+    })
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,6 +265,7 @@ var Index = React.createClass({
     e.preventDefault();
 
     var allUrls = this.state.allUrls
+
     var countUrls = 0
     var countActiveDomains = 0
     allUrls.map(function(obj){
@@ -315,9 +284,9 @@ var Index = React.createClass({
       var userLoggedIn = false
     }
 
-    console.log('userLoggedIn', userLoggedIn)
-    console.log('countLeftToSubmit', countLeftToSubmit)
-    console.log('submittedToday', submittedToday)
+    // console.log('userLoggedIn', userLoggedIn)
+    // console.log('countLeftToSubmit', countLeftToSubmit)
+    // console.log('submittedToday', submittedToday)
 
     if(userLoggedIn){
       if (noUrls) {

@@ -296,10 +296,20 @@
   //   }() === true || false ? true : false)
   ////////////////////////////////////
 
-var countLeftToSubmit = [['amazon', 01 ],['sears', 0],['walmart',0 ]]
-var sum = countLeftToSubmit.reduce(function(a, b) { return a + b[1]; }, 0);
+// var countLeftToSubmit = [['amazon', 01 ],['sears', 0],['walmart',0 ]]
+// var sum = countLeftToSubmit.reduce(function(a, b) { return a + b[1]; }, 0);
 
-console.log(sum)
+// console.log(sum)
+
+  ////////////////////////////////////
+
+  var array = [1,2,3,4,5,6,7,8,9,10];
+  array.splice(0,2)
+  console.log(array)
+
+
+
+
 
 
 
