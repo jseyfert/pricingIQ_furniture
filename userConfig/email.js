@@ -17,7 +17,7 @@ var htmlReset = "<div style='margin: 0; padding: 0; width: 100%; font-family: Tr
   "<div style='background-color: #f2f2f2; padding: 45px;'>" +
   "<div style='background-color: #ffffff; padding: 40px; text-align: center;'>" +
   "<h1 style='color: #5f5f5f; margin-bottom: 30px;'>Hi, " + name + "</h1>" +
-  "<p style='color: #5f5f5f; line-height: 22px;'>We've received a request to reset your password. if you didn't make the request, just ignore this email. Otherwise, you can reset your password using this token:</p>" +
+  "<p style='color: #5f5f5f; line-height: 22px;'>We've received a request to reset your password. if you didn't make the request, just ignore this email. Otherwise, you can reset your password using this token(expires in one hour):</p>" +
   resetToken + "</div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>pricingIQ</h3></div></div>";
 
   if(link){

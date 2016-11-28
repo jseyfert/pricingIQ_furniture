@@ -34,7 +34,6 @@ app.post('/suggest', userControl.suggest);
 app.post('/submitUrlsId', userControl.submitUrlsId);
 app.post('/submitUrlsNoId', userControl.submitUrlsNoId);
 
-// app.put('/updateUser', userControl.updateUser); //DELETE
 app.put('/reset', userControl.reset);
 app.get('/verifyReset/:token', userControl.verifyReset);
 

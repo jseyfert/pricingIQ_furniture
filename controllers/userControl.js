@@ -79,7 +79,7 @@ module.exports = {
   },
 
   submitUrlsId: function(req, res){
-    console.log('### SUBMIT URLS WITH ID ###');
+    console.log('######## SUBMIT URLS WITH ID ########', req.body.urlsToSubmit);
 
     user = req.body.user
     userId = req.body.user._id
@@ -115,7 +115,7 @@ module.exports = {
   },
 
   submitUrlsNoId: function(req, res){
-    console.log('*** submit urls witout id ***', req.body.urls);
+    console.log('*/*/*/*/*/* submit urls witout id */*/*/*/*', req.body.urls);
     res.json({ activeComponent: 'login' })
   },
 
@@ -149,7 +149,7 @@ module.exports = {
 
   forgot: function(req, res){
     var email = req.body.user.email;
-    var resetToken = randomstring.generate({ length: 64 });
+    var resetToken = randomstring.generate({ length: 32 });
     var passwordResetExpires = Date.now() + 3600000; // 1 hour
 
 
