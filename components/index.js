@@ -14,26 +14,15 @@ var Index = React.createClass({
 	
   getInitialState: function(){
 		return {
-      user: null,
-      message: null,
-      passwordResetToken: null,
-      activeComponent: 'landing',
-
-      submittedToday: null, //maybe remove
-      suggest: null,
-      noActiveDomains: null,
-      urlsSubmitted: false,
-
       userLoading: true,
       domainsLoading: true,
-
+      user: null,
+      message: null,
+      activeComponent: 'landing',
+      passwordResetToken: null,
       rawText: '',
-			allUrls: [],
-      allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
-			// allDomainsOLD: 
-			// [{domain: 'amazon' , domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png'},
-			// {domain: 'walmart', domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png'},
-			// {domain: 'sears' ,  domainActive: true, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png'}]
+      allUrls: [],
+      allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
 		}
 	},
 
@@ -149,6 +138,7 @@ var Index = React.createClass({
   },
 
   runCreateUrlObj: function(text){
+    console.log('in  runCreateUrlObj')
     var allUrls = this.createUrlObj(text);
     this.setState({ 
       allUrls: allUrls,
@@ -193,7 +183,6 @@ var Index = React.createClass({
         self.setState({ 
           user: user,
           activeComponent: activeComponent,
-          // suggest: null,
           // message: message,
         });
       },
@@ -231,7 +220,6 @@ var Index = React.createClass({
         var activeComponent = data.activeComponent
         self.setState({ 
           activeComponent: activeComponent, 
-          suggest: null,
           noActiveDomains: noActiveDomains, 
           allUrls: allUrls,
           message: null,
@@ -246,7 +234,32 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  signupUserFromServer: function(userForm){
+    var self = this;
+    var text = self.state.rawText
 
+    $.ajax({
+      method: 'POST',
+      url: '/signup',
+      data: userForm, 
+      success: function(data){
+        var user = data.user
+        self.setState({ 
+          user: user,
+          activeComponent: 'errorConfirmEmail',
+          message: { message: 'Please check email to verify user.', alert: 'alert alert-info' },
+        })
+        self.runCreateUrlObj(text)
+      },
+      error: function(xhr, status, err){
+        // console.log('xhr', xhr.responseJSON.message)
+        self.setState({ 
+          activeComponent: 'signup',
+          message: {message: xhr.responseJSON.message, alert: 'alert alert-danger' },
+        });
+      }
+    })
+  },
 
   handleUrlSubmit: function(e){
     e.preventDefault();
@@ -262,7 +275,6 @@ var Index = React.createClass({
       var countUrlFromActiveDomains = 0;
  
       allUrls.map(function(obj){
-        // console.log(obj)
         countUrls += obj.urlCount;
         if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
         if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
@@ -287,139 +299,134 @@ var Index = React.createClass({
       var noUrls = (countUrls <= 0)
     }
 
-
     if(userLoggedIn){
       if (noUrls) {
         this.setState({ 
           activeComponent: 'landing',
-          suggest: null,
-          allUrls: allUrls,
           message: { message: 'Please submit at least one valid Url',  alert: null }
         })
       } else if (!verified) {
         this.setState({
           activeComponent: 'errorConfirmEmail',
-          urlsSubmitted: true,
-          suggest: null,
-          allUrls: allUrls,
           message: { message: 'You have not yet verified your email. Please check your email.',  alert: "alert alert-danger" }
         })
       } else if (submittedToday) {
         this.setState({
           activeComponent: 'submittedToday',
           urlsSubmitted: true,
-          suggest: null,
-          allUrls: allUrls
         })
       } else if (noActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          urlsSubmitted: true,
-          suggest: null,
-          allUrls: allUrls,
           message: { message: 'You did not submit any active domains',  alert: "alert alert-info" }
       })
       } else if (noUrlsFromActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          urlsSubmitted: true,
-          suggest: null,
-          allUrls: allUrls,
           message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-info" }
       })
       } else {
         this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
-        // this.updateUser(this.state.user, urls);
       }
     } else if (!userLoggedIn) {   
       if (noUrls) {
         this.setState({ 
           activeComponent: 'landing',
-          suggest: null, 
-          allUrls: allUrls, 
           message: { message: 'Please submit at least one valid Url',  alert: null }
         })
       } else {
-        console.log('urls', allUrls)
+        // console.log('urls', allUrls)
         this.submitUrlsNoID(allUrls) // *******************************************************************************
       }
     }
   },
 
-  signupUserFromServer: function(user){
+  loginUserFromServer: function(userForm){
     var self = this;
-    var text = this.state.rawText
-    // var allUrls = self.state.allUrls
-    // var suggest = this.state.suggest
-    // console.log('in signupuser', user)
+    var text = self.state.rawText
+    // var currentTime = new Date().getTime()
+    // console.log('user',user)
     $.ajax({
       method: 'POST',
-      url: '/signup',
-      data: user, 
+      url: '/login',
+      data: userForm,
       success: function(data){
-        console.log('inSSSSuccess', data.user)
         var user = data.user
-        // var verified = data.user.verified
-        // console.log('data', data, 'verifieeddd', verified)
-        // var noActiveDomains = self.state.noActiveDomains;
-        // var urlsSubmitted = (self.state.allUrls.length > 0)
-        // console.log('in user sign up data',data)
-        // // if (!verified) {
+        self.setState({ user: user })
+        self.runCreateUrlObj(text)
+
+        var allUrls = self.state.allUrls
+        var verified = data.user.verified
+
+        var countUrls = 0;
+        var countLeftToSubmit = 0;
+        var countActiveDomains = 0;
+        var countUrlFromActiveDomains = 0;
+   
+        allUrls.map(function(obj){
+          countUrls += obj.urlCount;
+          if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
+          if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
+          if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
+        })
+   
+        var noUrls = (countUrls <= 0)
+        var submittedToday = (countLeftToSubmit === 0)
+        var noActiveDomains = (countActiveDomains <= 0)
+        var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
+    
+        console.log('noUrls', noUrls)
+        console.log('submittedToday', submittedToday)
+        console.log('noActiveDomains', noActiveDomains)
+        console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
+
+        if (!verified) {
           self.setState({ 
-            user: user,
-            // suggest: null,
+            // user: data.user,
             activeComponent: 'errorConfirmEmail',
-            // submittedToday: false,
-            // noActiveDomains: noActiveDomains,
-            message: { message: 'Please check email to verify user.', alert: 'alert alert-info' },
+            message: { message: 'You have not yet verified your email. Please check your email.', alert: "alert alert-danger" },
           })
-
-          self.runCreateUrlObj(text)
-
-        // } else if (suggest){
-        //   self.setState({ 
-        //     user: data.user,
-        //     suggest: null,
-        //     activeComponent: 'suggest',
-        //     noActiveDomains: noActiveDomains,
-        //     submittedToday: submittedToday,
-        //     message: null
-        //   })
-        // } else if(!urlsSubmitted){
-        //   self.setState({ 
-        //     user: data.user,
-        //     // suggest: null,
-        //     activeComponent: 'landing',
-        //     submittedToday: false, 
-        //     noActiveDomains: noActiveDomains,
-        //   })
-        // } else if (noActiveDomains){
-        //   self.setState({ 
-        //     user: data.user,
-        //     // suggest: null,
-        //     activeComponent: 'noActiveDomains',
-        //     submittedToday: false, 
-        //     noActiveDomains: noActiveDomains,
-        //   })
-        // } else {
-        //   this.submitUrlsID(data.user, urls);  /////////////////////////////////////////////////////////
-        //   // self.updateUser(data.user, urls);
-        // }
+        } else if (noUrls){
+          self.setState({ 
+            // user: data.user,
+            activeComponent: 'landing',
+            message: null,
+          })
+        } else if (submittedToday) {
+          self.setState({ 
+            // user: data.user,
+            activeComponent: 'submittedToday',
+            message: null,
+          })
+        } else if (noActiveDomains){
+          self.setState({ 
+            // user: data.user,
+            activeComponent: 'noActiveDomains',
+            message: { message: 'You did not submit any active domains',  alert: "alert alert-info" }
+          })
+        } else if (noUrlsFromActiveDomains){
+          self.setState({ 
+            // user: data.user,
+            activeComponent: 'noActiveDomains',
+            message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-info" }
+          })
+        } else {
+          self.submitUrlsID(user, allUrls);  /////////////////////////////////////////////////////////
+        }
       },
       error: function(xhr, status, err){
-        // console.log('xhr', xhr.responseJSON.message)
+        // console.error('/login', status, err, xhr.responseJSON)
         self.setState({ 
-          activeComponent: 'signup',
-          suggest: null,
-          message: {message: xhr.responseJSON.message, alert: 'alert alert-danger' },
+          activeComponent: 'login',
+          message: {message: xhr.responseJSON, alert: 'alert alert-danger'},
         });
       }
-    })
+    })  
   },
 
   handleEmailConfirm: function(){
-    var allUrls = this.state.allUrls
-    var suggest = this.state.suggest
+    var self = this;
+    var allUrls = self.state.allUrls
 
     var countUrls = 0;
     var countLeftToSubmit = 0;
@@ -427,7 +434,6 @@ var Index = React.createClass({
     var countUrlFromActiveDomains = 0;
 
     allUrls.map(function(obj){
-      // console.log(obj)
       countUrls += obj.urlCount;
       if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
       if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
@@ -439,168 +445,41 @@ var Index = React.createClass({
     var noActiveDomains = (countActiveDomains <= 0)
     var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0) 
 
-    console.log('noUrls', noUrls)
-    console.log('submittedToday', submittedToday)
-    console.log('noActiveDomains', noActiveDomains)
-    console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
+    // console.log('noUrls', noUrls)
+    // console.log('submittedToday', submittedToday)
+    // console.log('noActiveDomains', noActiveDomains)
+    // console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
 
-
-    ***continue from herer***
-          // console.log(this.state.user.countLeftToSubmit)
-          // var countLeftToSubmit = this.state.user.countLeftToSubmit.reduce(function(a, b) { return a + b.count; }, 0);
-          // var submittedToday = (countLeftToSubmit == 0)
-          // var countUrls = 0
-          // var countActiveDomains = 0
-          // allUrls.map(function(obj){
-          //   // countUrls += obj.urlCount
-          //   if(obj.domainActive){countActiveDomains += obj.urlCount}
-          // })
-          // var noUrls = (countUrls <= 0)
-          // var noActiveDomains = (countActiveDomains <= 0)
-          // console.log(noUrls, 'noUrls zzz')   
-
-    // var self = this;
-
-    // $.ajax({
-    //   method: 'GET', 
-    //   url: '/oneUser'
-    // }).done(function(data){
-    //   var verified = data.verified
-    //   // console.log(data,'in  handleEmailConfirm')
-     
-    //   if (!verified) {
-    //     self.setState({ 
-    //       user: data,
-    //       // suggest: null,
-    //       activeComponent: 'errorConfirmEmail',
-    //       noActiveDomains: noActiveDomains,
-    //       allUrls: allUrls,
-    //       message: { message: 'User has not been verified. Please check your email.', alert: "alert alert-danger" },
-    //     })
-    //   } else if (noUrls) {
-    //     self.setState({ 
-    //       user: data,
-    //       // suggest: null,
-    //       activeComponent: 'landing',
-    //       noActiveDomains: noActiveDomains,
-    //       allUrls: allUrls,
-    //       message: null,
-    //     })
-    //   } else if (suggest){
-    //     self.setState({ 
-    //       user: data,
-    //       suggest: null,
-    //       activeComponent: 'suggest',
-    //       noActiveDomains: noActiveDomains,
-    //       allUrls: allUrls,
-    //       message: null
-    //     })
-    //   }else if (noActiveDomains){
-    //     self.setState({ 
-    //       user: data,
-    //       // suggest: null,
-    //       activeComponent: 'noActiveDomains',
-    //       noActiveDomains: noActiveDomains,
-    //       allUrls: allUrls,
-    //       message: null,
-    //     })
-    //   } else {
-    //     self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
-    //     // self.updateUser(self.state.user, urls);
-    //   }
-    // })
-  },
-
-  loginUserFromServer: function(user){
-    var allUrls = this.state.allUrls
-    var currentTime = new Date().getTime()
-    var self = this;
-    // console.log('user',user)
     $.ajax({
-      method: 'POST',
-      url: '/login',
-      data: user,
-      success: function(data){
-
-
-        var verified = data.user.verified
-        var suggest = self.state.suggest
-
-        var countUrls = 0
-        var countActiveDomains = 0
-        allUrls.map(function(obj){
-          countUrls += obj.urlCount
-          if(obj.domainActive){countActiveDomains += obj.urlCount}
-        })
-        var noUrls = (countUrls <= 0)
-        var noActiveDomains = (countActiveDomains <= 0)
-
-        var countLeftToSubmit = data.user.countLeftToSubmit.reduce(function(a, b) { return a + b.count; }, 0);
-        var submittedToday = (countLeftToSubmit == 0)
-        
-        console.log('noUrls',noUrls)
-        // var noActiveDomains = self.state.noActiveDomains;
-        // var urlsSubmitted = self.state.urlsSubmitted;
-        
-        if (!verified) {
-          self.setState({ 
-            user: data.user,
-            // suggest: null,
-            activeComponent: 'errorConfirmEmail',
-            noActiveDomains: noActiveDomains,
-            submittedToday: submittedToday,
-            message: { message: 'You have not yet verified your email. Please check your email.', alert: "alert alert-danger" },
-          })
-        } else if (suggest){
-          self.setState({ 
-            user: data.user,
-            suggest: null,
-            activeComponent: 'suggest',
-            noActiveDomains: noActiveDomains,
-            submittedToday: submittedToday,
-            message: null
-          })
-        } else if (noUrls){
-          self.setState({ 
-            user: data.user,
-            // suggest: null,
-            activeComponent: 'landing',
-            noActiveDomains: noActiveDomains,
-            submittedToday: submittedToday,
-            message: null,
-          })
-        } else if (submittedToday) {
-          self.setState({ 
-            user: data.user,
-            // suggest: null,
-            activeComponent: 'submittedToday',
-            noActiveDomains: noActiveDomains,
-            submittedToday: submittedToday,
-            message: null,
-          })
-        } else if (noActiveDomains){
-          self.setState({ 
-            user: data.user,
-            // suggest: null,
-            activeComponent: 'noActiveDomains',
-            noActiveDomains: noActiveDomains,
-            submittedToday: submittedToday, 
-            message: null,
-          })
-        } else {
-          self.submitUrlsID(data.user, allUrls);  /////////////////////////////////////////////////////////
-          // self.updateUser(data.user, urls);
-        }
-      },
-      error: function(xhr, status, err){
-        // console.error('/login', status, err, xhr.responseJSON)
+      method: 'GET', 
+      url: '/oneUser'
+    }).done(function(data){
+      var verified = data.verified
+      self.setState({ user: data })
+      if (!verified) {
         self.setState({ 
-          activeComponent: 'login',
-          // suggest: null,
-          message: {message: xhr.responseJSON, alert: 'alert alert-danger'},
-        });
+          activeComponent: 'errorConfirmEmail',
+          message: { message: 'User has not been verified. Please check your email.', alert: "alert alert-danger" },
+        })
+      } else if (noUrls) {
+        self.setState({ 
+          activeComponent: 'landing',
+          message: null,
+        })
+      }else if (noActiveDomains){
+        self.setState({ 
+          activeComponent: 'noActiveDomains',
+          message: { message: 'You did not submit any active domains',  alert: "alert alert-info" },
+        })
+      } else if (noUrlsFromActiveDomains){
+        this.setState({ 
+          activeComponent: 'noActiveDomains',
+          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-info" },
+      })
+      } else {
+        self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
-    })  
+    })
   },
 
 
@@ -609,24 +488,23 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getOneUserFromServer: function(){
+    console.log('in getOneUserFromServer')
     var currentTime = new Date().getTime()
     var self = this;
+    var text = self.state.rawText
     $.ajax({
       method: 'GET', 
       url: '/oneUser'
     }).done(function(data){
       self.setState({ 
         user: data,
-        suggest: null,
+        activeComponent: 'landing',
         submittedToday: data.canSubmitAfter ? (currentTime < data.canSubmitAfter) : null,
         message: null,
-        // allUrls: [],
-        // urlsNoUser: [],
-        // rawText: null,
         userLoading: false,
       });
       if(!self.state.domainsLoading){
-        self.runCreateUrlObj('dummy');
+        self.runCreateUrlObj(text);
       }
     })
   },
@@ -643,12 +521,7 @@ var Index = React.createClass({
         }).done(function(data){
           self.setState({ 
             user: data,
-            suggest: null,
             activeComponent: 'landing',
-            submittedToday: null,
-            // allUrls: [],
-            // urlsNoUser: [],
-            // rawText: null,
             message: null,
           });
         })
@@ -672,13 +545,11 @@ var Index = React.createClass({
           if (valid) {
             self.setState({ 
               activeComponent: 'resetToken',
-              // suggest: null,
               message: message,
             });
           } else {
             self.setState({ 
                 activeComponent: 'forgotPassword',
-                // suggest: null,
                 message: message,
             });
           }
@@ -702,7 +573,6 @@ var Index = React.createClass({
 
           self.setState({ 
               activeComponent: activeComponent,
-              // suggest: null,
               passwordResetToken: passwordResetToken,
               message: message,
           });
@@ -725,7 +595,6 @@ var Index = React.createClass({
           var message = data.message
           self.setState({ 
               message: message,
-              // suggest: null,
               activeComponent: activeComponent,
           });
         },
@@ -748,7 +617,6 @@ var Index = React.createClass({
           var valid = data.valid
           self.setState({ 
               message: message,
-              // suggest: null,
               activeComponent: activeComponent,
           });
         },
@@ -758,26 +626,25 @@ var Index = React.createClass({
       })
   },
 
-  submitSuggestedDomains: function(domains) {
-    var self = this;
-      $.ajax({
-        method: 'POST',
-        url: '/suggest',
-        data: { domains: domains},
-        success: function(data){
-          var activeComponent = data.activeComponent
-          var message = data.message
-          self.setState({ 
-              activeComponent: activeComponent,
-              suggest: null,
-              message: message,
-          });
-        },
-        error: function(xhr, status, err){
-          console.error('/suggest', status, err.toString())
-        }
-      })
-  },
+  // submitSuggestedDomains: function(domains) {
+  //   var self = this;
+  //     $.ajax({
+  //       method: 'POST',
+  //       url: '/suggest',
+  //       data: { domains: domains},
+  //       success: function(data){
+  //         var activeComponent = data.activeComponent
+  //         var message = data.message
+  //         self.setState({ 
+  //             activeComponent: activeComponent,
+  //             message: message,
+  //         });
+  //       },
+  //       error: function(xhr, status, err){
+  //         console.error('/suggest', status, err.toString())
+  //       }
+  //     })
+  // },
 
   setActiveComponent: function(componentName) {
     var user = (this.state.user.user === 'anonymous') ? false : true;
@@ -786,14 +653,12 @@ var Index = React.createClass({
       // console.log('in suggest user')
       this.setState({
         activeComponent: componentName,
-        suggest: null,
         message: null,
       })
     } else if(componentName === 'suggest' && !user){
     // console.log('in suggest no user')
       this.setState({
         activeComponent: 'login',
-        suggest: true,
         message: null,
       })
     } else {
@@ -804,29 +669,6 @@ var Index = React.createClass({
     }
   },
 
-  // updateUser: function(user, urls){
-  //   var midnightTonight = new Date().setHours(23,59,59,0);
-  //   var self = this;
-  //     $.ajax({
-  //       method: 'PUT',
-  //       url: '/updateUser',
-  //       data: { user: user, canSubmitAfter: midnightTonight, urls: urls},
-  //       success: function(data){
-  //         self.setState({ 
-  //           user: data,
-  //           suggest: null,
-  //           activeComponent: 'confirm',
-  //           submittedToday: true,
-  //           allUrls: urls,
-  //           message: null,
-  //         });
-  //       },
-  //       error: function(xhr, status, err){
-  //         console.error('/updateUser', status, err.toString())
-  //       }
-  //     })
-  // }, 
-
   componentWillMount: function(){
 
     // setTimeout(() => {
@@ -835,7 +677,7 @@ var Index = React.createClass({
         domainsLoading: false
       });
       if(!this.state.userLoading){
-        this.runCreateUrlObj('dummy');
+        this.runCreateUrlObj();
       }
     // }, 100);
 

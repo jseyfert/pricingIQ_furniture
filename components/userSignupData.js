@@ -45,15 +45,15 @@ var UserSignupData = React.createClass({
 		e.preventDefault();
 
 			if (this.state.passwordsMatch){
-				var user = {};
-				user.email = this.state.email;
-				user.password = this.state.password;
-				user.user = this.state.user;
-				user.company = this.state.company;
-				user.resetCountAfter = midnightTonight;
-				user.allDomains = this.props.allDomains
+				var userForm = {};
+				userForm.email = this.state.email;
+				userForm.password = this.state.password;
+				userForm.user = this.state.user;
+				userForm.company = this.state.company;
+				userForm.resetCountAfter = midnightTonight;
+				userForm.allDomains = this.props.allDomains
 
-				this.props.signupUserFromServer(user);
+				this.props.signupUserFromServer(userForm);
 				this.setState({ 
 				  email: ''
 				});

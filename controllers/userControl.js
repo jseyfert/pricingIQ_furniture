@@ -78,39 +78,6 @@ module.exports = {
       }
   },
 
-  // updateUser: function(req, res){
-  //   var canSubmitAfter = req.body.canSubmitAfter
-  //   var urls = req.body.urls
-  //   console.log('in updateUser', canSubmitAfter, urls)
-
-  //   if(req.user) {
-  //       // console.log('in req.user', req.user)
-  //       mongoose.model('User').findById({
-  //           _id: req.user._id
-  //         },
-  //         function(err, user) {
-  //           if (err) {
-  //             return console.log('in updateUser > mongoose > findById', err);
-  //           } else {
-  //             user.canSubmitAfter = canSubmitAfter  // update canSubmitAfter with midnight tonight
-  //             user.save(function(err) { // save the user
-  //                 if (err) {
-  //                   // console.log('in updateUser > mongoose > findById > save user with new info', err);
-  //                   res.send(err);
-  //                 } else {
-  //                   // res.json({ message: 'user updated!' });
-  //                   res.json(user)
-  //                 }
-  //             });
-  //           }
-  //         });
-  //     } else {
-  //       res.json({
-  //           message: "could not update user"
-  //       })
-  //     }
-  // },
-
   submitUrlsId: function(req, res){
     console.log('### SUBMIT URLS WITH ID ###');
 
