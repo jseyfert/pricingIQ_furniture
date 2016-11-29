@@ -27,23 +27,24 @@ app.use(passport.session());
 
 var userControl = require('./controllers/userControl.js');
 
+
 app.post('/login', userControl.login);
 app.post('/signup', userControl.signup);
-app.post('/forgot', userControl.forgot);
-app.post('/suggest', userControl.suggest);
+app.get( '/logout', userControl.logout);
+app.get( '/user/:id', userControl.getUser);
+app.get( '/users', userControl.getAllUsers);
+app.get( '/oneUser', userControl.getOneUser);
+app.get( '/verifyEmail/:permalink/:emailVerificationToken', userControl.verifyEmail);
+app.post('/forgotPassword', userControl.forgotPassword);
+app.put( '/forgotPasswordResend', userControl.forgotPasswordResend); 
+app.get( '/verifyPasswordReset/:passwordResetToken', userControl.verifyPasswordReset);
+app.put( '/resetPassword', userControl.resetPassword);
+
 app.post('/submitUrlsId', userControl.submitUrlsId);
 app.post('/submitUrlsNoId', userControl.submitUrlsNoId);
 
-app.put('/reset', userControl.reset);
-app.get('/verifyReset/:token', userControl.verifyReset);
 
-app.put('/verifyResend', userControl.verifyResend); // resend email verification token
-app.get('/verify/:permalink/:token', userControl.verify);
-
-app.get('/logout', userControl.logout);
-app.get('/user/:id', userControl.getUser);
-app.get('/users', userControl.getAllUsers);
-app.get('/oneUser', userControl.getOneUser);
+// app.post('/suggest', userControl.suggest);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');

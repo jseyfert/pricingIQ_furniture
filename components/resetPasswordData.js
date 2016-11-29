@@ -29,7 +29,7 @@ var ResetPasswordData = React.createClass({
 			if (this.state.passwordsMatch){
 				
 				var password = this.state.password;
-				this.props.submitNewPassword(password);
+				this.props.resetPassword(password);
 
 				this.setState({ 
 				  password: '',

@@ -18,10 +18,10 @@ var ForgotPasswordHtml = React.createClass({
                 <button className="btn btn-warning btn-lg">Reset</button>
             </form>
             <hr/>
-            <p>Back to Login? <a onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p>
           </div>    
         </div>    
       </div>
+            // <p>Back to Login? <a onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p>
     )
   }
 });

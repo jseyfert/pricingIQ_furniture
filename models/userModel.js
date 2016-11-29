@@ -7,25 +7,16 @@ var UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   user: { type: String, required: true },
   company: { type: String, required: true },
-  
-  canSubmitAfter: { type: Number, required: true  }, // DELETE
 
   resetCountAfter: { type: Number},
   countLeftToSubmit: [{ domain : String, count : Number }],
 
-
-
-  // urlsLeftToSubmit: { type: Array},
-
-  permalink: { type: String, required: true },
-  verificationToken: { type: String, required: true },
   verified: { type: Boolean, required: true  },
+  permalink: { type: String, required: true },
+  emailVerificationToken: { type: String, required: true },
 
   passwordResetToken: { type: String },
   passwordResetExpires: { type: Date },
-
-
-	loggedIn: { type: Boolean } //get rid of at some point
 });
 
 UserSchema.methods.generateHash = function(password){

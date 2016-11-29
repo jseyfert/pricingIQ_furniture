@@ -1,7 +1,7 @@
 var React = require('react');
-var ResetTokenHtml = require('./resetTokenHtml.js');
+var ConfirmTokenHtml = require('./confirmTokenHtml.js');
 
-var ResetTokenData = React.createClass({
+var ConfirmTokenData = React.createClass({
 	getInitialState: function(){
 		return {
 			token: ''
@@ -20,7 +20,7 @@ var ResetTokenData = React.createClass({
 
 		var token = this.state.token;
 
-		this.props.submitResetToken(token);
+		this.props.verifyPasswordReset(token);
 
 		this.setState({ 
 		  token: ''
@@ -31,17 +31,19 @@ var ResetTokenData = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<ResetTokenHtml
+				<ConfirmTokenHtml
 				message={ this.props.message } 
 				errorMessage={ this.props.errorMessage }
 				onTokenChange={ this.onTokenChange }
 				handleTokenSubmit={ this.handleTokenSubmit }
 				setActiveComponent={ this.props.setActiveComponent }
 				token={ this.state.token }
+				forgotPasswordResend={ this.props.forgotPasswordResend }
+				passwordResetEmail={ this.props.passwordResetEmail } 
 				/>
 			</div>
 			)
 	}
 });
 
-module.exports = ResetTokenData;
+module.exports = ConfirmTokenData;

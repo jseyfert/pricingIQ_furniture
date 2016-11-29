@@ -20,6 +20,7 @@ var Index = React.createClass({
       message: null,
       activeComponent: 'landing',
       passwordResetToken: null,
+      passwordResetEmail: null,
       rawText: '',
       allUrls: [],
       allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
@@ -504,37 +505,50 @@ var Index = React.createClass({
     })
   },
 
-  forgotPassword: function(user){
+  forgotPassword: function(passwordResetEmail){
     var self = this;
       $.ajax({
         method: 'POST',
-        url: '/forgot',
-        data: { user: user},
+        url: '/forgotPassword',
+        data: {passwordResetEmail: passwordResetEmail},
         success: function(data){
-          if (data.valid) {
-            self.setState({ 
-              activeComponent: 'resetToken',
-              message: data.message,
-            });
-          } else {
-            self.setState({ 
-              activeComponent: 'forgotPassword',
-              message: data.message,
-            });
-          }
+          self.setState({ 
+            activeComponent: data.activeComponent,
+            message: data.message,
+            passwordResetEmail: data.passwordResetEmail,
+          });
         },
         error: function(xhr, status, err){
-          console.error('/forgot', status, err.toString())
+          console.error('/forgotPassword', status, err.toString())
         }
       })
   },  
+ 
+  forgotPasswordResend: function() {
+    var self = this;
+      $.ajax({
+        method: 'PUT',
+        url: '/forgotPasswordResend',
+        data: {passwordResetEmail: this.state.passwordResetEmail},
+        success: function(data){
+          self.setState({ 
+            activeComponent: data.activeComponent,
+            message: data.message,
+            passwordResetEmail: null,
+          });
+        },
+        error: function(xhr, status, err){
+          console.error('/forgotPasswordResend', status, err.toString())
+        }
+      })
+  },
 
-  submitResetToken: function(token) {
+  verifyPasswordReset: function(passwordResetToken) {
     var self = this;
       $.ajax({
         method: 'GET',
-        url: '/verifyReset/' + token,
-        data: { token: token},
+        url: '/verifyPasswordReset/' + passwordResetToken,
+        data: { passwordResetToken: passwordResetToken},
         success: function(data){
           self.setState({ 
               activeComponent: data.activeComponent,
@@ -543,38 +557,17 @@ var Index = React.createClass({
           });
         },
         error: function(xhr, status, err){
-          console.error('/verifyReset', status, err.toString())
+          console.error('/verifyPasswordReset', status, err.toString())
         }
       })
   }, 
 
-  resendVerifyToken: function() {
-    var user = this.state.user
-    var self = this;
-      $.ajax({
-        method: 'PUT',
-        url: '/verifyResend',
-        data: {user, user},
-        success: function(data){
-          var activeComponent = data.activeComponent
-          var message = data.message
-          self.setState({ 
-              message: message,
-              activeComponent: activeComponent,
-          });
-        },
-        error: function(xhr, status, err){
-          console.error('/verifyResend', status, err.toString())
-        }
-      })
-  },
-
-  submitNewPassword: function(password) {
+  resetPassword: function(password) {
     var passwordResetToken = this.state.passwordResetToken
     var self = this;
       $.ajax({
         method: 'PUT',
-        url: '/reset',
+        url: '/resetPassword',
         data: { password: password, passwordResetToken: passwordResetToken },
         success: function(data){
           self.setState({ 
@@ -583,7 +576,7 @@ var Index = React.createClass({
           });
         },
         error: function(xhr, status, err){
-          console.error('/reset', status, err.toString())
+          console.error('/resetPassword', status, err.toString())
         }
       })
   },
@@ -655,14 +648,15 @@ var Index = React.createClass({
         setActiveComponent={ this.setActiveComponent } 
         loginUserFromServer={ this.loginUserFromServer } 
         signupUserFromServer={ this.signupUserFromServer }
-        forgotPassword={ this.forgotPassword }
         handleEmailConfirm={ this.handleEmailConfirm }
         logoutUser={ this.logoutUser } 
         handleUrlSubmit={ this.handleUrlSubmit } 
-        submitResetToken={ this.submitResetToken } 
-        submitNewPassword={ this.submitNewPassword } 
+        verifyPasswordReset={ this.verifyPasswordReset } 
+        resetPassword={ this.resetPassword } 
         submitSuggestedDomains={ this.submitSuggestedDomains } 
-        resendVerifyToken={ this.resendVerifyToken } 
+        forgotPassword={ this.forgotPassword }
+        forgotPasswordResend={ this.forgotPasswordResend } 
+        passwordResetEmail={ this.state.passwordResetEmail } 
         />
       </div>
   	)

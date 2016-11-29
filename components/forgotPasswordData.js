@@ -16,10 +16,10 @@ var ForgotPassword = React.createClass({
 	handlePasswordReset: function(e){
 		e.preventDefault();
 
-		var user = {};
-		user.email = this.state.email;
+		// var user = {};
+		// user.email = this.state.email;
 
-		this.props.forgotPassword(user);
+		this.props.forgotPassword(this.state.email);
 
 		this.setState({ 
 		  email: ''

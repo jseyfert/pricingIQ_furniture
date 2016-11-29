@@ -105,16 +105,16 @@ module.exports = function(passport){
           console.log('allDomains signup', allDomains);
           var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
-          var verificationToken = randomstring.generate({ length: 64 });
-          var link = "http://localhost:7070" + "/verify/" + permalink + "/" + verificationToken;
+          var emailVerificationToken = randomstring.generate({ length: 32 });
+          var link = "http://localhost:7070" + "/verifyEmail/" + permalink + "/" + emailVerificationToken;
           
           newUser.permalink = permalink;
-          newUser.verificationToken = verificationToken;
+          newUser.emailVerificationToken = emailVerificationToken;
           newUser.verified = false;
 
           newUser.email = email;
           newUser.password = newUser.generateHash(password);
-          newUser.user = req.body.user;
+          newUser.user = req.body.user;``
           newUser.company = req.body.company;
           
           newUser.canSubmitAfter = 0; // DELETE
@@ -126,7 +126,7 @@ module.exports = function(passport){
             if(err) {
               throw err;
             } else {
-              console.log('in signUP', newUser)
+              // console.log('in signUP', newUser)
               SendMail(req.body.user, email, link, null)
               return done(null, newUser, { message: 'You successfully signed up.' });
             }
