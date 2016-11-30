@@ -6,15 +6,11 @@ var Footer = React.createClass({
   render: function(){
     return (
       <div>
-       <footer className="navbar-fixed-bottom">
-        <hr/>
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <p className="textWhite">&copy; 2016 PricingIQ</p>
-              </div>
-            </div>
+        <footer className="navbar-fixed-bottom">
+          <div className="container text-center">
+            <a href="#">FAQ</a> | Want us to add a new Domain? <a href="#">Suggest One</a>
           </div>
+          <br/>
         </footer>
       </div>
     )

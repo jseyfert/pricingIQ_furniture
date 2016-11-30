@@ -687,7 +687,7 @@ var Index = React.createClass({
 
 	render: function(){
   	return (
-  		<div>
+      <div>
   			<Header 
         user={ this.state.user } 
         logoutUser={ this.logoutUser }

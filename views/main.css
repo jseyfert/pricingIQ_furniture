@@ -1,5 +1,37 @@
+
+body{
+  background: linear-gradient(270deg, #19b4ae, #1277ca);
+  background-size: 400% 400%;
+  animation: AnimationName 30s ease infinite;
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.whiteText {
+  color: white;
+}
+
 a.colorBlue{
     color: #323996 !important;
+}
+
+h1.biggerText{
+    font-size: 130px;
+}
+
+
+div.noPadding{
+  padding: 0px;
+  /*padding-right: 0px;*/
+  /*padding-left: 0px;*/
 }
 
 .center {
@@ -42,33 +74,3 @@ li:hover {
 .label-as-badge {
     border-radius: 1em;
 }
-
-/*delete after testing*/
-
-/*a.colorRed{
-    color: #EF4136 !important;
-}
-*/
-
-input {
-  font-size: 1.3em;
-  display: inline-block;
-  margin: auto;
-  border-radius: 0.6em;
-  border: none;
-  outline: none;
-  box-shadow: 0 0 2px black;
-  padding: 0.3em 1em;
-  font-weight: 100;
-  font-family: Arial;
-  margin: 1em;
-}
-
-/*input:focus {
-  box-shadow: 0 0 8px rgba(0, 255, 50, 0.5)
-}
-
-input.invalid, input.invalid:focus {
-  box-shadow: 0 0 9px rgba(255, 25, 25, 0.5)
-}*/
-/*delete after testing*/
