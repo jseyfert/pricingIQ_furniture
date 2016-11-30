@@ -81,53 +81,9 @@ module.exports = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
- 
 
-  submitUrlsId: function(req, res){
-    console.log('######## SUBMIT URLS WITH ID ########', req.body.urlsToSubmit);
-
-    user = req.body.user
-    userId = req.body.user._id
-    urlsToSubmit = req.body.urlsToSubmit
-    newCountLeftToSubmit = req.body.newCountLeftToSubmit
-    console.log('urlsToSubmit', urlsToSubmit, 'newCountLeftToSubmit', newCountLeftToSubmit);
-   
-    if(user) {
-      mongoose.model('User').findById({ _id: userId },
-        function(err, user) {
-          if (err) {
-            // return console.log('in updateUser > mongoose > findById', err);
-          } else {
-            // console.log('countLeftToSubmit', user.countLeftToSubmit);
-            user.countLeftToSubmit = newCountLeftToSubmit
-            user.save(function(err) { 
-                if (err) {
-                  res.send(err);
-                } else {
-                  // console.log('success!!!!!!!!');
-                  res.json({
-                    user: user,
-                    activeComponent: 'confirm'
-                  })
-                }
-            });
-          }
-        });
-      } else {
-        console.log("could not submit urls");
-        res.json({ message: { message: "could not submit urls"} })
-      }
-  },
-
-  submitUrlsNoId: function(req, res){
-    console.log('*/*/*/*/*/* submit urls witout id */*/*/*/*', req.body.urls);
-    res.json({ activeComponent: 'login' })
-  },
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
   verifyEmail: function(req, res){
+    console.log(req.params)
       var permalink = req.params.permalink;
       var emailVerificationToken = req.params.emailVerificationToken;
       var htmlSuccess = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body cz-shortcut-listen="true"><div style="margin: 0; padding: 0; width: 100%; font-family: Trebuchet MS, sans-serif;"><div style="background-color: #f2f2f2; padding: 45px;"><div style="background-color: #ffffff; padding: 40px; text-align: center;"><h1 style="color: #5f5f5f; margin-bottom: 30px;">Congratulations, </h1><p style="color: #5f5f5f; line-height: 22px;">You have successfully verified your email, now please close this tab.</p></div> <h3 style="color: #5f5f5f; text-align: center; margin-top: 30px;">pricingIQ</h3></div></div></body></html>'
@@ -138,25 +94,91 @@ module.exports = {
           if(err){
             return console.log('error', err);
           } else if (user){
-            if (user.emailVerificationToken == emailVerificationToken) {
-                UserModel.findOneAndUpdate({'permalink': permalink}, {'verified': true}, function (err, resp) {
-                });
+            if(user.emailVerificationToken == emailVerificationToken){
+              if (user.emailVerificationExpires > Date.now()){
+                UserModel.findOneAndUpdate({'permalink': permalink}, {'verified': true}, function (err, resp) { });
                 res.send(htmlSuccess);
+              } else {
+                res.send(htmlTokenExpired);
+              }
             } else {
-                res.send(htmlTokenIncorrect);
+              res.send(htmlTokenIncorrect);
             }
-          } else {
-              res.send(htmlTokenExpired);
-
+          } else{
+            res.send(htmlTokenIncorrect);
           }
+      }); 
+  },
 
+  emailVerificationResend: function(req, res){
+    var email = req.body.user.email;
+    var emailVerificationExpires = Date.now() + 3600000; // 3600000 1 hour
+    var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
+    var emailVerificationToken = randomstring.generate({ length: 32 });
+    var link = "http://localhost:7070" + "/verifyEmail/" + permalink + "/" + emailVerificationToken;
+
+    UserModel.findOne({email: email}, function (err, user) {
+      // console.log('in findOne', user)
+      if (err) { 
+        return done(err); 
+      }
+      if (!user) {
+        res.json({
+          activeComponent: 'errorConfirmEmail',
+          message: {message: 'Account with that email address does not exist.', alert: 'alert alert-danger'},
+        })
+      }
+      if (user) {
+        user.permalink = permalink;
+        user.emailVerificationToken = emailVerificationToken;
+        user.emailVerificationExpires = emailVerificationExpires;
+        user.save((err) => {
+          res.json({
+            activeComponent: 'errorConfirmEmail',
+            message: null,
+          })
+        });
+        SendMail(req.body.user.user, email, link, null)
+      }
+    }); 
+  },
+
+  verifyPasswordReset: function(req, res){
+      var passwordResetToken = req.params.passwordResetToken;
+      // console.log('SERVER > userControl > reset', passwordResetToken);
+
+      UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
+        if(err){
+          return console.log('error', err);
+        } else if (user){
+          if (user.passwordResetExpires > Date.now()) {
+            console.log('password is ready to be updated');
+            res.json({
+              message: {message: 'The token worked! Password is ready to be updated', alert: 'alert alert-success'},
+              activeComponent: 'resetPassword',
+              passwordResetToken: passwordResetToken
+            })
+          } else {
+            console.log('The token is expired');
+            res.json({
+              message: {message: "The token is expired", alert: 'alert alert-danger'},
+              activeComponent: 'confirmToken'
+            })
+          }
+        } else {
+            console.log('The token is wrong');
+            res.json({
+              message: {message: "The token is wrong", alert: 'alert alert-danger'},
+              activeComponent: 'confirmToken',
+            })
+        }
       }); 
   },
 
   forgotPassword: function(req, res){
     var passwordResetEmail = req.body.passwordResetEmail;
     var passwordResetToken = randomstring.generate({ length: 32 });
-    var passwordResetExpires = Date.now() + 3600000; // 1 hour
+    var passwordResetExpires = Date.now() + 3600000; // 1 hour = 3600000
 
     UserModel.findOne({email: passwordResetEmail}, function (err, user) {
       if (err) { 
@@ -197,6 +219,7 @@ module.exports = {
         res.json({
           activeComponent: 'confirmToken',
           message: {message: 'Account with that email address does not exist.', alert: 'alert alert-danger'},
+          passwordResetEmail: passwordResetEmail,
         })
       }
       if (user) {
@@ -205,44 +228,13 @@ module.exports = {
         user.save((err) => {
           res.json({
             activeComponent: 'confirmToken',
-            message: {message: 'New email verification sent' , alert: 'alert alert-success'},
+            message: null,
+            passwordResetEmail: passwordResetEmail,
           })
         });
         SendMail(user.user, passwordResetEmail, null, passwordResetToken)
       }
     }); 
-  },
-
-  verifyPasswordReset: function(req, res){
-      var passwordResetToken = req.params.passwordResetToken;
-      console.log('SERVER > userControl > reset', passwordResetToken);
-
-      UserModel.findOne({'passwordResetToken': passwordResetToken}, function (err, user) {
-        if(err){
-          return console.log('error', err);
-        } else if (user){
-          if (user.passwordResetExpires > Date.now()) {
-            console.log('password is ready to be updated');
-            res.json({
-              message: {message: 'The token worked! Password is ready to be updated', alert: 'alert alert-success'},
-              activeComponent: 'resetPassword',
-              passwordResetToken: passwordResetToken
-            })
-          } else {
-            console.log('The token is expired');
-            res.json({
-              message: {message: "The token is expired. Click 'Send Again'", alert: 'alert alert-danger'},
-              activeComponent: 'confirmToken'
-            })
-          }
-        } else {
-            console.log('The token is wrong');
-            res.json({
-              message: {message: "The token is wrong. Click 'Send Again' to send a new one", alert: 'alert alert-danger'},
-              activeComponent: 'confirmToken',
-            })
-        }
-      }); 
   },
 
   resetPassword: function(req, res){

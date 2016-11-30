@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
 var SendMail = require('./email.js');
+var EmailVerification = require('./emailVerification.js');
 var passport = require('passport'); //i dont think this needs to be here
 var randomstring = require("randomstring");
 
@@ -102,19 +103,22 @@ module.exports = function(passport){
 					var newUser = new User();
 
           var allDomains = req.body.allDomains
-          console.log('allDomains signup', allDomains);
+          // console.log('allDomains signup', allDomains);
           var countLeftToSubmit = allDomains.map(function(arr){ return {domain: arr[0], count: 15} })
+
+          var emailVerificationExpires = Date.now() + 3600000; // 1 hour
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var emailVerificationToken = randomstring.generate({ length: 32 });
           var link = "http://localhost:7070" + "/verifyEmail/" + permalink + "/" + emailVerificationToken;
           
           newUser.permalink = permalink;
           newUser.emailVerificationToken = emailVerificationToken;
+          newUser.emailVerificationExpires = emailVerificationExpires;
           newUser.verified = false;
 
           newUser.email = email;
           newUser.password = newUser.generateHash(password);
-          newUser.user = req.body.user;``
+          newUser.user = req.body.user;
           newUser.company = req.body.company;
           
           newUser.canSubmitAfter = 0; // DELETE

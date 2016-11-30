@@ -14,6 +14,7 @@ var UserSchema = new mongoose.Schema({
   verified: { type: Boolean, required: true  },
   permalink: { type: String, required: true },
   emailVerificationToken: { type: String, required: true },
+  emailVerificationExpires: { type: Date },
 
   passwordResetToken: { type: String },
   passwordResetExpires: { type: Date },

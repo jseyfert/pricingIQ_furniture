@@ -5,15 +5,16 @@ var ConfirmTokenHtml = React.createClass({
 
   render: function(){
     var forgotPasswordResend = this.props.forgotPasswordResend;
-    var displayPasswordResend = (this.props.passwordResetEmail) ? <p>Didn't recieve an email? <a onClick={ this.props.forgotPasswordResend } >Send Again</a></p> : null;
-    // consolxe.log('in ConfirmTokenHtml > displayPasswordResend', displayPasswordResend);
+    var passwordResetCount= this.props.passwordResetCount;
+    console.log('passwordResetCount', passwordResetCount)
+    var displayPasswordResend = (this.props.passwordResetCount <= 2) ? <p>Didn't recieve an email? <a onClick={ this.props.forgotPasswordResend } >Send Again</a></p> : null;
     
     return (
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
           <ErrorMessage message={this.props.message} />
-          <h1><span className="fa fa-sign-in"></span>Validate User</h1>
+          <h1><span className="fa fa-sign-in"></span>Verify User</h1>
             <form className="" onSubmit={ this.props.handleTokenSubmit }>
               <div className="form-group">
                 <label>Paste token here</label>

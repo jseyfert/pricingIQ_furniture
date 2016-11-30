@@ -40,6 +40,7 @@ var ConfirmTokenData = React.createClass({
 				token={ this.state.token }
 				forgotPasswordResend={ this.props.forgotPasswordResend }
 				passwordResetEmail={ this.props.passwordResetEmail } 
+				passwordResetCount={ this.props.passwordResetCount } 
 				/>
 			</div>
 			)

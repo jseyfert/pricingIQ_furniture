@@ -93,8 +93,9 @@ var ShowWhichComponent = React.createClass({
           <ErrorConfirmEmail
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
-          handleEmailConfirm={ this.props.handleEmailConfirm }
-          resendVerifyToken={ this.props.resendVerifyToken }
+          emailVerification={ this.props.emailVerification }
+          emailVerificationResend={ this.props.emailVerificationResend }
+          emailVerificationCount={ this.props.emailVerificationCount }
           />
         </div>
         )
@@ -117,6 +118,7 @@ var ShowWhichComponent = React.createClass({
           verifyPasswordReset={ this.props.verifyPasswordReset }
           forgotPasswordResend={ this.props.forgotPasswordResend }
           passwordResetEmail={ this.props.passwordResetEmail } 
+          passwordResetCount={ this.props.passwordResetCount } 
           />
         </div>
         )

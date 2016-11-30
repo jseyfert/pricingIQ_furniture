@@ -25,26 +25,27 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); 
 
-var userControl = require('./controllers/userControl.js');
+var user = require('./controllers/user.js');
+var data = require('./controllers/data.js');
+
+app.post('/login', user.login);
+app.post('/signup', user.signup);
+app.get( '/logout', user.logout);
+app.get( '/user/:id', user.getUser);
+app.get( '/users', user.getAllUsers);
+app.get( '/oneUser', user.getOneUser);
+app.get( '/verifyEmail/:permalink/:emailVerificationToken', user.verifyEmail);
+app.post('/forgotPassword', user.forgotPassword);
+app.put( '/forgotPasswordResend', user.forgotPasswordResend); 
+app.put( '/emailVerificationResend', user.emailVerificationResend); 
+app.get( '/verifyPasswordReset/:passwordResetToken', user.verifyPasswordReset);
+app.put( '/resetPassword', user.resetPassword);
+// app.post('/suggest', user.suggest);
+
+app.post('/submitUrlsId', data.submitUrlsId);
+app.post('/submitUrlsNoId', data.submitUrlsNoId);
 
 
-app.post('/login', userControl.login);
-app.post('/signup', userControl.signup);
-app.get( '/logout', userControl.logout);
-app.get( '/user/:id', userControl.getUser);
-app.get( '/users', userControl.getAllUsers);
-app.get( '/oneUser', userControl.getOneUser);
-app.get( '/verifyEmail/:permalink/:emailVerificationToken', userControl.verifyEmail);
-app.post('/forgotPassword', userControl.forgotPassword);
-app.put( '/forgotPasswordResend', userControl.forgotPasswordResend); 
-app.get( '/verifyPasswordReset/:passwordResetToken', userControl.verifyPasswordReset);
-app.put( '/resetPassword', userControl.resetPassword);
-
-app.post('/submitUrlsId', userControl.submitUrlsId);
-app.post('/submitUrlsNoId', userControl.submitUrlsNoId);
-
-
-// app.post('/suggest', userControl.suggest);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');
@@ -81,16 +82,12 @@ mongoose.connect('mongodb://localhost:27017/pricingIQ');
 mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 app.get('/', function(req, res){
- 
  res.send('index');
-  
   // if (req.user) {
   //     console.log('server.js > logged in');
   // } else {
   //     console.log('server.js > NOT logged in');
   // }
-
-
 });
 
 // console.log('process.env', process.env.GOOGLE_ID);

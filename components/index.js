@@ -19,8 +19,12 @@ var Index = React.createClass({
       user: null,
       message: null,
       activeComponent: 'landing',
+      
       passwordResetToken: null,
       passwordResetEmail: null,
+      emailVerificationCount: 0,
+      passwordResetCount: 0,
+      
       rawText: '',
       allUrls: [],
       allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
@@ -401,7 +405,7 @@ var Index = React.createClass({
     })  
   },
 
-  handleEmailConfirm: function(){
+  emailVerification: function(){
     var self = this;
     var allUrls = self.state.allUrls
 
@@ -463,6 +467,36 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  emailVerificationResend: function() {
+    var addOne = this.state.emailVerificationCount + 1;
+    var resendMessage = {};
+    if (addOne === 1){
+      resendMessage = {message: 'Another email verification sent.', alert: 'alert alert-success'}
+    } else if (addOne === 2){
+      resendMessage = {message: 'And, another email verification sent.', alert: 'alert alert-success'}
+    } else if (addOne >= 3) {
+      resendMessage = {message: 'The last email verification has been sent - please check your spam folder', alert: 'alert alert-warning'}
+    }
+
+    var self = this;
+      $.ajax({
+        method: 'PUT',
+        url: '/emailVerificationResend',
+        data: {user: this.state.user},
+        success: function(data){
+          console.log('in success', data)
+          self.setState({ 
+            activeComponent: data.activeComponent,
+            message: (data.message) ? data.message : resendMessage,
+            emailVerificationCount: addOne,
+          });
+        },
+        error: function(xhr, status, err){
+          console.error('/emailVerificationResend', status, err.toString())
+        }
+      })
+  },
+
   getOneUserFromServer: function(){
     var self = this;
     var text = self.state.rawText
@@ -495,6 +529,10 @@ var Index = React.createClass({
             activeComponent: 'landing',
             message: null,
             rawText: '',
+            passwordResetToken: null,
+            passwordResetEmail: null,
+            emailVerificationCount: 0,
+            passwordResetCount: 0,
           });
         })
         self.runCreateUrlObj('dummyData');
@@ -525,6 +563,15 @@ var Index = React.createClass({
   },  
  
   forgotPasswordResend: function() {
+    var addOne = this.state.passwordResetCount + 1;
+    var resendMessage = {};
+    if (addOne === 1){
+      resendMessage = {message: 'Another password token sent.', alert: 'alert alert-success'}
+    } else if (addOne === 2){
+      resendMessage = {message: 'And, another password token sent.', alert: 'alert alert-success'}
+    } else if (addOne >= 3) {
+      resendMessage = {message: 'The last password token has been sent - please check your spam folder', alert: 'alert alert-warning'}
+    }
     var self = this;
       $.ajax({
         method: 'PUT',
@@ -533,8 +580,9 @@ var Index = React.createClass({
         success: function(data){
           self.setState({ 
             activeComponent: data.activeComponent,
-            message: data.message,
-            passwordResetEmail: null,
+            message: (data.message) ? data.message : resendMessage,
+            passwordResetEmail: data.passwordResetEmail,
+            passwordResetCount: addOne,
           });
         },
         error: function(xhr, status, err){
@@ -588,25 +636,37 @@ var Index = React.createClass({
     })
   },
 
-  // submitSuggestedDomains: function(domains) {
-  //   var self = this;
-  //     $.ajax({
-  //       method: 'POST',
-  //       url: '/suggest',
-  //       data: { domains: domains},
-  //       success: function(data){
-  //         var activeComponent = data.activeComponent
-  //         var message = data.message
-  //         self.setState({ 
-  //             activeComponent: activeComponent,
-  //             message: message,
-  //         });
-  //       },
-  //       error: function(xhr, status, err){
-  //         console.error('/suggest', status, err.toString())
-  //       }
-  //     })
-  // },
+
+
+
+  submitSuggestedDomains: function(state) {
+    
+    console.log('in submitSuggestedDomains', state)
+
+          this.setState({ 
+              message: {message: '- has already been taken', alert: 'alert alert-danger'}
+          });
+
+    // var self = this;
+    //   $.ajax({
+    //     method: 'POST',
+    //     url: '/suggest',
+    //     data: { domains: domains},
+    //     success: function(data){
+    //       var activeComponent = data.activeComponent
+    //       var message = data.message
+    //       self.setState({ 
+    //           activeComponent: activeComponent,
+    //           message: message,
+    //       });
+    //     },
+    //     error: function(xhr, status, err){
+    //       console.error('/suggest', status, err.toString())
+    //     }
+    //   })
+  },
+
+
 
   componentWillMount: function(){
 
@@ -648,15 +708,18 @@ var Index = React.createClass({
         setActiveComponent={ this.setActiveComponent } 
         loginUserFromServer={ this.loginUserFromServer } 
         signupUserFromServer={ this.signupUserFromServer }
-        handleEmailConfirm={ this.handleEmailConfirm }
+        emailVerification={ this.emailVerification }
         logoutUser={ this.logoutUser } 
         handleUrlSubmit={ this.handleUrlSubmit } 
         verifyPasswordReset={ this.verifyPasswordReset } 
+        emailVerificationResend={ this.emailVerificationResend } 
         resetPassword={ this.resetPassword } 
         submitSuggestedDomains={ this.submitSuggestedDomains } 
         forgotPassword={ this.forgotPassword }
         forgotPasswordResend={ this.forgotPasswordResend } 
         passwordResetEmail={ this.state.passwordResetEmail } 
+        emailVerificationCount={ this.state.emailVerificationCount } 
+        passwordResetCount={ this.state.passwordResetCount } 
         />
       </div>
   	)
