@@ -11,12 +11,12 @@ var Header = React.createClass({
       return (
         <div>
             <div className="container">
-              <p className="navbar-text navbar-right"><span className="glyphicon glyphicon-refresh spin whiteText" aria-hidden="true"></span></p>
+              <p className="navbar-text navbar-right"><span className="glyphicon glyphicon-refresh spin navbarLink" aria-hidden="true"></span></p>
             </div>
         </div>
         )
     } else {
-    var isLoggedIn = (this.props.user.user === 'anonymous') ? <p className="navbar-text navbar-right"><a className="navbar-link whiteText" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p> : <p className="navbar-text navbar-right whiteText">Welcome { this.props.user.user } - <LogoutUser logoutUser={ this.props.logoutUser } /></p>
+    var isLoggedIn = (this.props.user.user === 'anonymous') ? <p className="navbar-text navbar-right"><a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p> : <p className="navbar-text navbar-right navbarLink">Welcome { this.props.user.user } - <LogoutUser logoutUser={ this.props.logoutUser } /></p>
     return (
       <div>
           <div className="container">

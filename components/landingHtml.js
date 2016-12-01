@@ -6,52 +6,68 @@ var LandingHtml = React.createClass({
 
   render: function(){
       return (
+
         <div>
 
               <div className="container text-center">
-                 <h1 className="biggerText whiteText">pricingIQ</h1>
+                 <h1 className="mainLogo">pricingIQ</h1>
               <br/>
                  <p className="lead whiteText">Product Pricing Done Right</p>
                  <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
                     <div className="form-group">
                       <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
                     </div>
-                    <button className="btn btn-success btn-md">Extract</button>
+                    <button className="btn btn-warning btn-md">Extract</button>
                 </form>
               <br/>
               </div>
 
               <br/>
 
+
+
                <div className="container">
-              <br/>
+                <br/>
                   <div className="row">
-                    <div className="col-lg-3 col-md-4 col-xs-6 thumb noPadding">
-                        <a className="thumbnail" href="#">
-                            <img className="img-responsive" src="http://placehold.it/400x300" alt=""/>
+
+
+                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+                        <a href="#" className="list-group-item" target="_blank" href="https://www.amazon.com/">
+                            <img className="img-responsive Absolute-Center"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png" alt=""/>
                         </a>
                     </div>
-                    <div className="col-lg-3 col-md-4 col-xs-6 thumb noPadding">
-                        <a className="thumbnail" href="#">
-                            <img className="img-responsive" src="http://placehold.it/400x300" alt=""/>
+
+                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+                        <a className="list-group-item" target="_blank" href="https://www.walmart.com/">
+                          <div className="overlayGreen">
+                            <span className="badge green">5 of 15</span>
+                            <img className="img-responsive Absolute-Center"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png" alt=""/>
+                         </div>
                         </a>
                     </div>
-                    <div className="col-lg-3 col-md-4 col-xs-6 thumb noPadding">
-                        <a className="thumbnail" href="#">
-                            <img className="img-responsive" src="http://placehold.it/400x300" alt=""/>
+                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+                        <a className="list-group-item" target="_blank" href="http://www.sears.com/">
+                          <div className="overlayRed">
+                            <span className="badge red">5 of 15</span>
+                            <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
+                          </div>
                         </a>
                     </div>
-                    <div className="col-lg-3 col-md-4 col-xs-6 thumb noPadding">
-                        <a className="thumbnail" href="#">
-                            <img className="img-responsive" src="http://placehold.it/400x300" alt=""/>
+                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+                        <a className="list-group-item" target="_blank" href="http://www.homedepot.com/">
+                          <div className="overlayGreen">
+                            <span className="badge yellow">25 of 15</span>
+                            <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/TheHomeDepot.svg/176px-TheHomeDepot.svg.png" alt=""/>
+                          </div>
                         </a>
                     </div>
+
                 </div>
               </div> 
 
               <footer className="navbar-fixed-bottom">
                 <div className="container text-center whiteText">
-                  <a className="whiteText">FAQ</a> | Want us to add a new Domain? <a className="whiteText">Suggest One</a>
+                  <a className="colorOrange">FAQ</a> | Want us to add a new Domain? <a className="colorOrange">Suggest One</a>
                 </div>
                 <br/>
               </footer>

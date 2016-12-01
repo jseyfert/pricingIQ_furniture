@@ -1,17 +1,16 @@
-
-body{
-  background: linear-gradient(270deg, #19b4ae, #1277ca);
-  background-size: 400% 400%;
-  animation: AnimationName 30s ease infinite;
-}
-@keyframes AnimationName { 
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+a.colorOrange{
+    color: #F0AD4E !important;
 }
 
-h1 {
+a.colorOrange:hover {
+  color: #ED9C28 !important;
+  cursor:pointer;
+  text-decoration: none;
+}
+
+h1.mainLogo {
     color: white;
+    font-size: 130px;
     text-shadow: 2px 2px 4px #000000;
 }
 
@@ -19,21 +18,165 @@ h1 {
   color: white;
 }
 
-a.colorBlue{
-    color: #323996 !important;
+/*NAVBAR A TAGS*/
+a.navbarLink {
+  position: relative;
+  color: #F0AD4E;
+  text-decoration: none;
 }
 
-h1.biggerText{
-    font-size: 130px;
+a.navbarLink:hover {
+  color: #ED9C28;
 }
 
+a.navbarLink:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ED9C28;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
 
+a.navbarLink:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+/*NAVBAR A TAGS*/
+
+
+/*HOLYWOOD SQUARES*/
 div.noPadding{
   padding: 0px;
-  /*padding-right: 0px;*/
-  /*padding-left: 0px;*/
 }
 
+a.list-group-item{  
+  margin: 0px;      
+  height: 200px;
+  overflow: auto;
+}
+
+img.Absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.grow { 
+  transition: all .2s ease-in-out; 
+}
+
+.grow:hover { 
+  transform: scale(1.02); 
+  z-index: 1;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+}
+
+/*.redBackground {
+  background-color: #F2DEDE;
+}
+
+.greenBackground {
+  background-color: #DFF0D8;
+}*/
+
+.overlayGreen:after {
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  opacity: .4;
+  background-color: green;
+}
+
+.overlayRed:after {
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  opacity: .4;
+  background-color: red;
+}
+
+.badge.green {
+    /*color: black;*/
+    background-color: green;
+    position: relative;
+    z-index: 1;
+    line-height: normal;
+    border-radius: 5px;
+    font-size: initial;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+}
+
+.badge.red {
+    /*color: black;*/
+    background-color: red;
+    position: relative;
+    z-index: 1;
+    line-height: normal;
+    border-radius: 5px;
+    font-size: initial;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  }
+
+.badge.yellow {
+    /*color: black;*/
+    background-color: #F0AD4E;
+    position: relative;
+    z-index: 1;
+    line-height: normal;
+    border-radius: 5px;
+    font-size: initial;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+}
+
+/*HOLYWOOD SQUARES*/
+
+/*BACKGROUND ANIMATION*/
+body{
+  background: linear-gradient(270deg, #19b4ae, #1277ca);
+  background-size: 400% 400%;
+  animation: AnimationName 28s ease infinite;
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+/*BACKGROUND ANIMATION*/
+
+
+
+
+
+
+/*////////*/
+/*////////*/
+/*below is all from dev - can delete*/
+/*////////*/
+/*////////*/
+
+/*
 .center {
     margin: 0 auto;
     width: 80%;
@@ -73,4 +216,4 @@ li:hover {
 
 .label-as-badge {
     border-radius: 1em;
-}
+}*/
