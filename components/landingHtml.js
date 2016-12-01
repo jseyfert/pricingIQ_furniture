@@ -50,6 +50,7 @@ var LandingHtml = React.createClass({
                           <div className="overlayRed">
                             <span className="badge red">5 of 15</span>
                             <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
+                            <span className="badge redDissabled">Offline for Maintenance</span>
                           </div>
                         </a>
                     </div>

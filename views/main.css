@@ -117,11 +117,11 @@ img.Absolute-Center {
     position: relative;
     z-index: 1;
     line-height: normal;
-    border-radius: 5px;
+    border-radius: 4px;
     font-size: initial;
-    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
 }
 
 .badge.red {
@@ -130,7 +130,22 @@ img.Absolute-Center {
     position: relative;
     z-index: 1;
     line-height: normal;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: initial;
+/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
+  }
+
+  .badge.redDissabled {
+    color: black;
+    background-color: white;
+    position: absolute;
+    right: 30px;
+    left: 30px;
+    bottom: 20px;
+    z-index: 1;
+    line-height: normal;
     font-size: initial;
     -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
@@ -143,11 +158,11 @@ img.Absolute-Center {
     position: relative;
     z-index: 1;
     line-height: normal;
-    border-radius: 5px;
+    border-radius: 4px;
     font-size: initial;
-    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
 }
 
 /*HOLYWOOD SQUARES*/
