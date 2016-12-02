@@ -4,28 +4,36 @@ var React = require('react');
 var _ = require("underscore");
 var Input = require('./input.js');
 var validator = require('validator')
-
 var ErrorMessage = require('./errorMessage'); // delete
 
 
-var SuggestData = React.createClass({
+var Form = React.createClass({
   getInitialState: function(){
     return {
+      name: '',
+      company: '',
       email: '', 
       password: '',
       confirmPassword: '',
+      token: '',
     };
   },
 
+  handleNameChange: function(e){ this.setState({ name: e.target.value }) },
+  handleCompanyChange: function(e){ this.setState({ company: e.target.value }) },
   handleEmailChange: function(e){ this.setState({ email: e.target.value }) },
   handlePasswordChange: function(e){ this.setState({ password: e.target.value }) },  
   handleConfirmPasswordChange: function(e){ this.setState({ confirmPassword: e.target.value }) },
+  handleConfirmToken: function(e){ this.setState({ token: e.target.value }) },
 
   validate: function(state){
     return {
+      name: (state.name.length >= 2),
+      company: (state.company.length >= 2),
       email: validator.isEmail(state.email),
       password: (state.password.length >= 8),
       confirmPassword: validator.equals(state.password, state.confirmPassword),
+      token: (state.token.length === 32),
     }
   },
 
@@ -45,13 +53,17 @@ var SuggestData = React.createClass({
   },
 
   render: function(){
+    var activeComponent = this.props.activeComponent
+    console.log('activeComponent',activeComponent)
     var valid = this.validate(this.state);
+    if (true)
     return (
       <div>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
-          <h1><span className="fa fa-sign-in"></span> test</h1>
+          <h1><span className="fa fa-sign-in"></span> Login</h1>
             <form className="" onSubmit={ this.handleSubmit }>
+
               <Input 
               valid={valid.email}
               value={this.state.email} 
@@ -66,22 +78,15 @@ var SuggestData = React.createClass({
               lable='Password'
               errorMessage='- must contain at least 8 characters'
               />        
-              <Input 
-              valid={valid.confirmPassword}
-              value={this.state.confirmPassword}
-              onChange={this.handleConfirmPasswordChange}
-              lable='Confirm Password'
-              errorMessage='- passwords do not match'
-              />
               {this.button()}
             </form>
             <hr/>
+            <p>Already have an account? <a onClick={ this.props.setActiveComponent.bind(null, 'signup') }>Signup</a></p>
           </div>    
         </div>    
       </div>
-            // <p>Already have an account? <a onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a></p>
     );
   }
 });
 
-module.exports = SuggestData;
+module.exports = Form;

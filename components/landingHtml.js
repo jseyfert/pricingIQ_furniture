@@ -6,13 +6,18 @@ var LandingHtml = React.createClass({
 
   render: function(){
       return (
+// <div className="w3-container w3-center w3-animate-top">
+// <div className="w3-container w3-center w3-animate-bottom">
 
         <div>
 
               <div className="container text-center">
+
+                
                  <h1 className="mainLogo">pricingIQ</h1>
-              <br/>
-                 <p className="lead whiteText">Product Pricing Done Right</p>
+
+                  <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
+
                  <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
                     <div className="form-group">
                       <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
@@ -20,10 +25,11 @@ var LandingHtml = React.createClass({
                     <button className="btn btn-warning btn-md">Extract</button>
                 </form>
               <br/>
+
+
               </div>
 
               <br/>
-
 
 
                <div className="container">
@@ -45,20 +51,25 @@ var LandingHtml = React.createClass({
                          </div>
                         </a>
                     </div>
+
                     <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
                         <a className="list-group-item" target="_blank" href="http://www.sears.com/">
-                          <div className="overlayRed">
-                            <span className="badge red">5 of 15</span>
-                            <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
-                            <span className="badge redDissabled">Offline for Maintenance</span>
+                          <div className="overlayOfflineText">
+                            <div className="overlayOffline">
+                              <span className="badge red">5 of 15</span>
+                              <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
+                            </div>
                           </div>
                         </a>
                     </div>
+
                     <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
                         <a className="list-group-item" target="_blank" href="http://www.homedepot.com/">
-                          <div className="overlayGreen">
-                            <span className="badge yellow">25 of 15</span>
-                            <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/TheHomeDepot.svg/176px-TheHomeDepot.svg.png" alt=""/>
+                          <div className="overlayWarningText">
+                            <div className="overlayGreen">
+                              <span className="badge yellow">25 of 15</span>
+                              <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/TheHomeDepot.svg/176px-TheHomeDepot.svg.png" alt=""/>
+                            </div>
                           </div>
                         </a>
                     </div>
@@ -68,10 +79,34 @@ var LandingHtml = React.createClass({
 
               <footer className="navbar-fixed-bottom">
                 <div className="container text-center whiteText">
-                  <a className="colorOrange">FAQ</a> | Want us to add a new Domain? <a className="colorOrange">Suggest One</a>
-                </div>
+                  <a className="colorOrange" onClick={ this.props.setActiveComponent.bind(null, 'faq') } >FAQ</a> | Want us to add a new Domain? <a className="colorOrange" data-toggle="modal" data-target="#exampleModal">Suggest One</a>
+                 </div>
                 <br/>
               </footer>
+
+
+<div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div className="modal-dialog" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 className="modal-title" id="exampleModalLabel">teset</h4>
+      </div>
+      <div className="modal-body">
+        <form>
+          <div className="form-group">
+            <label for="message-text" className="control-label">Message:</label>
+            <textarea className="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
 
         </div>
       )

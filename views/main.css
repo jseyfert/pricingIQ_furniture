@@ -1,32 +1,43 @@
-a.colorOrange{
-    color: #F0AD4E !important;
+body {
+  color: white;
 }
 
-a.colorOrange:hover {
+h1 span {
+  text-shadow: 2px 2px 4px #000000; /*login titles*/
+}
+
+h1.mainLogo {
+  font-size: 130px;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+a {
+  color: #F0AD4E !important;
+} 
+
+a:hover {
   color: #ED9C28 !important;
   cursor:pointer;
   text-decoration: none;
 }
 
-h1.mainLogo {
-    color: white;
-    font-size: 130px;
-    text-shadow: 2px 2px 4px #000000;
+.blackText {
+  color: black !important;
 }
 
-.whiteText {
-  color: white;
+.blackText:hover {
+  color: black !important;
+}
+
+a.blackText:hover {
+  color: black !important;
+  text-decoration: underline;
 }
 
 /*NAVBAR A TAGS*/
 a.navbarLink {
   position: relative;
-  color: #F0AD4E;
   text-decoration: none;
-}
-
-a.navbarLink:hover {
-  color: #ED9C28;
 }
 
 a.navbarLink:before {
@@ -61,6 +72,7 @@ a.list-group-item{
   margin: 0px;      
   height: 200px;
   overflow: auto;
+  border-radius: 0px !important;  /*THIS MAKE THE THE BOXES SQUARE*/
 }
 
 img.Absolute-Center {
@@ -74,20 +86,12 @@ img.Absolute-Center {
 }
 
 .grow:hover { 
-  transform: scale(1.02); 
+  transform: scale(1.03); 
   z-index: 1;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
 }
-
-/*.redBackground {
-  background-color: #F2DEDE;
-}
-
-.greenBackground {
-  background-color: #DFF0D8;
-}*/
 
 .overlayGreen:after {
   position: absolute;
@@ -100,7 +104,7 @@ img.Absolute-Center {
   background-color: green;
 }
 
-.overlayRed:after {
+.overlayOffline:after {
   position: absolute;
   content:"";
   top:0;
@@ -111,124 +115,148 @@ img.Absolute-Center {
   background-color: red;
 }
 
+.overlayOfflineText:hover:after {
+  content:"Offline";
+  font-weight: 700;
+  text-align: center;
+  font-size: -webkit-xxx-large;
+  z-index: 1;
+  position: absolute;
+  right: 30px;
+  left: 30px;
+  bottom: 65px;
+  color: white;
+  background-color: red;
+  opacity: .9;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px; 
+}
+
+.overlayWarningText:hover:after {
+  content:"Too Many - 1st 15 will be Processed";
+  font-weight: 700;
+  text-align: center;
+  font-size: x-large;
+  z-index: 1;
+  position: absolute;
+  right: 30px;
+  left: 30px;
+  bottom: 45px;
+  color: white;
+  background-color: #F0AD4E;
+  opacity: .9;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px; 
+}
+
 .badge.green {
-    /*color: black;*/
-    background-color: green;
-    position: relative;
-    z-index: 1;
-    line-height: normal;
-    border-radius: 4px;
-    font-size: initial;
-/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
+  background-color: green;
+  position: relative;
+  z-index: 1;
+  line-height: normal;
+  border-radius: 4px;
+  font-size: initial;
 }
 
 .badge.red {
-    /*color: black;*/
-    background-color: red;
-    position: relative;
-    z-index: 1;
-    line-height: normal;
-    border-radius: 4px;
-    font-size: initial;
-/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
-  }
-
-  .badge.redDissabled {
-    color: black;
-    background-color: white;
-    position: absolute;
-    right: 30px;
-    left: 30px;
-    bottom: 20px;
-    z-index: 1;
-    line-height: normal;
-    font-size: initial;
-    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  background-color: red;
+  position: relative;
+  z-index: 1;
+  line-height: normal;
+  border-radius: 4px;
+  font-size: initial;
   }
 
 .badge.yellow {
-    /*color: black;*/
-    background-color: #F0AD4E;
-    position: relative;
-    z-index: 1;
-    line-height: normal;
-    border-radius: 4px;
-    font-size: initial;
-/*    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
+  background-color: #F0AD4E;
+  position: relative;
+  z-index: 1;
+  line-height: normal;
+  border-radius: 4px;
+  font-size: initial;
 }
+
+/*<span className="badge redDissabled">Offline for Maintenance</span>
+.badge.redDissabled {
+  color: black;
+  background-color: white;
+  position: absolute;
+  right: 30px;
+  left: 30px;
+  bottom: 20px;
+  z-index: 1;
+  line-height: normal;
+  font-size: initial;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
+}*/
 
 /*HOLYWOOD SQUARES*/
 
-/*BACKGROUND ANIMATION*/
+
+/*BACKGROUND COLOR ANIMATION*/
 body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
   background-size: 400% 400%;
   animation: AnimationName 28s ease infinite;
 }
 @keyframes AnimationName { 
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 /*BACKGROUND ANIMATION*/
 
 
-
-
-
-
-/*////////*/
-/*////////*/
-/*below is all from dev - can delete*/
-/*////////*/
-/*////////*/
-
-/*
-.center {
-    margin: 0 auto;
-    width: 80%;
+/*FADE IN ON LOAD*/
+#fadeIn p {
+  margin-top: 25px;
+  font-size: 21px;
+  text-align: center;
+  animation: fadein 2s;
+  -moz-animation: fadein 2s; /* Firefox */
+  -webkit-animation: fadein 2s; /* Safari and Chrome */
+  -o-animation: fadein 2s; /* Opera */
 }
-
-hr.showHr {
-  border: 0;
-  clear:both;
-  display:block;
-  width: 100%;               
-  background-color: lightgrey;
-  height: 1px;
+@keyframes fadein {
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
 }
-
-.marginBottom { 
-  margin-bottom: 33px;
+@-moz-keyframes fadein { /* Firefox */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
 }
-
-.smallUrlText {
-  font-size: 66%;
+@-webkit-keyframes fadein { /* Safari and Chrome */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
 }
-
-.yellowText {
-  color: #F0AD4E;
+@-o-keyframes fadein { /* Opera */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity: 1;
+  }
 }
-
-li:hover {
-    background-color: #EEEEEE;
-}
-
-.greenHover:hover {
-    background-color: #DFF0D8;
-}
-
-.redHover:hover {
-    background-color: #EBCCCC;
-
-.label-as-badge {
-    border-radius: 1em;
-}*/
+/*FADE IN ON LOAD*/

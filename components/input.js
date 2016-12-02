@@ -26,7 +26,7 @@ var Input = React.createClass({
     }
     // wait until they start typing, and then stop
     else {
-      this.prepareToValidate = _.debounce(startValidation, 1000);
+      this.prepareToValidate = _.debounce(startValidation, 1500);
     }
   },
   
@@ -42,16 +42,19 @@ var Input = React.createClass({
     if (this.state.validationStarted) {
        if(this.props.valid){
         return (
-          <div className="form-group has-success">
-            <label className="control-label" for="inputSuccess1">{this.props.lable}</label>
-            <input 
-            {...this.props}
-            onChange={this.handleChange} 
-            type="text" 
-            className="form-control" 
-            id="inputError1"
-            />
-          </div>
+        <div className="form-group has-success has-feedback">
+          <label className="control-label" for="inputSuccess2">{this.props.lable}</label>
+          <input 
+          {...this.props}
+          onChange={this.handleChange} 
+          type="text" 
+          className="form-control" 
+          id="inputSuccess2" 
+          aria-describedby="inputSuccess2Status"
+          />
+          <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+          <span id="inputSuccess2Status" className="sr-only">(success)</span>
+        </div>
         );
        } else {
         return (

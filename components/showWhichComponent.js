@@ -10,16 +10,17 @@ var UserSignupData = require('./userSignupData.js');
 var ForgotPasswordData = require('./forgotPasswordData.js');
 var ConfirmTokenData = require('./confirmTokenData.js');
 var ResetPasswordData = require('./resetPasswordData.js');
-var SuggestData = require('./suggestData.js');
+var Form = require('./form.js');
+var Faq = require('./faq.js');
 
 
 var ShowWhichComponent = React.createClass({
   
   setActiveComponent: function() {
-    var activeComponent = this.props.activeComponent
+    var activeComponent = 'login' //this.props.activeComponent
     // console.log(this.props.allUrls);
     if (activeComponent === 'landing'){
-      return (
+       return (
         <div>
           <LandingData
           domainsLoading={ this.props.domainsLoading } 
@@ -65,7 +66,7 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'login'){
+    } else if(false){
       return (
         <div>
           <UserLoginData
@@ -122,7 +123,7 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'resetPassword'){
+    } else if(false){
       return (
         <div>
           <ResetPasswordData
@@ -133,13 +134,23 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'suggest'){
+    } else if(activeComponent === 'login' || activeComponent === 'resetPassword'){
       return (
         <div>
-          <SuggestData
+          <Form
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
+          activeComponent={ this.props.activeComponent }
           submitSuggestedDomains={ this.props.submitSuggestedDomains }
+          />
+        </div>
+        )
+    } else if(activeComponent === 'faq'){
+      return (
+        <div>
+          <Faq
+          message={ this.props.message }
+          setActiveComponent={ this.props.setActiveComponent }
           />
         </div>
         )

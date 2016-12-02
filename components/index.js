@@ -18,7 +18,7 @@ var Index = React.createClass({
       domainsLoading: true,
       user: null,
       message: null,
-      activeComponent: 'landing',
+      activeComponent: 'login',
       
       passwordResetToken: null,
       passwordResetEmail: null,
@@ -506,7 +506,7 @@ var Index = React.createClass({
     }).done(function(data){
       self.setState({ 
         user: data,
-        activeComponent: 'landing',
+        activeComponent: 'login',
         message: null,
         userLoading: false,
       });
@@ -670,7 +670,7 @@ var Index = React.createClass({
 
   componentWillMount: function(){
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.setState({  
         allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
         domainsLoading: false
@@ -678,11 +678,11 @@ var Index = React.createClass({
       if(!this.state.userLoading){
         this.runCreateUrlObj('dummyData');
       }
-    }, 600);
+    // }, 600);
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.getOneUserFromServer();
-    }, 100);
+    // }, 100);
   },
 
 	render: function(){
@@ -722,6 +722,7 @@ var Index = React.createClass({
         passwordResetCount={ this.state.passwordResetCount } 
         />
       </div>
+        // <Footer/>
   	)
 	}
 });

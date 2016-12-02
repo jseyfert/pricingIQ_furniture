@@ -7,8 +7,8 @@ var Footer = React.createClass({
     return (
       <div>
         <footer className="navbar-fixed-bottom">
-          <div className="container text-center">
-            <a href="#">FAQ</a> | Want us to add a new Domain? <a href="#">Suggest One</a>
+          <div className="container text-center whiteText">
+            <a className="colorOrange">FAQ</a> | Want us to add a new Domain? <a className="colorOrange">Suggest One</a>
           </div>
           <br/>
         </footer>
