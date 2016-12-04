@@ -75,6 +75,15 @@ var Faq = React.createClass({
   </div>
 </div> 
 
+
+<footer className="navbar-fixed-bottom">
+  <div className="container text-center whiteText">
+    <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
+   </div>
+  <br/>
+</footer>
+              
+
         </div>
       )
     }

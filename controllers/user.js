@@ -124,7 +124,7 @@ module.exports = {
       }
       if (!user) {
         res.json({
-          activeComponent: 'errorConfirmEmail',
+          activeComponent: 'confirmEmail',
           message: {message: 'Account with that email address does not exist.', alert: 'alert alert-danger'},
         })
       }
@@ -134,7 +134,7 @@ module.exports = {
         user.emailVerificationExpires = emailVerificationExpires;
         user.save((err) => {
           res.json({
-            activeComponent: 'errorConfirmEmail',
+            activeComponent: 'confirmEmail',
             message: null,
           })
         });

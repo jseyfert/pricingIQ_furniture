@@ -11,6 +11,14 @@ h1.mainLogo {
   text-shadow: 2px 2px 4px #000000;
 }
 
+label.control-label.red {
+  text-shadow: .5px .5px .5px #461c1c;
+}
+
+label.control-label.green {
+  text-shadow: .5px .5px .5px #9c9c9c;
+}
+
 a {
   color: #F0AD4E !important;
 } 
@@ -24,7 +32,7 @@ a:hover {
 .blackText {
   color: black !important;
 }
-
+`
 .blackText:hover {
   color: black !important;
 }
@@ -33,6 +41,27 @@ a.blackText:hover {
   color: black !important;
   text-decoration: underline;
 }
+
+.badge.greenBackground {
+  background-color: green;
+}
+.badge.yellowBackground {
+  background-color: #8A6D3B;
+}
+.badge.redBackground {
+  background-color: #A94442;
+}
+.greenText {
+  color: green;
+}
+.yellowText {
+  color: #8A6D3B;
+}
+.redText {
+  color: #A94442;
+}
+
+
 
 /*NAVBAR A TAGS*/
 a.navbarLink {
@@ -82,11 +111,11 @@ img.Absolute-Center {
 }
 
 .grow { 
-  transition: all .2s ease-in-out; 
+  transition: all .15s ease-in-out; 
 }
 
 .grow:hover { 
-  transform: scale(1.03); 
+  transform: scale(1.04); 
   z-index: 1;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
@@ -207,7 +236,7 @@ img.Absolute-Center {
 body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
   background-size: 400% 400%;
-  animation: AnimationName 28s ease infinite;
+  animation: AnimationName 17s ease infinite;
 }
 @keyframes AnimationName { 
   0%{background-position:0% 50%}

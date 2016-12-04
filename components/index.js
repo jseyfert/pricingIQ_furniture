@@ -1,14 +1,13 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-
 var ShowWhichComponent = require('./showWhichComponent.js');
-var Header = require('./header.js');
-var Footer = require('./footer.js');
+var Header = require('./partialComps/header.js');
+var Footer = require('./partialComps/footer.js');
+
 var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
-// console.log('process.env', process.env);
 
 var Index = React.createClass({
 	
@@ -18,7 +17,7 @@ var Index = React.createClass({
       domainsLoading: true,
       user: null,
       message: null,
-      activeComponent: 'login',
+      activeComponent: 'landing',
       
       passwordResetToken: null,
       passwordResetEmail: null,
@@ -232,7 +231,7 @@ var Index = React.createClass({
         var user = data.user
         self.setState({ 
           user: user,
-          activeComponent: 'errorConfirmEmail',
+          activeComponent: 'confirmEmail',
           message: { message: 'Please check email to verify user.', alert: 'alert alert-info' },
         })
         self.runCreateUrlObj(text)
@@ -293,7 +292,7 @@ var Index = React.createClass({
         })
       } else if (!verified) {
         this.setState({
-          activeComponent: 'errorConfirmEmail',
+          activeComponent: 'confirmEmail',
           message: { message: 'You have not yet verified your email. Please check your email.',  alert: "alert alert-danger" }
         })
       } else if (submittedToday) {
@@ -368,7 +367,7 @@ var Index = React.createClass({
 
         if (!verified) {
           self.setState({ 
-            activeComponent: 'errorConfirmEmail',
+            activeComponent: 'confirmEmail',
             message: { message: 'You have not yet verified your email. Please check your email.', alert: "alert alert-danger" },
           })
         } else if (noUrls){
@@ -439,7 +438,7 @@ var Index = React.createClass({
       self.setState({ user: data })
       if (!verified) {
         self.setState({ 
-          activeComponent: 'errorConfirmEmail',
+          activeComponent: 'confirmEmail',
           message: { message: 'User has not been verified. Please check your email.', alert: "alert alert-danger" },
         })
       } else if (noUrls) {
@@ -506,7 +505,7 @@ var Index = React.createClass({
     }).done(function(data){
       self.setState({ 
         user: data,
-        activeComponent: 'login',
+        activeComponent: 'landing',
         message: null,
         userLoading: false,
       });

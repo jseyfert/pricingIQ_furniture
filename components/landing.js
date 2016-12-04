@@ -1,8 +1,8 @@
 var React = require('react');
-var ErrorMessage = require('./errorMessage');
+var Message = require('./partialComps/message');
 var _ = require("underscore");
 
-var LandingHtml = React.createClass({
+var Landing = React.createClass({
 
   render: function(){
       return (
@@ -238,5 +238,5 @@ var LandingHtml = React.createClass({
   // }
 });
 
-module.exports = LandingHtml;
+module.exports = Landing;
 

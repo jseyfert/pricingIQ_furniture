@@ -1,6 +1,6 @@
 
 var React = require('react');
-var LogoutUser = require('./userLogout.js');
+// var LogoutUser = require('./userLogout.js');
 
 var Footer = React.createClass({
   render: function(){

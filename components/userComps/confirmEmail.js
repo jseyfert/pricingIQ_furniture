@@ -1,8 +1,8 @@
 
 var React = require('react');
-var ErrorMessage = require('./errorMessage');
+var Message = require('../partialComps/message');
 
-var ErrorConfirmEmail = React.createClass({
+var ConfirmEmail = React.createClass({
 
   render: function(){
     var emailVerification = this.props.emailVerification;
@@ -13,7 +13,7 @@ var ErrorConfirmEmail = React.createClass({
     return(
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3 text-center">
-            <ErrorMessage message={this.props.message} />
+            <Message message={this.props.message} />
             <button className="btn btn-info btn-lg btn-block" onClick={ emailVerification } >Click here after account verification</button>
             <hr/>
             {displayEmailVerificationResend}
@@ -23,4 +23,4 @@ var ErrorConfirmEmail = React.createClass({
   }
 });
 
-module.exports = ErrorConfirmEmail;
+module.exports = ConfirmEmail;

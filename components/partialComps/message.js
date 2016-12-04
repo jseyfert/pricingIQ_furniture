@@ -1,7 +1,7 @@
 
 var React = require('react');
 
-var ErrorMessage = React.createClass({
+var Message = React.createClass({
 
   render: function(){
   if(this.props.message){
@@ -24,4 +24,4 @@ var ErrorMessage = React.createClass({
   }
 });
 
-module.exports = ErrorMessage;
+module.exports = Message;

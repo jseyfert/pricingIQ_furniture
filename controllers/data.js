@@ -26,7 +26,7 @@ module.exports = {
                   // console.log('success!!!!!!!!');
                   res.json({
                     user: user,
-                    activeComponent: 'confirm'
+                    activeComponent: 'displayUrls'
                   })
                 }
             });

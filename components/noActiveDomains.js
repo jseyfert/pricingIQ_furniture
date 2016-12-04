@@ -1,7 +1,7 @@
 
 var React = require('react');
 var _ = require("underscore");
-var ErrorMessage = require('./errorMessage');
+var Message = require('./partialComps/message');
 
 var ErrorNoActiveDomains = React.createClass({
 
@@ -38,7 +38,7 @@ var ErrorNoActiveDomains = React.createClass({
       <div>
         <div className="container">
           <div className="jumbotron">
-          <ErrorMessage message={this.props.message} />
+          <Message message={this.props.message} />
             <hr className="showHr"/>
             <div className="container-fluid">
               <div className="row">

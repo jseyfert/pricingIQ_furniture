@@ -1,28 +1,28 @@
 var React = require('react');
 
-var LandingData = require('./landingData.js');
-var ErrorSubmittedToday = require('./errorSubmittedToday.js');
-var ErrorNoActiveDomains = require('./errorNoActiveDomains.js');
-var ErrorConfirmEmail = require('./errorConfirmEmail.js');
-var ConfirmData = require('./confirmData.js');
-var UserLoginData = require('./userLoginData.js');
-var UserSignupData = require('./userSignupData.js');
-var ForgotPasswordData = require('./forgotPasswordData.js');
-var ConfirmTokenData = require('./confirmTokenData.js');
-var ResetPasswordData = require('./resetPasswordData.js');
-var Form = require('./form.js');
+var ConfirmEmail = require('./userComps/confirmEmail.js');
+var ConfirmToken = require('./userComps/confirmToken.js');
+var ForgotPassword = require('./userComps/forgotPassword.js');
+var Login = require('./userComps/login.js');
+var ResetPassword = require('./userComps/resetPassword.js');
+var Signup = require('./userComps/signup.js');
+
+var DisplayUrls = require('./displayUrls.js');
 var Faq = require('./faq.js');
+var Landing = require('./landing.js');
+var NoActiveDomains = require('./noActiveDomains.js');
+var SubmittedToday = require('./submittedToday.js');
 
 
 var ShowWhichComponent = React.createClass({
   
   setActiveComponent: function() {
-    var activeComponent = 'login' //this.props.activeComponent
+    var activeComponent = this.props.activeComponent
     // console.log(this.props.allUrls);
     if (activeComponent === 'landing'){
        return (
         <div>
-          <LandingData
+          <Landing
           domainsLoading={ this.props.domainsLoading } 
           userLoading={ this.props.userLoading } 
           message={ this.props.message } 
@@ -39,7 +39,7 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'submittedToday'){
       return (
         <div>
-          <ErrorSubmittedToday
+          <SubmittedToday
           message={ this.props.message }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
@@ -49,27 +49,27 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'noActiveDomains'){
       return (
         <div>
-          <ErrorNoActiveDomains
+          <NoActiveDomains
           message={ this.props.message }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
           />
         </div>
         )
-    } else if(activeComponent === 'confirm'){
+    } else if(activeComponent === 'displayUrls'){
       return (
         <div>
-          <ConfirmData
+          <DisplayUrls
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
           />
         </div>
         )
-    } else if(false){
+    } else if(activeComponent === 'login'){
       return (
         <div>
-          <UserLoginData
+          <Login
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           loginUserFromServer={ this.props.loginUserFromServer }
@@ -80,7 +80,7 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'signup'){
       return (
         <div>
-          <UserSignupData
+          <Signup
           message={ this.props.message }
           allDomains={ this.props.allDomains }
           signupUserFromServer={ this.props.signupUserFromServer }
@@ -88,10 +88,10 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'errorConfirmEmail'){
+    } else if(activeComponent === 'confirmEmail'){
       return (
         <div>
-          <ErrorConfirmEmail
+          <ConfirmEmail
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
           emailVerification={ this.props.emailVerification }
@@ -103,7 +103,7 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'forgotPassword'){
       return (
         <div>
-          <ForgotPasswordData
+          <ForgotPassword
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
           forgotPassword={ this.props.forgotPassword }
@@ -113,7 +113,7 @@ var ShowWhichComponent = React.createClass({
     } else if(activeComponent === 'confirmToken'){
       return (
         <div>
-          <ConfirmTokenData
+          <ConfirmToken
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
           verifyPasswordReset={ this.props.verifyPasswordReset }
@@ -123,25 +123,14 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(false){
+    } else if(activeComponent === 'resetPassword'){
       return (
         <div>
-          <ResetPasswordData
+          <ResetPassword
           message={ this.props.message }
           setActiveComponent={ this.props.setActiveComponent }
           resetPassword={ this.props.resetPassword }
           resetToken={ this.props.resetToken }
-          />
-        </div>
-        )
-    } else if(activeComponent === 'login' || activeComponent === 'resetPassword'){
-      return (
-        <div>
-          <Form
-          message={ this.props.message }
-          setActiveComponent={ this.props.setActiveComponent }
-          activeComponent={ this.props.activeComponent }
-          submitSuggestedDomains={ this.props.submitSuggestedDomains }
           />
         </div>
         )
