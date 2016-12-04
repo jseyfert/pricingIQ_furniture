@@ -68,6 +68,16 @@ var ConfirmHtml = React.createClass({
   render: function(){
     return (
 <div>
+
+<div className="container text-center">
+  <h1 className="mainLogo">pricingIQ</h1>
+  <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
+  <br/>
+</div>
+
+<br/>
+
+
 <div className="container">   
 
     <div className="panel-group" id="faqAccordion3">

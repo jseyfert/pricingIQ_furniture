@@ -232,7 +232,7 @@ var Index = React.createClass({
         self.setState({ 
           user: user,
           activeComponent: 'confirmEmail',
-          message: { message: 'Please check email to verify user.', alert: 'alert alert-info' },
+          message: { message: 'Please check email to verify user.', alert: 'alert alert-danger' },
         })
         self.runCreateUrlObj(text)
       },
@@ -303,12 +303,12 @@ var Index = React.createClass({
       } else if (noActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You did not submit any active domains',  alert: "alert alert-info" }
+          message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" }
       })
       } else if (noUrlsFromActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-info" }
+          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
       })
       } else {
         this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
@@ -383,12 +383,12 @@ var Index = React.createClass({
         } else if (noActiveDomains){
           self.setState({ 
             activeComponent: 'noActiveDomains',
-            message: { message: 'You did not submit any active domains',  alert: "alert alert-info" }
+            message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" }
           })
         } else if (noUrlsFromActiveDomains){
           self.setState({ 
             activeComponent: 'noActiveDomains',
-            message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-info" }
+            message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
           })
         } else {
           self.submitUrlsID(user, allUrls);  /////////////////////////////////////////////////////////
@@ -449,12 +449,12 @@ var Index = React.createClass({
       }else if (noActiveDomains){
         self.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You did not submit any active domains',  alert: "alert alert-info" },
+          message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" },
         })
       } else if (noUrlsFromActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-info" },
+          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" },
       })
       } else {
         self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
