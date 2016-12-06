@@ -1,6 +1,7 @@
 
 var React = require('react');
 var _ = require("underscore");
+var Logo = require('./partialComps/logo');
 
 var ConfirmHtml = React.createClass({
 
@@ -69,14 +70,9 @@ var ConfirmHtml = React.createClass({
     return (
 <div>
 
-<div className="container text-center">
-  <h1 className="mainLogo">pricingIQ</h1>
-  <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
-  <br/>
-</div>
+<Logo delay={false} /> 
 
 <br/>
-
 
 <div className="container">   
 
@@ -132,7 +128,6 @@ var ConfirmHtml = React.createClass({
       </div>
     </div>
 
-
     <div className="panel-group" id="faqAccordion4">
       <div className="panel panel-warning">
         <li className="list-group-item list-group-item-warning" data-toggle="collapse" data-parent="#faqAccordion4" data-target="#question6">
@@ -150,7 +145,7 @@ var ConfirmHtml = React.createClass({
               <span className="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
               https://www.amazon.com/TCL-32S3800-32-Inch-Smart-Model/dp/B00UB9UJBA/ref=sr_1_2?s=tv&ie=UTF8&qid=1477108424&sr=1-2&keywords=tvs
             </li> 
-            <li className="list-group-item redText" data-toggle="collapse" data-parent="#faqAccordion5" data-target="#question7">
+            <li className="list-group-item redText" data-toggle="collapse" data-parent="#faqAccordion4" data-target="#question6">
               <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
               https://www.amazon.com/TCL-32S3800-32-Inch-Smart-Model/dp/B00UB9UJBA/ref=sr_1_2?s=tv&ie=UTF8&qid=1477108424&sr=1-2&keywords=tvs
             </li>  
@@ -159,8 +154,6 @@ var ConfirmHtml = React.createClass({
       </div>
     </div>
 
-
-
 </div>
 </div>
 
@@ -168,29 +161,5 @@ var ConfirmHtml = React.createClass({
   }
 });
 
-
-
 module.exports = ConfirmHtml;
-
-
-      // <div>
-      //   <div className="container">
-      //     <div className="jumbotron">
-      //        <h1>Thank You</h1>
-      //        <p>Please check your email to recieve your data</p>
-      //        <hr className="showHr"/>
-      //        { this.displayRow() }
-      //     </div>
-      //   </div>
-      // </div>
-
-
-
-
-
-
-
-
-
-
 

@@ -1,4 +1,5 @@
 var React = require('react');
+var Logo = require('./partialComps/logo');
 
 var Faq = React.createClass({
 
@@ -6,11 +7,7 @@ var Faq = React.createClass({
       return (
         <div>
 
-<div className="container text-center">
-  <h1 className="mainLogo">pricingIQ</h1>
-  <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
-  <br/>
-</div>
+<Logo delay={true} />
 
 <br/>
 
@@ -76,12 +73,6 @@ var Faq = React.createClass({
 </div> 
 
 
-<footer className="navbar-fixed-bottom">
-  <div className="container text-center whiteText">
-    <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
-   </div>
-  <br/>
-</footer>
               
 
         </div>
@@ -91,3 +82,9 @@ var Faq = React.createClass({
 
 module.exports = Faq;
 
+// <footer className="navbar-fixed-bottom">
+//   <div className="container text-center whiteText">
+//     <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
+//    </div>
+//   <br/>
+// </footer>

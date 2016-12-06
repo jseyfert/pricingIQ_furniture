@@ -6,7 +6,8 @@ var Header = React.createClass({
 
   render: function(){
     var userLoading = this.props.userLoading
-    // console.log('userLoading',userLoading);
+    var activeComponent = this.props.activeComponent
+    var user = this.props.user
     if(userLoading) {
       return (
         <div>
@@ -15,19 +16,47 @@ var Header = React.createClass({
             </div>
         </div>
         )
-    } else {
-     // <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
-     // <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
-    var isLoggedIn = (this.props.user.user === 'anonymous') ? <p className="navbar-text navbar-right"><a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a>
-     </p> : <p className="navbar-text navbar-right navbarLink">Welcome { this.props.user.user } - <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }> Logout</a> 
-     </p>
-    return (
-      <div>
+    } else if(activeComponent === 'faq') {
+      if (this.props.user.user !== 'anonymous'){
+        return(
           <div className="container">
-              { isLoggedIn }
+            <p className="navbar-text navbar-right navbarLink">
+              Welcome { this.props.user.user }&nbsp;
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
+              <span className="makeOrange"> | </span>
+              <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }>Logout</a> 
+            </p>
           </div>
-      </div>
-    )
+        )
+      } else {
+        return(
+          <div className="container">
+            <p className="navbar-text navbar-right">
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
+              <span className="makeOrange"> | </span>
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a>
+            </p> 
+          </div>
+        )
+      }
+    } else {
+      if (this.props.user.user !== 'anonymous'){
+        return(
+          <div className="container">
+            <p className="navbar-text navbar-right navbarLink">
+              Welcome { this.props.user.user } <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }>Logout</a> 
+            </p>
+          </div>
+        )
+      } else {
+        return(
+          <div className="container">
+            <p className="navbar-text navbar-right">
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'login') }>Login</a>
+            </p> 
+          </div>
+        )
+      }
     }
   }
 });

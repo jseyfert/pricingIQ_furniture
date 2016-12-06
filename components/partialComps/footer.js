@@ -5,14 +5,12 @@ var React = require('react');
 var Footer = React.createClass({
   render: function(){
     return (
-      <div>
-        <footer className="navbar-fixed-bottom">
-          <div className="container text-center whiteText">
-            <a className="colorOrange">FAQ</a> | Want us to add a new Domain? <a className="colorOrange">Suggest One</a>
-          </div>
-          <br/>
-        </footer>
-      </div>
+      <footer className="navbar-fixed-bottom">
+        <div className="container text-center whiteText">
+          <a onClick={ this.props.setActiveComponent.bind(null, 'faq') } >FAQ</a> | Want us to add a new Domain? <a data-toggle="modal" data-target="#exampleModal">Suggest One</a>
+        </div>
+        <br/>
+      </footer>
     )
   }
 });

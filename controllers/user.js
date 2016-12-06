@@ -280,14 +280,6 @@ module.exports = {
     }); 
   },
 
-  // suggest: function(req, res){
-  //   var domains = req.body.domains;
-  //   console.log('in server - these domains have been sent to the server\n', domains);
-  //   res.json({
-  //     message: {message: 'Your domain suggestions were sent', alert: "alert alert-success"},
-  //     activeComponent: 'landing',
-  //   })
-  // },
 
 };
 

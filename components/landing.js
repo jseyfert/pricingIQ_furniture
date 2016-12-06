@@ -1,171 +1,61 @@
 var React = require('react');
-var Message = require('./partialComps/message');
 var _ = require("underscore");
+
+var Message = require('./partialComps/message');
+var Logo = require('./partialComps/logo');
+var ModalDialog = require('./partialComps/modalDialog');
+var Footer = require('./partialComps/footer');
+var DomainInfo = require('../userConfig/domainInfo.js');
+var DomainRed = require('./partialComps/domainRed');
+var DomainWhite = require('./partialComps/domainWhite');
+var DomainGreen = require('./partialComps/domainGreen');
+var DomainYellow = require('./partialComps/domainYellow');
 
 var Landing = React.createClass({
 
-  render: function(){
-      return (
-// <div className="w3-container w3-center w3-animate-top">
-// <div className="w3-container w3-center w3-animate-bottom">
+  displayDomains: function(){
+    var user = (this.props.user.user !== 'anonymous') ? this.props.user : false
+    var allUrls = this.props.allUrls;
+    var rows = [];
 
-        <div>
-
-              <div className="container text-center">
-
-                
-                 <h1 className="mainLogo">pricingIQ</h1>
-
-                  <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
-
-                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-                    <div className="form-group">
-                      <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
-                    </div>
-                    <button className="btn btn-warning btn-md">Extract</button>
-                </form>
-              <br/>
-
-
-              </div>
-
-              <br/>
-
-
-               <div className="container">
-                <br/>
-                  <div className="row">
-
-
-                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-                        <a href="#" className="list-group-item" target="_blank" href="https://www.amazon.com/">
-                            <img className="img-responsive Absolute-Center"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png" alt=""/>
-                        </a>
-                    </div>
-
-                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-                        <a className="list-group-item" target="_blank" href="https://www.walmart.com/">
-                          <div className="overlayGreen">
-                            <span className="badge green">5 of 15</span>
-                            <img className="img-responsive Absolute-Center"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Wal-Mart_logo.svg/200px-Wal-Mart_logo.svg.png" alt=""/>
-                         </div>
-                        </a>
-                    </div>
-
-                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-                        <a className="list-group-item" target="_blank" href="http://www.sears.com/">
-                          <div className="overlayOfflineText">
-                            <div className="overlayOffline">
-                              <span className="badge red">5 of 15</span>
-                              <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Sears_logo_2010-present.svg/170px-Sears_logo_2010-present.svg.png" alt=""/>
-                            </div>
-                          </div>
-                        </a>
-                    </div>
-
-                    <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-                        <a className="list-group-item" target="_blank" href="http://www.homedepot.com/">
-                          <div className="overlayWarningText">
-                            <div className="overlayGreen">
-                              <span className="badge yellow">25 of 15</span>
-                              <img className="img-responsive Absolute-Center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/TheHomeDepot.svg/176px-TheHomeDepot.svg.png" alt=""/>
-                            </div>
-                          </div>
-                        </a>
-                    </div>
-
-                </div>
-              </div> 
-
-              <footer className="navbar-fixed-bottom">
-                <div className="container text-center whiteText">
-                  <a className="colorOrange" onClick={ this.props.setActiveComponent.bind(null, 'faq') } >FAQ</a> | Want us to add a new Domain? <a className="colorOrange" data-toggle="modal" data-target="#exampleModal">Suggest One</a>
-                 </div>
-                <br/>
-              </footer>
-
-
-<div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div className="modal-dialog" role="document">
-    <div className="modal-content">
-      <div className="modal-header">
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 className="modal-title" id="exampleModalLabel">teset</h4>
-      </div>
-      <div className="modal-body">
-        <form>
-          <div className="form-group">
-            <label for="message-text" className="control-label">Message:</label>
-            <textarea className="form-control" id="message-text"></textarea>
-          </div>
-        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Send message</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-        </div>
-      )
-    }
-
-  /////////////////////////////
-
-
-
-  // displayDomains: function(){
-  //   var user = (this.props.user.user !== 'anonymous') ? this.props.user : false
-  //   // if(!user){ return null; }
-  //   var allUrls = this.props.allUrls;
-  //   var rows = [];
-
-  //   allUrls.map(function(arr){
-  //     // console.log(arr)
-  //     if(arr.domainOffered && !user){
-  //       rows.push(              
-  //         <div className="col-lg-4 col-md-6 col-xs-12 marginBottom" key={arr.domain}>
-  //            <h3> {arr.domain}</h3>
-  //           <ul>
-  //             <li>domainActive: {arr.domainActive.toString()}</li>
-  //             <li>current url count: {arr.urlCount}</li>
-  //           </ul>
-  //         </div>
-  //       )
-  //     }else if(arr.domainOffered){
-  //       if(!arr.domainActive){
-  //         rows.push(              
-  //           <div className="col-lg-4 col-md-6 col-xs-12 marginBottom" key={arr.domain}>
-  //              <h3> {arr.domain}</h3>
-  //             <ul>
-  //               <li>domainActive: {arr.domainActive.toString()}</li>
-  //               <li>count left to submit: </li>
-  //               <li>current url count: </li>
-  //               <li>count we will submit now: </li>
-  //               <li>count after this submit: </li>
-  //             </ul>
-  //           </div>
-  //         )
-  //       } else {
-  //       rows.push(              
-  //         <div className="col-lg-4 col-md-6 col-xs-12 marginBottom" key={arr.domain}>
-  //            <h3> {arr.domain}</h3>
-  //             <ul>
-  //               <li>domainActive: {arr.domainActive.toString()}</li>
-  //               <li>count left to submit: {arr.countLeftToSubmit}</li>
-  //               <li>current url count: {arr.urlCount}</li>
-  //               <li>count to submit now: {arr.countToSubmitNow}</li>
-  //               <li>count after this submit: {arr.countLeftAfterSubmit}</li>
-  //             </ul>
-  //         </div>
-  //       )
-  //       }
-  //   }
-  //   })
-  //   return rows;
-  // },
+    allUrls.map(function(obj){
+      var domain = obj.domain
+      var domainActive = obj.domainActive
+      var domainOffered = obj.domainOffered
+      var urlCount = obj.urlCount
+      // console.log( 'domainActive', obj.countLeftToSubmit)
+      if(user){
+        if(domainOffered){
+          if(domainActive && obj.countLeftToSubmit > 0){
+            if(urlCount === 0){
+              rows.push( <DomainWhite obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            } else if (urlCount > 15 || urlCount > obj.countLeftToSubmit) {
+              rows.push( <DomainYellow obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            } else {
+              rows.push( <DomainGreen obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            }
+          } else {
+            rows.push( <DomainRed obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+          }
+        }
+      } else {
+        if(domainOffered){
+          if(domainActive){
+            if(urlCount === 0){
+              rows.push( <DomainWhite obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            } else if (urlCount > 15) {
+              rows.push( <DomainYellow obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            } else {
+              rows.push( <DomainGreen obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+            }
+          } else {
+            rows.push( <DomainRed obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
+          }
+        }
+      }
+    })  
+    return rows;
+  },
 
   // showErrorMessage: function(){
   //   var errorMessage = (this.props.message) ? this.props.message.message : null;
@@ -176,66 +66,96 @@ var Landing = React.createClass({
   //       )
   // },
 
-  // render: function(){
-  //   var domainsLoading= this.props.domainsLoading
-  //   var userLoading = this.props.userLoading
-  //   // console.log('domainsLoading', domainsLoading, 'userLoading', userLoading)
-  //   if (domainsLoading || userLoading){
-  //     return (
-  //       <div>
-  //         <div className="container">
-  //             <div className="jumbotron">
-  //              <h1>PricingIQ</h1>
-  //              <p>Drive data insight with the world's #1 web data platform.</p>
-  //              <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-  //               <div className="form-group">
-  //               <textarea className="form-control" name="rawText" rows="1" cols="44" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
-  //               </div>
-  //               <button className="btn btn-warning btn-md">Submit</button>
-  //               {this.showErrorMessage()}
-  //             </form>
-  //             <br/>
-  //             <div className="row text-center">
-  //               <hr className="showHr"/>
-  //               <br/>
-  //               <span className="glyphicon glyphicon-refresh spin" aria-hidden="true"></span>
-  //             </div>
-  //         </div>
-  //              </div>
-  //             <div className="col-lg-12 col-md-12 col-xs-12">
-  //               <p className="text-center">Dont see your domain? <a onClick={ this.props.setActiveComponent.bind(null, 'suggest') }>Suggest one.</a></p>
-  //           </div>
-  //       </div>
-  //     )
-  //   } else{
-  //     return (
-  //       <div>
-  //         <div className="container">
-  //             <div className="jumbotron">
-  //              <h1>PricingIQ</h1>
-  //              <p>Drive data insight with the world's #1 web data platform.</p>
-  //              <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-  //               <div className="form-group">
-  //               <textarea className="form-control" name="rawText" rows="1" cols="44" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
-  //               </div>
-  //               <button className="btn btn-warning btn-md">Submit</button>
-  //               {this.showErrorMessage()}
-  //             </form>
-  //             <br/>
-  //             <div className="row">
-  //               <hr className="showHr"/>
-  //               <br/>
-  //               { this.displayDomains() }
-  //             </div>
-  //         </div>
-  //              </div>
-  //             <div className="col-lg-12 col-md-12 col-xs-12">
-  //               <p className="text-center">Dont see your domain? <a onClick={ this.props.setActiveComponent.bind(null, 'suggest') }>Suggest one.</a></p>
-  //           </div>
-  //       </div>
-  //     )
-  //   }
-  // }
+  render: function(){
+    // console.log('this.props.submitSuggestedDomains2',this.props.submitSuggestedDomains);
+      var domainsLoading= this.props.domainsLoading
+      var userLoading = this.props.userLoading
+      // console.log('domainsLoading', domainsLoading, 'userLoading', userLoading)
+      if (domainsLoading || userLoading){
+        return (
+          <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            <Logo delay={true} />
+            
+            <div className="container text-center">
+                <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
+                  <div className="form-group">
+                    <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } disabled/>
+                  </div>
+                  <button className="btn btn-warning btn-md disabled" disabled>Extract</button>
+                </form>
+              <br/>
+            </div>
+              <br/>
+            <div className="container">
+              <br/>
+              <br/>
+              <br/>
+              <div className="row text-center">
+                <i className="fa fa-spinner w3-spin" style={{fontSize:'44px'}}></i>
+              </div>
+            </div> 
+            <ModalDialog/>
+            <Footer setActiveComponent={ this.props.setActiveComponent } />
+          </div>
+        )
+      } else{
+        return (
+          <div>
+
+
+
+
+
+
+            <ModalDialog submitSuggestedDomains={ this.props.submitSuggestedDomains }/>
+
+
+
+          
+            <Logo delay={false} />
+
+
+            <div className="container text-center">
+                <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
+                  <div className="form-group">
+                    <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
+                  </div>
+                  <button className="btn btn-warning btn-md">Extract</button>
+                  <Message message={this.props.message} />
+                </form>
+              <br/>
+            </div>
+
+
+
+
+
+              <br/>
+            <div className="container">
+              <br/>
+              <div className="row">
+                {this.displayDomains()}
+              </div>
+            </div> 
+            <Footer setActiveComponent={ this.props.setActiveComponent } />
+          </div>
+        )
+      }
+    }
 });
 
 module.exports = Landing;

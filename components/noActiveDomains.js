@@ -2,8 +2,9 @@
 var React = require('react');
 var _ = require("underscore");
 var Message = require('./partialComps/message');
+var Logo = require('./partialComps/logo');
 
-var ErrorNoActiveDomains = React.createClass({
+var NoActiveDomains = React.createClass({
 
   displayRowsAvailable: function(){
     var rows = [];
@@ -12,7 +13,7 @@ var ErrorNoActiveDomains = React.createClass({
     allDomains.map(function(arr){
       if (arr[1] === true) {
         rows.push( 
-          <li className="list-group-item text-center greenHover greenText">
+          <li className="list-group-item text-center greenHover greenText" key={ arr[0] }>
             { arr[0] }
             <span className="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
           </li> 
@@ -29,28 +30,68 @@ var ErrorNoActiveDomains = React.createClass({
     allUrls.map(function(obj){
       if (!obj.domainActive && obj.urlCount > 0){
         rows.push( 
-          <li className="list-group-item text-center redText">
+          <li className="list-group-item text-center redText" key={ obj.domain }>
             { obj.domain }
             <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
           </li> 
           )
       } 
     })
-    return rows;
+    if (rows.length > 0){
+      return (
+        <div className="panel panel-danger"> 
+          <div className="panel-heading"> 
+            <h3 className="panel-title text-center">
+              <strong>Offline Domains:</strong>
+            </h3> 
+          </div> 
+          <div className="list-group"> 
+            { rows }
+          </div> 
+        </div>
+      )
+    }
+  },
+
+ displayRowsLimitReached: function(){
+    var rows = [];
+    var allUrls = this.props.allUrls;
+
+    allUrls.map(function(obj){
+      console.log(obj)
+      if (obj.domainActive && obj.countLeftToSubmit === 0 && obj.urlCount > 0){
+        rows.push( 
+          <li className="list-group-item text-center redText" key={ obj.domain }>
+            { obj.domain }
+            <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+          </li> 
+          )
+      } 
+    })
+    if (rows.length > 0){
+      return (
+        <div className="panel panel-danger"> 
+          <div className="panel-heading"> 
+            <h3 className="panel-title text-center">
+              <strong>Limit Reached:</strong>
+            </h3> 
+          </div> 
+          <div className="list-group"> 
+            { rows }
+          </div> 
+        </div>
+      )
+    }
   },
 
   render: function(){
 
     return (
     <div>
+
+      <Logo delay={true} /> 
+
       <div className="container">
-
-        <div className="container text-center">
-          <h1 className="mainLogo">pricingIQ</h1>
-          <div id="fadeIn"><p className="lead whiteText">Product Pricing Done Right</p></div>
-          <br/>
-        </div>
-
         <br/>
 
         <div className="container">
@@ -62,23 +103,15 @@ var ErrorNoActiveDomains = React.createClass({
                 </div>
 
                 <div className="col-lg-6">
-                  <div className="panel panel-danger"> 
-                    <div className="panel-heading"> 
-                      <h3 className="panel-title text-center">
-                        <strong>Inactive Domains you submitted:</strong>
-                      </h3> 
-                    </div> 
-                    <div className="list-group"> 
-                      { this.displayRowsNotAvailable() }
-                    </div> 
-                  </div>
-                </div>
+                  { this.displayRowsNotAvailable() }
+                  { this.displayRowsLimitReached() }
+                </div>  
 
                 <div className="col-lg-6">
                   <div className="panel panel-success"> 
                     <div className="panel-heading"> 
                       <h3 className="panel-title text-center">
-                        <strong>Active Domains you can submit:</strong>
+                        <strong>Online Domains:</strong>
                       </h3> 
                     </div> 
                     <div className="list-group"> 
@@ -98,4 +131,4 @@ var ErrorNoActiveDomains = React.createClass({
   }
 });
 
-module.exports = ErrorNoActiveDomains;
+module.exports = NoActiveDomains;

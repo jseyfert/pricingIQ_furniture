@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Suggest = require('../models/suggest.js');
 
 module.exports = {
 
@@ -41,6 +42,23 @@ module.exports = {
   submitUrlsNoId: function(req, res){
     console.log('*/*/*/*/*/* submit urls witout id */*/*/*/*', req.body.urls);
     res.json({ activeComponent: 'login' })
+  },
+
+  suggest: function(req, res){
+    var arr = req.body.arr;
+    // console.log('in server - these arr have been sent to the server\n', arr);
+    // res.json({ message: {message: 'suggested domains sent to server'}})
+    
+    var newSuggest = new Suggest();
+    newSuggest.suggest = arr
+
+    newSuggest.save(function(err){
+      if(err) {
+        throw err;
+      } else {
+        res.json({ message: 'suggested domains sent to server'})
+      }
+    })
   },
 
 };

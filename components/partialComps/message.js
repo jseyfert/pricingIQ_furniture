@@ -10,13 +10,11 @@ var Message = React.createClass({
 
     var link = <a className="alert-link" > test</a>
       return (
-        <div>
           <div className={alert} role="alert">
             <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span className="sr-only">Error: </span>&nbsp; 
            {message}
           </div>
-        </div>
       )
     } else {
       return null;

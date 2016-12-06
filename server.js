@@ -40,8 +40,8 @@ app.put( '/forgotPasswordResend', user.forgotPasswordResend);
 app.put( '/emailVerificationResend', user.emailVerificationResend); 
 app.get( '/verifyPasswordReset/:passwordResetToken', user.verifyPasswordReset);
 app.put( '/resetPassword', user.resetPassword);
-// app.post('/suggest', user.suggest);
 
+app.post('/suggest', data.suggest);
 app.post('/submitUrlsId', data.submitUrlsId);
 app.post('/submitUrlsNoId', data.submitUrlsNoId);
 
@@ -89,8 +89,6 @@ app.get('/', function(req, res){
   //     console.log('server.js > NOT logged in');
   // }
 });
-
-// console.log('process.env', process.env.GOOGLE_ID);
 
 
 app.listen(7070, function(){

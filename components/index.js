@@ -31,6 +31,7 @@ var Index = React.createClass({
 	},
 
   createUrlObj: function(text){
+    console.log('process.env', process.env)
     if (this.state.user.user !== 'anonymous'){
       var userLoggedIn = true
       var user = this.state.user
@@ -50,8 +51,9 @@ var Index = React.createClass({
     urlArray.map(function(url){
         if (validator.isURL(url) && parseDomain(url)){
           var getDomain = parseDomain(url).domain
-          domains.push(getDomain)
-          domainsAndUrls.push([getDomain, url])
+          var lowerCaseDomain = getDomain.toLowerCase()
+          domains.push(lowerCaseDomain)
+          domainsAndUrls.push([lowerCaseDomain, url])
         } else {
           return null;
         }
@@ -288,7 +290,7 @@ var Index = React.createClass({
       if (noUrls) {
         this.setState({ 
           activeComponent: 'landing',
-          message: { message: 'Please submit at least one valid Url',  alert: null }
+          message: { message: 'Please submit at least one valid Url',  alert: null },
         })
       } else if (!verified) {
         this.setState({
@@ -300,16 +302,16 @@ var Index = React.createClass({
           activeComponent: 'submittedToday',
           urlsSubmitted: true,
         })
-      } else if (noActiveDomains){
+      } else if (noActiveDomains || noUrlsFromActiveDomains){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" }
-      })
-      } else if (noUrlsFromActiveDomains){
-        this.setState({ 
-          activeComponent: 'noActiveDomains',
-          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
-      })
+          message: { message: 'You have reach your limit for the following domains, or you did not submit any online domains.',  alert: "alert alert-danger" }
+        })
+      // } else if (noUrlsFromActiveDomains){
+      //   this.setState({ 
+      //     activeComponent: 'noActiveDomains',
+      //     message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
+      // })
       } else {
         this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
@@ -635,34 +637,19 @@ var Index = React.createClass({
     })
   },
 
-
-
-
-  submitSuggestedDomains: function(state) {
-    
-    console.log('in submitSuggestedDomains', state)
-
-          this.setState({ 
-              message: {message: '- has already been taken', alert: 'alert alert-danger'}
-          });
-
-    // var self = this;
-    //   $.ajax({
-    //     method: 'POST',
-    //     url: '/suggest',
-    //     data: { domains: domains},
-    //     success: function(data){
-    //       var activeComponent = data.activeComponent
-    //       var message = data.message
-    //       self.setState({ 
-    //           activeComponent: activeComponent,
-    //           message: message,
-    //       });
-    //     },
-    //     error: function(xhr, status, err){
-    //       console.error('/suggest', status, err.toString())
-    //     }
-    //   })
+  submitSuggestedDomains: function(arr) {
+    var self = this;
+      $.ajax({
+        method: 'POST',
+        url: '/suggest',
+        data: { arr: arr},
+        success: function(data){
+          console.log('submitSuggestedDomains success', data)
+        },
+        error: function(xhr, status, err){
+          console.error('/suggest', status, err.toString())
+        }
+      })
   },
 
 
@@ -671,17 +658,17 @@ var Index = React.createClass({
 
     // setTimeout(() => {
       this.setState({  
-        allDomains: [['amazon', true ],['walmart', true ],['sears', false]],
+        allDomains: [['amazon', true ],['walmart', true ],['sears', false],['homedepot', true]],
         domainsLoading: false
       });
       if(!this.state.userLoading){
         this.runCreateUrlObj('dummyData');
       }
-    // }, 600);
+    // }, 1110);
 
     // setTimeout(() => {
       this.getOneUserFromServer();
-    // }, 100);
+    // }, 1110);
   },
 
 	render: function(){
@@ -691,6 +678,7 @@ var Index = React.createClass({
         user={ this.state.user } 
         logoutUser={ this.logoutUser }
         setActiveComponent={ this.setActiveComponent }
+        activeComponent={ this.state.activeComponent }
         userLoading={ this.state.userLoading } 
         />
         <ShowWhichComponent 

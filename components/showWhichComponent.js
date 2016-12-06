@@ -17,12 +17,15 @@ var SubmittedToday = require('./submittedToday.js');
 var ShowWhichComponent = React.createClass({
   
   setActiveComponent: function() {
+
+
     var activeComponent = this.props.activeComponent
-    // console.log(this.props.allUrls);
+    // console.log('this.props.submitSuggestedDomains1',this.props.submitSuggestedDomains);
     if (activeComponent === 'landing'){
        return (
         <div>
           <Landing
+          submitSuggestedDomains={ this.props.submitSuggestedDomains }
           domainsLoading={ this.props.domainsLoading } 
           userLoading={ this.props.userLoading } 
           message={ this.props.message } 

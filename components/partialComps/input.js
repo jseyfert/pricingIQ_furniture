@@ -26,7 +26,7 @@ var Input = React.createClass({
     }
     // wait until they start typing, and then stop
     else {
-      this.prepareToValidate = _.debounce(startValidation, 1200);
+      this.prepareToValidate = _.debounce(startValidation, 500);
     }
   },
   
@@ -49,6 +49,7 @@ var Input = React.createClass({
             {...this.props}
             onChange={this.handleChange} 
             type={this.props.type} 
+            value={this.props.value}
             className="form-control" 
             id="inputSuccess2" 
             aria-describedby="inputSuccess2Status"
@@ -66,6 +67,7 @@ var Input = React.createClass({
             {...this.props}
             onChange={this.handleChange} 
             type={this.props.type} 
+            value={this.props.value}
             className="form-control" 
             id="inputError2"
             aria-describedby="inputError2Status"
@@ -84,6 +86,7 @@ var Input = React.createClass({
           {...this.props}
           onChange={this.handleChange} 
           type={this.props.type}
+          value={this.props.value}
           className="form-control"
           required 
           />
