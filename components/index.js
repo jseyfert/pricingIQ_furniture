@@ -31,7 +31,7 @@ var Index = React.createClass({
 	},
 
   createUrlObj: function(text){
-    console.log('process.env', process.env)
+    // console.log('process.env', process.env)
     if (this.state.user.user !== 'anonymous'){
       var userLoggedIn = true
       var user = this.state.user
@@ -161,11 +161,12 @@ var Index = React.createClass({
     var urlsToSubmit = [];
     var newCountLeftToSubmit = [];
 
-    allUrls.filter(function(obj){
+    allUrls.map(function(obj){
       if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
-        obj.urls = obj.urls.slice(0, obj.countToSubmitNow)
-        urlsToSubmit.push(obj)
-        // submit = true
+        var temp = {}
+        temp.domain = obj.domain
+        temp.urls = obj.urls.slice(0, obj.countToSubmitNow)
+        urlsToSubmit.push(temp)
       }
       if (obj.domainOffered === true){
         newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
@@ -173,7 +174,6 @@ var Index = React.createClass({
     })
 
     console.log('urlsToSubmit', urlsToSubmit )
-    // console.log(urlsToSubmit, 'urlsToSubmit', newCountLeftToSubmit, 'newCountLeftToSubmit')
 
     $.ajax({
       method: 'POST',
@@ -658,7 +658,7 @@ var Index = React.createClass({
 
     // setTimeout(() => {
       this.setState({  
-        allDomains: [['amazon', true ],['walmart', true ],['sears', false],['homedepot', true]],
+        allDomains: [['amazon', false ],['walmart', true ],['sears', false],['homedepot', true]],
         domainsLoading: false
       });
       if(!this.state.userLoading){

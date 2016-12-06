@@ -5,7 +5,7 @@ var DomainYellow = React.createClass({
   render: function(){
     var obj = this.props.obj
     var domainInfo = this.props.domainInfo
-    console.log('in yellow', obj, (obj.countLeftToSubmit >= 0))
+    // console.log('in yellow', obj, (obj.countLeftToSubmit >= 0))
     var urlCount = (obj.urlCount > 0) ? obj.urlCount : null;
     var countLeftToSubmit = (obj.countLeftToSubmit === null) ? 15 : obj.countLeftToSubmit
       return (

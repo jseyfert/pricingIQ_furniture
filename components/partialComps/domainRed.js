@@ -5,7 +5,7 @@ var DomainRed = React.createClass({
   render: function(){
   var obj = this.props.obj
   var domainInfo = this.props.domainInfo
-  console.log(obj)
+  // console.log(obj)
   var countLeftToSubmit = (obj.countLeftToSubmit === null) ? 15 : obj.countLeftToSubmit
   var urlCount = (obj.urlCount > 0) ? obj.urlCount + ' of ' + countLeftToSubmit : null;
 
