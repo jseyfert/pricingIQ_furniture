@@ -26,7 +26,7 @@ var Input = React.createClass({
     }
     // wait until they start typing, and then stop
     else {
-      this.prepareToValidate = _.debounce(startValidation, 500);
+      this.prepareToValidate = _.debounce(startValidation, 1000);
     }
   },
   

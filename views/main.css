@@ -313,6 +313,18 @@ img.Absolute-Center {
 /*BACKGROUND COLOR ANIMATION*/
 
 /*body{
+  background: linear-gradient(270deg, #67B26F, #4ca2cd);
+  background-size: 400% 400%;
+  animation: AnimationName 17s ease infinite;
+}*/
+
+body{
+  background: linear-gradient(270deg, #43cea2, #185a9d);
+  background-size: 400% 400%;
+  animation: AnimationName 17s ease infinite;
+}
+
+/*body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
   background-size: 400% 400%;
   animation: AnimationName 17s ease infinite;
@@ -330,17 +342,16 @@ img.Absolute-Center {
   animation: AnimationName 20s ease infinite;
 }*/
 
-body{
+/*body{
   min-width: 100%;
   min-height: 100%;
-  /*text-align: center;*/
   background: linear-gradient(90deg,#4bc5cf,#4b79cf,rgb(161, 152, 234));
   background-size: 300% 300%;
   -webkit-animation: AnimationName 30s ease infinite;
   -moz-animation: AnimationName 30s ease infinite;
   -o-animation: AnimationName 30s ease infinite;
   animation: AnimationName 30s ease infinite;
-}
+}*/
 
 
 @keyframes AnimationName { 

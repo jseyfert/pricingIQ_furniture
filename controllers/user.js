@@ -1,5 +1,5 @@
 var UserModel = require('../models/userModel.js');
-var SendMail = require('../userConfig/email.js');
+var SendMail = require('../config/email.js');
 var express = require('express');
 var app = express();
 var passport = require('passport');

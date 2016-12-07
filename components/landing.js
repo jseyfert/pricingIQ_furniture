@@ -5,11 +5,11 @@ var Message = require('./partialComps/message');
 var Logo = require('./partialComps/logo');
 var ModalDialog = require('./partialComps/modalDialog');
 var Footer = require('./partialComps/footer');
-var DomainInfo = require('../userConfig/domainInfo.js');
-var DomainRed = require('./partialComps/domainRed');
-var DomainWhite = require('./partialComps/domainWhite');
-var DomainGreen = require('./partialComps/domainGreen');
-var DomainYellow = require('./partialComps/domainYellow');
+var DomainInfo = require('../config/domainInfo.js');
+var DomainRed = require('./partialComps/domainSquares/red');
+var DomainWhite = require('./partialComps/domainSquares/white');
+var DomainGreen = require('./partialComps/domainSquares/green');
+var DomainYellow = require('./partialComps/domainSquares/yellow');
 
 var Landing = React.createClass({
 

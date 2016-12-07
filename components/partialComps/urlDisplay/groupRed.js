@@ -15,7 +15,7 @@ var UrlGroupRed = React.createClass({
 
     var displayBadgeText = function(){
       if(!domainOffered){
-        return 'Domain Not Offered'
+        return 'Not Offered'
       } else if (domainActive){
         return 'Limit Reached'
       } else {

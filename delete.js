@@ -303,9 +303,9 @@
 
   ////////////////////////////////////
 
-  var array = [1,2,3,4,5,6,7,8,9,10];
-  array.splice(0,2)
-  console.log(array)
+  // var array = [1,2,3,4,5,6,7,8,9,10];
+  // array.splice(0,2)
+  // console.log(array)
 
 
 

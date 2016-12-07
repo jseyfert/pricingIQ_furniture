@@ -154,7 +154,6 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
   submitUrlsID: function(user, allUrls){
     var self = this;
 
@@ -221,6 +220,7 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   signupUserFromServer: function(userForm){
     var self = this;
     var text = self.state.rawText
@@ -297,15 +297,15 @@ var Index = React.createClass({
           activeComponent: 'confirmEmail',
           message: { message: 'You have not yet verified your email. Please check your email.',  alert: "alert alert-danger" }
         })
-      } else if (submittedToday) {
-        this.setState({
-          activeComponent: 'submittedToday',
-          urlsSubmitted: true,
-        })
-      } else if (noActiveDomains || noUrlsFromActiveDomains){
+      // } else if (submittedToday) {
+      //   this.setState({
+      //     activeComponent: 'submittedToday',
+      //     urlsSubmitted: true,
+      //   })
+      } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
         this.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You have reach your limit for the following domains, or you did not submit any online domains.',  alert: "alert alert-danger" }
+          message: null//{ message: 'You have reach your limit, or you did not submit any online domains.',  alert: "alert alert-danger" }
         })
       // } else if (noUrlsFromActiveDomains){
       //   this.setState({ 
@@ -377,21 +377,21 @@ var Index = React.createClass({
             activeComponent: 'landing',
             message: null,
           })
-        } else if (submittedToday) {
-          self.setState({ 
-            activeComponent: 'submittedToday',
-            message: null,
-          })
-        } else if (noActiveDomains){
-          self.setState({ 
-            activeComponent: 'noActiveDomains',
-            message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" }
-          })
-        } else if (noUrlsFromActiveDomains){
+        // } else if (submittedToday) {
+        //   self.setState({ 
+        //     activeComponent: 'submittedToday',
+        //     message: null,
+        //   })
+        } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
           self.setState({ 
             activeComponent: 'noActiveDomains',
-            message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
+            message: null //{ message: 'You did not submit any active domains',  alert: "alert alert-danger" }
           })
+        // } else if (noUrlsFromActiveDomains){
+        //   self.setState({ 
+        //     activeComponent: 'noActiveDomains',
+        //     message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
+        //   })
         } else {
           self.submitUrlsID(user, allUrls);  /////////////////////////////////////////////////////////
         }
@@ -448,15 +448,15 @@ var Index = React.createClass({
           activeComponent: 'landing',
           message: null,
         })
-      }else if (noActiveDomains){
+      // }else if (noActiveDomains){
+      //   self.setState({ 
+      //     activeComponent: 'noActiveDomains',
+      //     message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" },
+      //   })
+      } else if (noUrlsFromActiveDomains || noActiveDomains){
         self.setState({ 
           activeComponent: 'noActiveDomains',
-          message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" },
-        })
-      } else if (noUrlsFromActiveDomains){
-        this.setState({ 
-          activeComponent: 'noActiveDomains',
-          message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" },
+          message: null//{ message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" },
       })
       } else {
         self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
@@ -631,10 +631,19 @@ var Index = React.createClass({
   },
 
   setActiveComponent: function(componentName) {
-    this.setState({
-      activeComponent: componentName,
-      message: null,
-    })
+    if (componentName === 'login'){
+      this.setState({
+        activeComponent: componentName,
+        message: null,
+        rawText: '',
+      })
+      this.runCreateUrlObj('dummyData');
+    } else {
+      this.setState({
+        activeComponent: componentName,
+        message: null,
+      })
+    }
   },
 
   submitSuggestedDomains: function(arr) {

@@ -2,20 +2,16 @@
 var React = require('react');
 var _ = require("underscore");
 var Logo = require('./partialComps/logo');
-var UrlItemGreen = require('./partialComps/urlItemGreen');
-var UrlItemRed = require('./partialComps/urlItemRed');
-var UrlGroupGreen = require('./partialComps/urlGroupGreen');
-var UrlGroupRed = require('./partialComps/urlGroupRed');
-var UrlGroupYellow = require('./partialComps/urlGroupYellow');
+var UrlItemGreen = require('./partialComps/urlDisplay/itemGreen');
+var UrlItemRed = require('./partialComps/urlDisplay/itemRed');
+var UrlGroupGreen = require('./partialComps/urlDisplay/groupGreen');
+var UrlGroupRed = require('./partialComps/urlDisplay/groupRed');
+var UrlGroupYellow = require('./partialComps/urlDisplay/groupYellow');
 
 var ConfirmHtml = React.createClass({
 
   displayRow: function(){
-    // var rowsGreen = [];
-    // var rowsYellow = [];
-    // var rowsGreenYellow = rowsGreen.concat(rowsYellow);
-    // var rowsRed = [];
-    // var rows = rows.concat(rowsGreen).concat(rowsYellow).concat(rowsRed)
+    
     var rows = [];
 
     var allUrls = this.props.allUrls;
@@ -90,14 +86,13 @@ return (
 
 <Logo delay={false} /> 
 
-<br/>
+
+
 
 <div className="container">   
-
+<h3 className="text-center">The following Urls in green are being processed, please check you email.</h3>
+<br/>
     {this.displayRow()}
-
-
-
 
 </div>
 </div>

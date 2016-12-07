@@ -6,14 +6,14 @@ var Logo = require('./partialComps/logo');
 
 var NoActiveDomains = React.createClass({
 
-  displayRowsAvailable: function(){
+  displayOnline: function(){
     var rows = [];
     var allDomains = this.props.allDomains;
 
     allDomains.map(function(arr){
       if (arr[1] === true) {
         rows.push( 
-          <li className="list-group-item text-center greenHover greenText" key={ arr[0] }>
+          <li className="list-group-item text-center greenHover greenText hover" key={ arr[0] }>
             { arr[0] }
             <span className="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
           </li> 
@@ -23,14 +23,15 @@ var NoActiveDomains = React.createClass({
     return rows;
   },
 
-  displayRowsNotAvailable: function(){
+  displayOffline: function(){
     var rows = [];
     var allUrls = this.props.allUrls;
 
     allUrls.map(function(obj){
-      if (!obj.domainActive && obj.urlCount > 0){
+      // console.log(obj.domainOffered, 'obj')
+      if (!obj.domainActive && obj.domainOffered && obj.urlCount > 0){
         rows.push( 
-          <li className="list-group-item text-center redText" key={ obj.domain }>
+          <li className="list-group-item text-center redText hover" key={ obj.domain }>
             { obj.domain }
             <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
           </li> 
@@ -51,9 +52,40 @@ var NoActiveDomains = React.createClass({
         </div>
       )
     }
+  },  
+
+  displayNotOffered: function(){
+    var rows = [];
+    var allUrls = this.props.allUrls;
+
+    allUrls.map(function(obj){
+      // console.log(obj.domainOffered, 'obj')
+      if (!obj.domainActive && !obj.domainOffered && obj.urlCount > 0){
+        rows.push( 
+          <li className="list-group-item text-center redText hover" key={ obj.domain }>
+            { obj.domain }
+            <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+          </li> 
+          )
+      } 
+    })
+    if (rows.length > 0){
+      return (
+        <div className="panel panel-danger"> 
+          <div className="panel-heading"> 
+            <h3 className="panel-title text-center">
+              <strong>Domains Not Offered:</strong>
+            </h3> 
+          </div> 
+          <div className="list-group"> 
+            { rows }
+          </div> 
+        </div>
+      )
+    }
   },
 
- displayRowsLimitReached: function(){
+ displayLimitReached: function(){
     var rows = [];
     var allUrls = this.props.allUrls;
 
@@ -61,7 +93,7 @@ var NoActiveDomains = React.createClass({
       console.log(obj)
       if (obj.domainActive && obj.countLeftToSubmit === 0 && obj.urlCount > 0){
         rows.push( 
-          <li className="list-group-item text-center redText" key={ obj.domain }>
+          <li className="list-group-item text-center redText hover" key={ obj.domain }>
             { obj.domain }
             <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
           </li> 
@@ -85,48 +117,31 @@ var NoActiveDomains = React.createClass({
   },
 
   render: function(){
-
     return (
-    <div>
-
-      <Logo delay={true} /> 
-
-      <div className="container">
+      <div>
+        <Logo delay={true} /> 
+        <h3 className="text-center">You have reach your limit, or did not submit any online domains.</h3>
         <br/>
-
         <div className="container">
-            <div className="container-fluid">
-              <div className="row">
-
-                <div className="col-lg-12 text-center">
-                  <Message message={this.props.message} />
-                </div>
-
-                <div className="col-lg-6">
-                  { this.displayRowsNotAvailable() }
-                  { this.displayRowsLimitReached() }
-                </div>  
-
-                <div className="col-lg-6">
-                  <div className="panel panel-success"> 
-                    <div className="panel-heading"> 
-                      <h3 className="panel-title text-center">
-                        <strong>Online Domains:</strong>
-                      </h3> 
-                    </div> 
-                    <div className="list-group"> 
-                      { this.displayRowsAvailable() }
-                    </div> 
-                  </div>
-                </div>
-
-              </div>
-            </div>
+          <div className="col-sm-6 col-sm-offset-3">
+            { this.displayOffline() }
+            { this.displayLimitReached() }
+            { this.displayNotOffered() }
+          </div>
         </div>
-
       </div>
-    </div>
-
+                // <div className="col-lg-6">
+                //   <div className="panel panel-success"> 
+                //     <div className="panel-heading"> 
+                //       <h3 className="panel-title text-center">
+                //         <strong>Online Domains:</strong>
+                //       </h3> 
+                //     </div> 
+                //     <div className="list-group"> 
+                //       { this.displayOnline() }
+                //     </div> 
+                //   </div>
+                // </div>
     )
   }
 });
