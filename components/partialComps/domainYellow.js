@@ -10,14 +10,14 @@ var DomainYellow = React.createClass({
     var countLeftToSubmit = (obj.countLeftToSubmit === null) ? 15 : obj.countLeftToSubmit
       return (
       <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-          <a className="list-group-item" target="_blank" href={domainInfo.href}>
             <div className="overlayWarningText" >
               <div className="overlayGreen">
+                <a className="list-group-item" target="_blank" href={domainInfo.href}>
                 <span className="badge yellow">{urlCount} of {countLeftToSubmit}</span>
                 <img className="img-responsive Absolute-Center" src={domainInfo.src} alt={domainInfo.alt}/>
+                </a>  
               </div>
             </div>
-          </a>
       </div>
       )
     }

@@ -1,6 +1,6 @@
 body {
   color: white;
-   text-shadow: .5px .5px 1px #000000;
+   /*text-shadow: .5px .5px 1px #000000;*/
 }
 
 h1 span {
@@ -77,6 +77,10 @@ div.alert{
   color: #A94442;
 }
 
+li.hover:hover {
+  background-color: #f5f5f5;
+}
+
 
 
 /*NAVBAR A TAGS*/
@@ -84,7 +88,8 @@ div.alert{
   color: #F0AD4E;
   /*font-size: 18px;*/
   font-weight: bold;
-  text-shadow: .5px .5px 1px #000000;
+  text-shadow: .4px .4px 1px #000000;
+
 /*      -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);*/
@@ -95,7 +100,7 @@ a.navbarLink {
   text-decoration: none;
   /*font-size: 18px;*/
   font-weight: bold;
-  text-shadow: .5px .5px 1px #000000;
+  text-shadow: .4px .4px 1px #000000;
   padding-bottom: 4px;
  /*     -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
@@ -150,8 +155,9 @@ a.list-group-item{
   margin: 0px;      
   height: 200px;
   overflow: auto;
+  border-width: 0px;
   /*border-color: red;*/
-  /*border-radius: 0px !important;*/  /*THIS MAKE THE THE BOXES SQUARE*/
+  border-radius: 0px !important;  /*THIS MAKE THE THE BOXES SQUARE*/
 }
 
 img.Absolute-Center {
@@ -181,6 +187,7 @@ img.Absolute-Center {
   height:100%;
   opacity: .4;
   background-color: green;
+  text
 }
 
 .overlayOffline:after {
@@ -304,12 +311,6 @@ img.Absolute-Center {
 
 
 /*BACKGROUND COLOR ANIMATION*/
-body{
-  background: linear-gradient(270deg, #5b85c1, #40a2bf, #5399d2);
-  background-size: 600% 600%;
-  animation: AnimationName 12s ease infinite;
-}
-/*#1277ca*/
 
 /*body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
@@ -317,11 +318,37 @@ body{
   animation: AnimationName 17s ease infinite;
 }*/
 
+/*body{
+  background: linear-gradient(270deg, #5b85c1, #40a2bf, #5399d2);
+  background-size: 600% 600%;
+  animation: AnimationName 12s ease infinite;
+}*/
+
+/*body{
+  background: linear-gradient(270deg, #715F9B, #4876B4, #009ee2, #66c2ce);
+  background-size: 600% 600%;
+  animation: AnimationName 20s ease infinite;
+}*/
+
+body{
+  min-width: 100%;
+  min-height: 100%;
+  /*text-align: center;*/
+  background: linear-gradient(90deg,#4bc5cf,#4b79cf,rgb(161, 152, 234));
+  background-size: 300% 300%;
+  -webkit-animation: AnimationName 30s ease infinite;
+  -moz-animation: AnimationName 30s ease infinite;
+  -o-animation: AnimationName 30s ease infinite;
+  animation: AnimationName 30s ease infinite;
+}
+
+
 @keyframes AnimationName { 
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
+
 /*BACKGROUND ANIMATION*/
 
 

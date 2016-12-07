@@ -16,7 +16,6 @@ var UrlGroupYellow = React.createClass({
                 <span className="badge yellowBackground">{countLeftToSubmit} of {urlCount} processed</span>
                 <span className="badge yellowBackground">Too Many</span>
                 <span className="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-                <span className="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
                 <strong> {domain}</strong>
               </li>
               <div id={"question" + index} className="panel-collapse collapse" style={{height: '0px'}}>
