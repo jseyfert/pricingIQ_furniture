@@ -124,12 +124,16 @@ var Landing = React.createClass({
             <ModalDialog submitSuggestedDomains={ this.props.submitSuggestedDomains }/>
 
 
-
           
             <Logo delay={false} />
 
 
             <div className="container text-center">
+
+
+
+
+
                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
                   <div className="form-group">
                     <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>

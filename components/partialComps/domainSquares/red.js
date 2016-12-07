@@ -12,27 +12,27 @@ var DomainRed = React.createClass({
   if (obj.countLeftToSubmit === 0) {
     return (
       <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-             <div className="overlaySubmittedText">
-              <div className="overlayOffline">
-                <a className="list-group-item" target="_blank" href={domainInfo.href}>
-                <span className="badge red">{urlCount}</span>
-                <img className="img-responsive Absolute-Center" src={domainInfo.src} alt={domainInfo.alt}/>
-                </a>
-              </div>
-            </div>
+         <div className="overlaySubmittedText">
+          <div className="overlayOffline">
+            <a className="list-group-item" target="_blank" href={domainInfo.href}>
+            <span className="badge red">{urlCount}</span>
+            <img className="img-responsive Absolute-Center" src={domainInfo.src} alt={domainInfo.alt}/>
+            </a>
+          </div>
+        </div>
       </div>
     )
   } else{
     return (
       <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
-            <div className="overlayOfflineText">
-              <div className="overlayOffline">
-               <a className="list-group-item" target="_blank" href={domainInfo.href}>
-                <span className="badge red">{urlCount}</span>
-                <img className="img-responsive Absolute-Center" src={domainInfo.src} alt={domainInfo.alt}/>
-               </a>
-              </div>
-            </div>
+        <div className="overlayOfflineText">
+          <div className="overlayOffline">
+           <a className="list-group-item" target="_blank" href={domainInfo.href}>
+            <span className="badge red">{urlCount}</span>
+            <img className="img-responsive Absolute-Center" src={domainInfo.src} alt={domainInfo.alt}/>
+           </a>
+          </div>
+        </div>
       </div>
     )
   }

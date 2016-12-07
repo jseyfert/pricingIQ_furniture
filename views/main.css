@@ -77,11 +77,21 @@ div.alert{
   color: #A94442;
 }
 
+.smallText {
+  font-size: small;
+}
+
 li.hover:hover {
   background-color: #f5f5f5;
 }
 
+li.list-group-item-warning {
+  background-color: #fff5c1;
+}
 
+li.list-group-item-success {
+  background-color: #ddffce;
+}
 
 /*NAVBAR A TAGS*/
 .makeOrange {
@@ -155,9 +165,10 @@ a.list-group-item{
   margin: 0px;      
   height: 200px;
   overflow: auto;
-  border-width: 0px;
-  /*border-color: red;*/
-  border-radius: 0px !important;  /*THIS MAKE THE THE BOXES SQUARE*/
+  border-width-right: 5px;
+  border-width-left: 5px;
+  border-color: #F5F5F5;
+  border-radius: 0px !important;  THIS MAKE THE THE BOXES SQUARE
 }
 
 img.Absolute-Center {
@@ -199,6 +210,17 @@ img.Absolute-Center {
   height:100%;
   opacity: .4;
   background-color: red;
+}
+
+.overlayThumbsUpText:hover:after {
+  content:"👍";
+  text-align: center;
+  font-size: 90px;
+  position: absolute;
+  right: 30px;
+  left: 30px;
+  bottom: 30px;
+  text-shadow: 1px 1px 2px #000000;
 }
 
 .overlayOfflineText:hover:after {
@@ -291,21 +313,6 @@ img.Absolute-Center {
   font-size: initial;
 }
 
-/*<span className="badge redDissabled">Offline for Maintenance</span>
-.badge.redDissabled {
-  color: black;
-  background-color: white;
-  position: absolute;
-  right: 30px;
-  left: 30px;
-  bottom: 20px;
-  z-index: 1;
-  line-height: normal;
-  font-size: initial;
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.27);
-}*/
 
 /*HOLYWOOD SQUARES*/
 
@@ -318,11 +325,11 @@ img.Absolute-Center {
   animation: AnimationName 17s ease infinite;
 }*/
 
-body{
+/*body{
   background: linear-gradient(270deg, #43cea2, #185a9d);
   background-size: 400% 400%;
   animation: AnimationName 17s ease infinite;
-}
+}*/
 
 /*body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
@@ -342,7 +349,7 @@ body{
   animation: AnimationName 20s ease infinite;
 }*/
 
-/*body{
+body{
   min-width: 100%;
   min-height: 100%;
   background: linear-gradient(90deg,#4bc5cf,#4b79cf,rgb(161, 152, 234));
@@ -351,7 +358,7 @@ body{
   -moz-animation: AnimationName 30s ease infinite;
   -o-animation: AnimationName 30s ease infinite;
   animation: AnimationName 30s ease infinite;
-}*/
+}
 
 
 @keyframes AnimationName { 

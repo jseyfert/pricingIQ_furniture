@@ -667,7 +667,7 @@ var Index = React.createClass({
 
     // setTimeout(() => {
       this.setState({  
-        allDomains: [['amazon', true ],['walmart', true ],['sears', false],['homedepot', false]],
+        allDomains: [['amazon', true ],['walmart', true ],['sears', true],['homedepot', false]],
         domainsLoading: false
       });
       if(!this.state.userLoading){
