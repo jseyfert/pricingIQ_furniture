@@ -62,7 +62,6 @@ var ForgotPassword = React.createClass({
 
                 <button className="btn btn-warning btn-lg">Reset</button>
             </form>
-            <hr/>
           </div>    
         </div>    
       </div>

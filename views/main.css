@@ -1,5 +1,6 @@
 body {
   color: white;
+   text-shadow: .5px .5px 1px #000000;
 }
 
 h1 span {
@@ -12,11 +13,17 @@ h1.mainLogo {
 }
 
 label.control-label.red {
-  text-shadow: .5px .5px .5px #461c1c;
+  text-shadow: .5px .5px .5px #dac0c0;
+/*  text-shadow: .5px .5px .5px #461c1c;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;*/
 }
 
 label.control-label.green {
-  text-shadow: .5px .5px .5px #9c9c9c;
+  text-shadow: .5px .5px .5px #d2d2d2;
+/*  text-shadow: .5px .5px .5px #9c9c9c;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;*/
 }
 
 a {
@@ -31,16 +38,25 @@ a:hover {
 
 .blackText {
   color: black !important;
+  text-shadow: none;
 }
 `
 .blackText:hover {
   color: black !important;
+  text-shadow: none;
 }
 
 a.blackText:hover {
   color: black !important;
   text-decoration: underline;
+  text-shadow: none;
 }
+
+div.alert{
+  text-shadow: none !important;
+}
+
+
 
 .badge.greenBackground {
   background-color: green;
@@ -134,7 +150,7 @@ a.list-group-item{
   margin: 0px;      
   height: 200px;
   overflow: auto;
-  border-color: red;
+  /*border-color: red;*/
   /*border-radius: 0px !important;*/  /*THIS MAKE THE THE BOXES SQUARE*/
 }
 
@@ -289,10 +305,18 @@ img.Absolute-Center {
 
 /*BACKGROUND COLOR ANIMATION*/
 body{
+  background: linear-gradient(270deg, #5b85c1, #40a2bf, #5399d2);
+  background-size: 600% 600%;
+  animation: AnimationName 12s ease infinite;
+}
+/*#1277ca*/
+
+/*body{
   background: linear-gradient(270deg, #19b4ae, #1277ca);
   background-size: 400% 400%;
   animation: AnimationName 17s ease infinite;
-}
+}*/
+
 @keyframes AnimationName { 
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}

@@ -1,6 +1,6 @@
 
 var React = require('react');
-var _ = require("underscore");
+var Logo = require('./partialComps/logo');
 
 var ErrorSubmittedToday = React.createClass({
 
@@ -8,14 +8,15 @@ var ErrorSubmittedToday = React.createClass({
 
     return (
         <div>
-          <div className="container">
-            <div className="jumbotron">
-              <div className="alert alert-info" role="alert">
+
+        <Logo delay={false} /> 
+
+          <div className="container text-center">
+              <div className="alert alert-danger" role="alert">
                 <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span className="sr-only">Error: </span>
-                 &nbsp; You already submitted today, please come back tomorrow
+                 &nbsp; You are out of submitts for today, please come back tomorrow.
               </div>
-            </div>
           </div>
         </div>
     )
