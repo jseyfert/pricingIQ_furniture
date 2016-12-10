@@ -15,6 +15,8 @@ var Index = React.createClass({
 		return {
       userLoading: true,
       domainsLoading: true,
+      urlsUploading: false,
+
       user: null,
       message: null,
       activeComponent: 'landing',
@@ -162,28 +164,30 @@ var Index = React.createClass({
 
     allUrls.map(function(obj){
       if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
-        var temp = {}
-        temp.domain = obj.domain
-        temp.urls = obj.urls.slice(0, obj.countToSubmitNow)
-        urlsToSubmit.push(temp)
+        // var temp = []
+        // temp.domain = obj.domain
+        // temp = obj.urls.slice(0, obj.countToSubmitNow)
+        obj.urls.slice(0, obj.countToSubmitNow).map(function(url){
+          urlsToSubmit.push(url)
+        })
       }
       if (obj.domainOffered === true){
         newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
       }
     })
 
-    console.log('urlsToSubmit', urlsToSubmit )
+    // console.log('urlsToSubmit', urlsToSubmit )
 
     $.ajax({
       method: 'POST',
       url: '/submitUrlsId',
       data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: newCountLeftToSubmit },
       success: function(data){
-        var activeComponent = data.activeComponent
-        var user = data.user
         self.setState({ 
-          user: user,
-          activeComponent: activeComponent,
+          user: data.user,
+          activeComponent: data.activeComponent,
+          message: data.message,
+          urlsUploading: false
         });
       },
       error: function(xhr, status, err){
@@ -194,15 +198,20 @@ var Index = React.createClass({
 
   submitUrlsNoID: function(allUrls){
     
-    var urlsToSubmit = allUrls.filter(function(obj){
-      if (obj.urlCount > 0){ return obj; }
+    var urlsToSubmit = [];
+    allUrls.map(function(obj){
+      if (obj.urlCount > 0){ 
+        obj.urls.map(function(url){
+          urlsToSubmit.push(url)
+        })
+      }
     })
 
     var self = this;
     $.ajax({
       method: 'POST',
       url: '/submitUrlsNoId',
-      data: {urls: urlsToSubmit},
+      data: {urlsToSubmit: urlsToSubmit},
       success: function(data){
         // console.log(data, 'in success')
         var activeComponent = data.activeComponent
@@ -313,6 +322,7 @@ var Index = React.createClass({
       //     message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
       // })
       } else {
+        this.setState({ urlsUploading: true })
         this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
     } else if (!userLoggedIn) {   
@@ -362,10 +372,10 @@ var Index = React.createClass({
         var noActiveDomains = (countActiveDomains <= 0)
         var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
     
-        console.log('noUrls', noUrls)
-        console.log('submittedToday', submittedToday)
-        console.log('noActiveDomains', noActiveDomains)
-        console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
+        // console.log('noUrls', noUrls)
+        // console.log('submittedToday', submittedToday)
+        // console.log('noActiveDomains', noActiveDomains)
+        // console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
 
         if (!verified) {
           self.setState({ 
@@ -393,6 +403,7 @@ var Index = React.createClass({
         //     message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
         //   })
         } else {
+          self.setState({ urlsUploading: true })
           self.submitUrlsID(user, allUrls);  /////////////////////////////////////////////////////////
         }
       },
@@ -459,6 +470,7 @@ var Index = React.createClass({
           message: null//{ message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" },
       })
       } else {
+        self.setState({ urlsUploading: true })
         self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
     })
@@ -534,6 +546,7 @@ var Index = React.createClass({
             passwordResetEmail: null,
             emailVerificationCount: 0,
             passwordResetCount: 0,
+            urlsUploading: false,
           });
         })
         self.runCreateUrlObj('dummyData');
@@ -675,9 +688,9 @@ var Index = React.createClass({
       }
     // }, 1110);
 
-    // setTimeout(() => {
+    setTimeout(() => {
       this.getOneUserFromServer();
-    // }, 1110);
+    }, 1110);
   },
 
 	render: function(){
@@ -693,6 +706,7 @@ var Index = React.createClass({
         <ShowWhichComponent 
         userLoading={ this.state.userLoading } 
         domainsLoading={ this.state.domainsLoading } 
+        urlsUploading={ this.state.urlsUploading } 
         createUrlObj={ this.createUrlObj } 
         user={ this.state.user } 
         message={ this.state.message } 

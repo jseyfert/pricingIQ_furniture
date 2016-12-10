@@ -1,6 +1,7 @@
 
 var React = require('react');
 var _ = require("underscore");
+var Message = require('./partialComps/message');
 var Logo = require('./partialComps/logo');
 var UrlItemGreen = require('./partialComps/urlDisplay/itemGreen');
 var UrlItemRed = require('./partialComps/urlDisplay/itemRed');
@@ -35,9 +36,9 @@ var ConfirmHtml = React.createClass({
 
     var displayListItemYellow = function(urls, urlCount, countLeftToSubmit, index){
       var listItem = [];
-      console.log('urls',urls)
+      // console.log('urls',urls)
       urls.map(function(url, thisIndex){
-        console.log('homedepot.com',thisIndex)
+        // console.log('homedepot.com',thisIndex)
         if(thisIndex < countLeftToSubmit ) {
           listItem.push( <UrlItemGreen url={url} index={index} key={thisIndex} /> ) 
         } else {
@@ -55,7 +56,7 @@ var ConfirmHtml = React.createClass({
       var countLeftToSubmit = obj.countLeftToSubmit
       var urlCount = obj.urlCount
       var urls = obj.urls
-      console.log('in them urls', urls)
+      // console.log('in them urls', urls)
 
       if(urlCount > 0){
         if(domainActive && countLeftToSubmit > 0){
@@ -75,7 +76,7 @@ var ConfirmHtml = React.createClass({
         }
       }
     })
-    console.log('rows',rows)
+    // console.log('rows',rows)
     return rows;
   },
 
@@ -87,6 +88,7 @@ return (
   <div className="container">   
     <h3 className="text-center">The Urls in green are now being processed.</h3>
     <h3 className="text-center">Check your email to recieve your data.</h3>
+    <div className="text-center"><Message message={this.props.message} /></div>
     <br/>
     {this.displayRow()}
   </div>

@@ -5,10 +5,10 @@ var ModalDialog = React.createClass({
 
   getInitialState: function(){
     return {
-      domain1: null,
-      domain2: null,
-      domain3: null,
-      domain4: null,
+      domain1: '',
+      domain2: '',
+      domain3: '',
+      domain4: '',
     };
   },
 
@@ -26,7 +26,7 @@ var ModalDialog = React.createClass({
     if (this.state.domain4) {arr.push(this.state.domain4)}
     if (arr.length > 0){
       this.props.submitSuggestedDomains(arr);
-      this.setState({ domain1:null, domain2: null, domain3: null, domain4: null});
+      this.setState({ domain1:'', domain2: '', domain3: '', domain4: ''});
     }  
   },
 

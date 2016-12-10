@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
+var Sequelize = require('sequelize')
 // var cookieParser = require('cookie-parser')
 require('dotenv').config();
 require('./config/passport.js')(passport);
@@ -80,6 +81,49 @@ if (process.env.NODE_ENV === 'production') {
 
 mongoose.connect('mongodb://localhost:27017/pricingIQ');
 mongoose.connection.once('open', function(){ console.log('Connected to database'); });
+
+var sequelize = new Sequelize('mssql://appUser:appUser@54.70.87.41:1433/pricingIQ');
+
+// var Order_noUsers = sequelize.define('order_noUsers', {
+//   orderId: {
+//     type: Sequelize.INTEGER,
+//     primaryKey: true,
+//     autoIncrement: true 
+//   }
+// })
+
+// var Url_noUsers = sequelize.define('url_noUsers', {
+//   urlId: {
+//     type: Sequelize.INTEGER,
+//     primaryKey: true,
+//     autoIncrement: true 
+//   },
+//     url: Sequelize.TEXT,
+// })
+
+// Url_noUsers.belongsTo(Order_noUsers, {foreignKey: 'orderId'});
+
+// sequelize.sync().then(function () {
+//   Order_noUsers.create({
+//     // userId: 'userId',
+//     // email: 'email',
+//   }).then(function(order){
+//     console.log(order)
+//     Url_noUsers.create({
+//       orderId: order.dataValues.orderId,
+//       url: 'url1',
+//     })
+//     Url_noUsers.create({
+//       orderId: order.dataValues.orderId,
+//       url: 'url2',
+//     })
+//     Url_noUsers.create({
+//       orderId: order.dataValues.orderId,
+//       url: 'url3',
+//     })
+//   })
+// })
+
 
 app.get('/', function(req, res){
  res.send('index');

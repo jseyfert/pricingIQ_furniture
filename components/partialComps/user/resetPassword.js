@@ -1,6 +1,6 @@
 var React = require('react');
-var Input = require('../partialComps/input.js');
-var Message = require('../partialComps/message');
+var Input = require('../input.js');
+var Message = require('../message');
 
 var _ = require("underscore");
 var validator = require('validator')

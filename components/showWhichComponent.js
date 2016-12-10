@@ -1,11 +1,11 @@
 var React = require('react');
 
-var ConfirmEmail = require('./userComps/confirmEmail.js');
-var ConfirmToken = require('./userComps/confirmToken.js');
-var ForgotPassword = require('./userComps/forgotPassword.js');
-var Login = require('./userComps/login.js');
-var ResetPassword = require('./userComps/resetPassword.js');
-var Signup = require('./userComps/signup.js');
+var ConfirmEmail = require('./partialComps/user/confirmEmail.js');
+var ConfirmToken = require('./partialComps/user/confirmToken.js');
+var ForgotPassword = require('./partialComps/user/forgotPassword.js');
+var Login = require('./partialComps/user/login.js');
+var ResetPassword = require('./partialComps/user/resetPassword.js');
+var Signup = require('./partialComps/user/signup.js');
 
 var DisplayUrls = require('./displayUrls.js');
 var Faq = require('./faq.js');
@@ -27,6 +27,7 @@ var ShowWhichComponent = React.createClass({
           <Landing
           submitSuggestedDomains={ this.props.submitSuggestedDomains }
           domainsLoading={ this.props.domainsLoading } 
+          urlsUploading={ this.props.urlsUploading } 
           userLoading={ this.props.userLoading } 
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
@@ -74,6 +75,7 @@ var ShowWhichComponent = React.createClass({
         <div>
           <Login
           message={ this.props.message } 
+          urlsUploading={ this.props.urlsUploading } 
           allDomains={ this.props.allDomains }
           loginUserFromServer={ this.props.loginUserFromServer }
           setActiveComponent={ this.props.setActiveComponent }
@@ -96,6 +98,7 @@ var ShowWhichComponent = React.createClass({
         <div>
           <ConfirmEmail
           message={ this.props.message }
+          urlsUploading={ this.props.urlsUploading }
           setActiveComponent={ this.props.setActiveComponent }
           emailVerification={ this.props.emailVerification }
           emailVerificationResend={ this.props.emailVerificationResend }

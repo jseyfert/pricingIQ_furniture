@@ -70,33 +70,13 @@ var Landing = React.createClass({
     // console.log('this.props.submitSuggestedDomains2',this.props.submitSuggestedDomains);
       var domainsLoading= this.props.domainsLoading
       var userLoading = this.props.userLoading
-      // console.log('domainsLoading', domainsLoading, 'userLoading', userLoading)
-      if (domainsLoading || userLoading){
+      var urlsUploading = this.props.urlsUploading
+      console.log('urlsUploading', urlsUploading)
+      if (domainsLoading || userLoading || urlsUploading){
         return (
           <div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
             <Logo delay={true} />
-            
             <div className="container text-center">
-                <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-                  <div className="form-group">
-                    <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } disabled/>
-                  </div>
-                  <button className="btn btn-warning btn-md disabled" disabled>Extract</button>
-                </form>
               <br/>
             </div>
               <br/>
@@ -115,25 +95,9 @@ var Landing = React.createClass({
       } else{
         return (
           <div>
-
-
-
-
-
-
             <ModalDialog submitSuggestedDomains={ this.props.submitSuggestedDomains }/>
-
-
-          
             <Logo delay={false} />
-
-
             <div className="container text-center">
-
-
-
-
-
                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
                   <div className="form-group">
                     <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
@@ -143,11 +107,6 @@ var Landing = React.createClass({
                 </form>
               <br/>
             </div>
-
-
-
-
-
               <br/>
             <div className="container">
               <br/>
