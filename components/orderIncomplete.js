@@ -4,7 +4,7 @@ var _ = require("underscore");
 var Message = require('./partialComps/message');
 var Logo = require('./partialComps/logo');
 
-var NoActiveDomains = React.createClass({
+var OrderIncomplete = React.createClass({
 
   displayOnline: function(){
     var rows = [];
@@ -146,4 +146,4 @@ var NoActiveDomains = React.createClass({
   }
 });
 
-module.exports = NoActiveDomains;
+module.exports = OrderIncomplete;

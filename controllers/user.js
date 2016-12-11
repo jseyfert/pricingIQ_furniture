@@ -83,7 +83,7 @@ module.exports = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   verifyEmail: function(req, res){
-    console.log(req.params)
+    // console.log(req.params)
       var permalink = req.params.permalink;
       var emailVerificationToken = req.params.emailVerificationToken;
       var htmlSuccess = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body cz-shortcut-listen="true"><div style="margin: 0; padding: 0; width: 100%; font-family: Trebuchet MS, sans-serif;"><div style="background-color: #f2f2f2; padding: 45px;"><div style="background-color: #ffffff; padding: 40px; text-align: center;"><h1 style="color: #5f5f5f; margin-bottom: 30px;">Congratulations, </h1><p style="color: #5f5f5f; line-height: 22px;">You have successfully verified your email, now please close this tab.</p></div> <h3 style="color: #5f5f5f; text-align: center; margin-top: 30px;">pricingIQ</h3></div></div></body></html>'
@@ -152,21 +152,21 @@ module.exports = {
           return console.log('error', err);
         } else if (user){
           if (user.passwordResetExpires > Date.now()) {
-            console.log('password is ready to be updated');
+            // console.log('password is ready to be updated');
             res.json({
               message: {message: 'The token worked! Password is ready to be updated', alert: 'alert alert-success'},
               activeComponent: 'resetPassword',
               passwordResetToken: passwordResetToken
             })
           } else {
-            console.log('The token is expired');
+            // console.log('The token is expired');
             res.json({
               message: {message: "The token is expired", alert: 'alert alert-danger'},
               activeComponent: 'confirmToken'
             })
           }
         } else {
-            console.log('The token is wrong');
+            // console.log('The token is wrong');
             res.json({
               message: {message: "The token is wrong", alert: 'alert alert-danger'},
               activeComponent: 'confirmToken',
@@ -262,7 +262,7 @@ module.exports = {
           SendMail(user.user, user.email, null, null)
 
         } else {
-          console.log('The token is expired');
+          // console.log('The token is expired');
           res.json({
             valid: false,
             message: {message: 'The token is expired - click here to resend', alert: "alert alert-danger"},
@@ -270,7 +270,7 @@ module.exports = {
           })
         }
       } else {
-          console.log('The token is wrong');
+          // console.log('The token is wrong');
           res.json({
             valid: false,
             message: {message:'The token is wrong', alert: "alert alert-danger"},

@@ -1,7 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/userModel.js');
 var SendMail = require('./email.js');
-var EmailVerification = require('./emailVerification.js');
 var passport = require('passport'); //i dont think this needs to be here
 var randomstring = require("randomstring");
 
@@ -79,7 +78,7 @@ module.exports = function(passport){
             }
         });
       }
-      console.log('in signin', user)
+      // console.log('in signin', user)
 			return done(null, user, { message: 'You logged in successfully' });
 		});
 	}));	

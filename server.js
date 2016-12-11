@@ -15,14 +15,20 @@ var app = express();
 // app.use(cookieParser())
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true })); // // app.use(bodyParser.urlencoded());
+
 app.use(express.static(__dirname + '/views'));
-app.use(session({ secret: 'thisIsPricingIQ' }));  
+
+// app.use(session({ secret: 'thisIsPricingIQ' }));  
+// app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(session({
- cookie: {
-  maxAge: 60000  // 30 days  //60 * 60 * 24 * 1 // = 1 day
- }
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 2629800000 }, // 1 month
 }));
+
+
 app.use(passport.initialize());
 app.use(passport.session()); 
 
@@ -50,7 +56,6 @@ app.post('/submitUrlsNoId', data.submitUrlsNoId);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');
-
   app.use('/static', express.static('static'));
 } else {
   // When not in production, enable hot reloading
@@ -79,50 +84,9 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/pricingIQ');
 mongoose.connection.once('open', function(){ console.log('Connected to database'); });
-
-var sequelize = new Sequelize('mssql://appUser:appUser@54.70.87.41:1433/pricingIQ');
-
-// var Order_noUsers = sequelize.define('order_noUsers', {
-//   orderId: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true 
-//   }
-// })
-
-// var Url_noUsers = sequelize.define('url_noUsers', {
-//   urlId: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true 
-//   },
-//     url: Sequelize.TEXT,
-// })
-
-// Url_noUsers.belongsTo(Order_noUsers, {foreignKey: 'orderId'});
-
-// sequelize.sync().then(function () {
-//   Order_noUsers.create({
-//     // userId: 'userId',
-//     // email: 'email',
-//   }).then(function(order){
-//     console.log(order)
-//     Url_noUsers.create({
-//       orderId: order.dataValues.orderId,
-//       url: 'url1',
-//     })
-//     Url_noUsers.create({
-//       orderId: order.dataValues.orderId,
-//       url: 'url2',
-//     })
-//     Url_noUsers.create({
-//       orderId: order.dataValues.orderId,
-//       url: 'url3',
-//     })
-//   })
-// })
 
 
 app.get('/', function(req, res){

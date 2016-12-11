@@ -176,8 +176,6 @@ var Index = React.createClass({
       }
     })
 
-    // console.log('urlsToSubmit', urlsToSubmit )
-
     $.ajax({
       method: 'POST',
       url: '/submitUrlsId',
@@ -197,13 +195,10 @@ var Index = React.createClass({
   },  
 
   submitUrlsNoID: function(allUrls){
-    
     var urlsToSubmit = [];
     allUrls.map(function(obj){
       if (obj.urlCount > 0){ 
-        obj.urls.map(function(url){
-          urlsToSubmit.push(url)
-        })
+        obj.urls.map(function(url){ urlsToSubmit.push(url)})
       }
     })
 
@@ -282,10 +277,6 @@ var Index = React.createClass({
       var noActiveDomains = (countActiveDomains <= 0)
       var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
   
-      console.log('noUrls', noUrls)
-      console.log('submittedToday', submittedToday)
-      console.log('noActiveDomains', noActiveDomains)
-      console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
     } else {
       var userLoggedIn = false
       var countUrls = 0
@@ -313,12 +304,12 @@ var Index = React.createClass({
       //   })
       } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
         this.setState({ 
-          activeComponent: 'noActiveDomains',
+          activeComponent: 'orderIncomplete',
           message: null//{ message: 'You have reach your limit, or you did not submit any online domains.',  alert: "alert alert-danger" }
         })
       // } else if (noUrlsFromActiveDomains){
       //   this.setState({ 
-      //     activeComponent: 'noActiveDomains',
+      //     activeComponent: 'orderIncomplete',
       //     message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
       // })
       } else {
@@ -371,11 +362,6 @@ var Index = React.createClass({
         var submittedToday = (countLeftToSubmit === 0)
         var noActiveDomains = (countActiveDomains <= 0)
         var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
-    
-        // console.log('noUrls', noUrls)
-        // console.log('submittedToday', submittedToday)
-        // console.log('noActiveDomains', noActiveDomains)
-        // console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
 
         if (!verified) {
           self.setState({ 
@@ -394,12 +380,12 @@ var Index = React.createClass({
         //   })
         } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
           self.setState({ 
-            activeComponent: 'noActiveDomains',
+            activeComponent: 'orderIncomplete',
             message: null //{ message: 'You did not submit any active domains',  alert: "alert alert-danger" }
           })
         // } else if (noUrlsFromActiveDomains){
         //   self.setState({ 
-        //     activeComponent: 'noActiveDomains',
+        //     activeComponent: 'orderIncomplete',
         //     message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
         //   })
         } else {
@@ -438,11 +424,6 @@ var Index = React.createClass({
     var noActiveDomains = (countActiveDomains <= 0)
     var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0) 
 
-    console.log('noUrls', noUrls)
-    console.log('submittedToday', submittedToday)
-    console.log('noActiveDomains', noActiveDomains)
-    console.log('noUrlsFromActiveDomains', noUrlsFromActiveDomains)
-
     $.ajax({
       method: 'GET', 
       url: '/oneUser'
@@ -466,7 +447,7 @@ var Index = React.createClass({
       //   })
       } else if (noUrlsFromActiveDomains || noActiveDomains){
         self.setState({ 
-          activeComponent: 'noActiveDomains',
+          activeComponent: 'orderIncomplete',
           message: null//{ message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" },
       })
       } else {

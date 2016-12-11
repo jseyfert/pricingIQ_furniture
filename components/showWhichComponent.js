@@ -10,8 +10,7 @@ var Signup = require('./partialComps/user/signup.js');
 var DisplayUrls = require('./displayUrls.js');
 var Faq = require('./faq.js');
 var Landing = require('./landing.js');
-var NoActiveDomains = require('./noActiveDomains.js');
-var SubmittedToday = require('./submittedToday.js');
+var OrderIncomplete = require('./orderIncomplete.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -50,10 +49,10 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'noActiveDomains'){
+    } else if(activeComponent === 'orderIncomplete'){
       return (
         <div>
-          <NoActiveDomains
+          <OrderIncomplete
           message={ this.props.message }
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
