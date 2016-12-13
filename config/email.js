@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 
 var SendMail = function(name, email, link, passwordResetToken){
 
-  var transporter = nodemailer.createTransport('smtps://' + process.env.GOOGLE_ID + '%40gmail.com:' + process.env.GOOGLE_SECRET + '@smtp.gmail.com');
+  var transporter = nodemailer.createTransport('smtps://' + process.env.GOOGLE_ID + '%40pricingiq.io:' + process.env.GOOGLE_SECRET + '@smtp.gmail.com');
 
   var htmlValidate = "<div style='margin: 0; padding: 0; width: 100%; font-family: Trebuchet MS, sans-serif;'>" +
     "<div style='background-color: #f2f2f2; padding: 45px;'>" +

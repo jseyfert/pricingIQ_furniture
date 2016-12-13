@@ -9,6 +9,8 @@ var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
 
+// var Fingerprint2 = require('fingerprintjs2');
+
 var Index = React.createClass({
 	
   getInitialState: function(){
@@ -195,12 +197,29 @@ var Index = React.createClass({
   },  
 
   submitUrlsNoID: function(allUrls){
+
     var urlsToSubmit = [];
     allUrls.map(function(obj){
       if (obj.urlCount > 0){ 
         obj.urls.map(function(url){ urlsToSubmit.push(url)})
       }
     })
+
+  //   var fingerprint2 = {}
+
+  //   new Fingerprint2().get(function(result, components){
+  //     fingerprint2.result = result
+  //     components.filter(function(obj){
+  //       if (obj.key === 'timezone_offset'){
+  //         fingerprint2.timezone = obj.value
+  //       }
+  //     })
+  //   });
+
+  //   var test2 = fingerprint2.result
+  //   var test3 = fingerprint2.timezone
+
+  // console.log('hashFingerprintJs2', fingerprint2, test2, test3)
 
     var self = this;
     $.ajax({
@@ -213,12 +232,15 @@ var Index = React.createClass({
         self.setState({ 
           activeComponent: activeComponent, 
           message: null,
+
         })
       },
       error: function(xhr, status, err){
         console.error('/submitUrlsNoId', status, err.toString())
       }
     })
+
+
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -669,9 +691,9 @@ var Index = React.createClass({
       }
     // }, 1110);
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.getOneUserFromServer();
-    }, 1110);
+    // }, 1110);
   },
 
 	render: function(){

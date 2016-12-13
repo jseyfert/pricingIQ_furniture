@@ -44,9 +44,13 @@ var Input = React.createClass({
        if(this.props.valid){
           return (
           <div className="form-group has-success has-feedback">
-            <label className="control-label green" for="inputSuccess2">{this.props.lable}</label>
+            <label className="control-label green" 
+            // for="inputSuccess2"
+            >
+              {this.props.lable}
+            </label>
             <input 
-            {...this.props}
+            // {...this.props}
             onChange={this.handleChange} 
             type={this.props.type} 
             value={this.props.value}
@@ -62,9 +66,13 @@ var Input = React.createClass({
        } else {
         return (
           <div className="form-group has-error has-feedback">
-            <label className="control-label red" for="inputError2">{this.props.errorMessageClient}</label>
+            <label className="control-label red" 
+            // for="inputError2"
+              >
+            {this.props.errorMessageClient}
+            </label>
             <input 
-            {...this.props}
+            // {...this.props}
             onChange={this.handleChange} 
             type={this.props.type} 
             value={this.props.value}
@@ -83,7 +91,7 @@ var Input = React.createClass({
         <div className="form-group">
           <label>{this.props.lable}</label>
           <input 
-          {...this.props}
+          // {...this.props}
           onChange={this.handleChange} 
           type={this.props.type}
           value={this.props.value}

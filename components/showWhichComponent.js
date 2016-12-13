@@ -7,48 +7,34 @@ var Login = require('./partialComps/user/login.js');
 var ResetPassword = require('./partialComps/user/resetPassword.js');
 var Signup = require('./partialComps/user/signup.js');
 
-var DisplayUrls = require('./displayUrls.js');
 var Faq = require('./faq.js');
 var Landing = require('./landing.js');
+var OrderComplete = require('./orderComplete.js');
 var OrderIncomplete = require('./orderIncomplete.js');
 
 
 var ShowWhichComponent = React.createClass({
-  
   setActiveComponent: function() {
-
-
     var activeComponent = this.props.activeComponent
-    // console.log('this.props.submitSuggestedDomains1',this.props.submitSuggestedDomains);
     if (activeComponent === 'landing'){
-       return (
-        <div>
-          <Landing
-          submitSuggestedDomains={ this.props.submitSuggestedDomains }
-          domainsLoading={ this.props.domainsLoading } 
-          urlsUploading={ this.props.urlsUploading } 
-          userLoading={ this.props.userLoading } 
-          message={ this.props.message } 
-          allDomains={ this.props.allDomains }
-          handleUrlSubmit={ this.props.handleUrlSubmit }
-          onTextChange={ this.props.onTextChange }
-          setActiveComponent={ this.props.setActiveComponent }
-          allUrls = { this.props.allUrls }
-          user={ this.props.user }
-          rawText={ this.props.rawText } 
-          />
-        </div>
-        )
-    } else if(activeComponent === 'submittedToday'){
-      return (
-        <div>
-          <SubmittedToday
-          message={ this.props.message }
-          allDomains={ this.props.allDomains }
-          allUrls = { this.props.allUrls }
-          />
-        </div>
-        )
+     return (
+      <div>
+        <Landing
+        submitSuggestedDomains={ this.props.submitSuggestedDomains }
+        domainsLoading={ this.props.domainsLoading } 
+        urlsUploading={ this.props.urlsUploading } 
+        userLoading={ this.props.userLoading } 
+        message={ this.props.message } 
+        allDomains={ this.props.allDomains }
+        handleUrlSubmit={ this.props.handleUrlSubmit }
+        onTextChange={ this.props.onTextChange }
+        setActiveComponent={ this.props.setActiveComponent }
+        allUrls = { this.props.allUrls }
+        user={ this.props.user }
+        rawText={ this.props.rawText } 
+        />
+      </div>
+      )
     } else if(activeComponent === 'orderIncomplete'){
       return (
         <div>
@@ -59,10 +45,10 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'displayUrls'){
+    } else if(activeComponent === 'orderComplete'){
       return (
         <div>
-          <DisplayUrls
+          <OrderComplete
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
@@ -138,7 +124,7 @@ var ShowWhichComponent = React.createClass({
           resetToken={ this.props.resetToken }
           />
         </div>
-        )
+      )
     } else if(activeComponent === 'faq'){
       return (
         <div>
@@ -162,7 +148,7 @@ var ShowWhichComponent = React.createClass({
       <div>
         {this.setActiveComponent()}
       </div>           
-      )
+    )
   }
 });
 

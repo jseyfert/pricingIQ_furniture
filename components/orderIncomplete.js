@@ -130,18 +130,6 @@ var OrderIncomplete = React.createClass({
           </div>
         </div>
       </div>
-                // <div className="col-lg-6">
-                //   <div className="panel panel-success"> 
-                //     <div className="panel-heading"> 
-                //       <h3 className="panel-title text-center">
-                //         <strong>Online Domains:</strong>
-                //       </h3> 
-                //     </div> 
-                //     <div className="list-group"> 
-                //       { this.displayOnline() }
-                //     </div> 
-                //   </div>
-                // </div>
     )
   }
 });

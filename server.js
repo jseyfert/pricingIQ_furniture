@@ -19,6 +19,31 @@ app.use(bodyParser.urlencoded({ extended: true })); // // app.use(bodyParser.url
 
 app.use(express.static(__dirname + '/views'));
 
+var Fingerprint = require('express-fingerprint');
+
+app.use(Fingerprint({
+    paramters:[
+        // Defaults 
+        Fingerprint.useragent,
+        Fingerprint.acceptHeaders,
+        Fingerprint.geoip,
+ 
+        // Additional parameters 
+        function(next) {
+            // ...do something... 
+            next(null,{
+            'param1':'value1'
+            })
+        },
+        function(next) {
+            // ...do something... 
+            next(null,{
+            'param2':'value2'
+            })
+        },
+    ]
+}))
+
 // app.use(session({ secret: 'thisIsPricingIQ' }));  
 // app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(session({
@@ -97,6 +122,11 @@ app.get('/', function(req, res){
   //     console.log('server.js > NOT logged in');
   // }
 });
+
+app.get('*',function(req,res,next) {
+    // Fingerprint object 
+    console.log(req.fingerprint)
+})
 
 
 app.listen(7070, function(){
