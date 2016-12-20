@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Suggest = require('../models/suggest.js');
 var Sequelize = require('sequelize')
-var sequelize = new Sequelize('mssql://appUser:appUser@54.70.87.41:1433/pricingIQ');
+var sequelize = new Sequelize(process.env.SQL_URI);
 
 
 module.exports = {

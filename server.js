@@ -5,45 +5,36 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
 var Sequelize = require('sequelize')
+var Fingerprint = require('express-fingerprint');
+var session = require('express-session');
+// var MongoStore = require('connect-mongo')(session);
+var FileStore = require('session-file-store')(session);
 // var cookieParser = require('cookie-parser')
+
 require('dotenv').config();
 require('./config/passport.js')(passport);
 
 var app = express();
  
-//mounting all of your middleware
-// app.use(cookieParser())
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // // app.use(bodyParser.urlencoded());
 
 app.use(express.static(__dirname + '/views'));
 
-var Fingerprint = require('express-fingerprint');
-
 app.use(Fingerprint({
     paramters:[
-        // Defaults 
         Fingerprint.useragent,
         Fingerprint.acceptHeaders,
         Fingerprint.geoip,
- 
-        // Additional parameters 
-        function(next) {
-            // ...do something... 
-            next(null,{
-            'param1':'value1'
-            })
-        },
-        function(next) {
-            // ...do something... 
-            next(null,{
-            'param2':'value2'
-            })
-        },
     ]
 }))
 
+// app.use(session({
+//     store: new FileStore(options),
+//     secret: 'keyboard cat'
+// }));
+// app.use(cookieParser())
 // app.use(session({ secret: 'thisIsPricingIQ' }));  
 // app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(session({
@@ -51,6 +42,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 2629800000 }, // 1 month
+  store: new FileStore,
+  // store: new MongoStore,
 }));
 
 
@@ -110,7 +103,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/pricingIQ');
+mongoose.connect(process.env.MONGO_URI);
 mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 
@@ -123,14 +116,8 @@ app.get('/', function(req, res){
   // }
 });
 
-app.get('*',function(req,res,next) {
-    // Fingerprint object 
-    console.log(req.fingerprint)
-})
-
-
-app.listen(7070, function(){
-	console.log('server on 7070');
+app.listen(process.env.PORT, function(){
+	console.log('server on ' + process.env.PORT);
 });
 
 

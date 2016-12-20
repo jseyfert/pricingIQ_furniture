@@ -108,7 +108,7 @@ module.exports = function(passport){
           var emailVerificationExpires = Date.now() + 3600000; // 1 hour
           var permalink = email.toLowerCase().replace(' ', '').replace(/[^\w\s]/gi, '').trim();
           var emailVerificationToken = randomstring.generate({ length: 32 });
-          var link = "http://localhost:7070" + "/verifyEmail/" + permalink + "/" + emailVerificationToken;
+          var link = "http://" + process.env.HOST + ":" + process.env.PORT + "/verifyEmail/" + permalink + "/" + emailVerificationToken;
           
           newUser.permalink = permalink;
           newUser.emailVerificationToken = emailVerificationToken;

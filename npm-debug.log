@@ -1,15 +1,15 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/local/Cellar/node/7.1.0/bin/node',
+1 verbose cli [ '/usr/local/Cellar/node/7.2.1/bin/node',
 1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'start' ]
 2 info using npm@3.10.9
-3 info using node@v7.1.0
+3 info using node@v7.2.1
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle projectstartup@1.0.0~prestart: projectstartup@1.0.0
 6 silly lifecycle projectstartup@1.0.0~prestart: no script for prestart, continuing
 7 info lifecycle projectstartup@1.0.0~start: projectstartup@1.0.0
 8 verbose lifecycle projectstartup@1.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle projectstartup@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/johnseyfert/code/pricingIQ_react_v7/node_modules/.bin:/usr/local/Cellar/node/7.1.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+9 verbose lifecycle projectstartup@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/johnseyfert/code/pricingIQ_react_v7/node_modules/.bin:/usr/local/Cellar/node/7.2.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 10 verbose lifecycle projectstartup@1.0.0~start: CWD: /Users/johnseyfert/code/pricingIQ_react_v7
 11 silly lifecycle projectstartup@1.0.0~start: Args: [ '-c', 'node server.js' ]
 12 silly lifecycle projectstartup@1.0.0~start: Returned: code: 1  signal: null
@@ -27,8 +27,8 @@
 15 verbose pkgid projectstartup@1.0.0
 16 verbose cwd /Users/johnseyfert/code/pricingIQ_react_v7
 17 error Darwin 16.1.0
-18 error argv "/usr/local/Cellar/node/7.1.0/bin/node" "/usr/local/bin/npm" "start"
-19 error node v7.1.0
+18 error argv "/usr/local/Cellar/node/7.2.1/bin/node" "/usr/local/bin/npm" "start"
+19 error node v7.2.1
 20 error npm  v3.10.9
 21 error code ELIFECYCLE
 22 error projectstartup@1.0.0 start: `node server.js`

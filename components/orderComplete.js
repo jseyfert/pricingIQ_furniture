@@ -83,8 +83,7 @@ var OrderComplete = React.createClass({
       <div>
         <Logo delay={false} /> 
         <div className="container">   
-          <h3 className="text-center">The Urls in green are now being processed.</h3>
-          <h3 className="text-center">Check your email to recieve your data.</h3>
+          <h3 className="text-center">Urls in green are being processed. Check your email to recieve your data.</h3>
           <div className="text-center"><Message message={this.props.message} /></div>
           <br/>
           {this.displayRow()}

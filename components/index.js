@@ -239,8 +239,6 @@ var Index = React.createClass({
         console.error('/submitUrlsNoId', status, err.toString())
       }
     })
-
-
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -677,13 +675,11 @@ var Index = React.createClass({
       })
   },
 
-
-
   componentWillMount: function(){
 
     // setTimeout(() => {
       this.setState({  
-        allDomains: [['amazon', true ],['walmart', true ],['sears', true],['homedepot', false]],
+        allDomains: [['amazon', false ],['walmart', true ],['sears', true],['homedepot', false]],
         domainsLoading: false
       });
       if(!this.state.userLoading){
