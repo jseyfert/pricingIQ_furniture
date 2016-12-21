@@ -50,8 +50,7 @@
     "session-file-store": "^1.0.0",
     "tedious": "^1.14.0",
     "underscore": "^1.8.3",
-    "validator": "^6.1.0",
-    "winston": "^2.3.0"
+    "validator": "^6.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
