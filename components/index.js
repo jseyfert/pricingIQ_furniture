@@ -147,7 +147,7 @@ var Index = React.createClass({
   },
 
   runCreateUrlObj: function(text){
-    console.log('in runCreateUrlObj')
+    // console.log('in runCreateUrlObj')
     var allUrls = this.createUrlObj(text);
     this.setState({ 
       allUrls: allUrls,
@@ -498,7 +498,7 @@ var Index = React.createClass({
         url: '/emailVerificationResend',
         data: {user: this.state.user},
         success: function(data){
-          console.log('in success', data)
+          // console.log('in success', data)
           self.setState({ 
             activeComponent: data.activeComponent,
             message: (data.message) ? data.message : resendMessage,
@@ -667,7 +667,7 @@ var Index = React.createClass({
         url: '/suggest',
         data: { arr: arr},
         success: function(data){
-          console.log('submitSuggestedDomains success', data)
+          // console.log('submitSuggestedDomains success', data)
         },
         error: function(xhr, status, err){
           console.error('/suggest', status, err.toString())

@@ -71,7 +71,7 @@ var Landing = React.createClass({
       var domainsLoading= this.props.domainsLoading
       var userLoading = this.props.userLoading
       var urlsUploading = this.props.urlsUploading
-      console.log('urlsUploading', urlsUploading)
+      // console.log('urlsUploading', urlsUploading)
       if (domainsLoading || userLoading || urlsUploading){
         return (
           <div>
