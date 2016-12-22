@@ -9,7 +9,7 @@ var DomainYellow = React.createClass({
     var urlCount = (obj.urlCount > 0) ? obj.urlCount : null;
     var countLeftToSubmit = (obj.countLeftToSubmit === null) ? 15 : obj.countLeftToSubmit
       return (
-      <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+      <div className="col-lg-3 col-md-6 col-xs-6 thumb noPadding grow">
             <div className="overlayWarningText" >
               <div className="overlayGreen">
                 <a className="list-group-item" target="_blank" href={domainInfo.href}>

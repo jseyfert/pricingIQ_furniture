@@ -11,7 +11,7 @@ var DomainRed = React.createClass({
 
   if (obj.countLeftToSubmit === 0) {
     return (
-      <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+      <div className="col-lg-3 col-md-6 col-xs-6 thumb noPadding grow">
          <div className="overlaySubmittedText">
           <div className="overlayOffline">
             <a className="list-group-item" target="_blank" href={domainInfo.href}>
@@ -24,7 +24,7 @@ var DomainRed = React.createClass({
     )
   } else{
     return (
-      <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+      <div className="col-lg-3 col-md-6 col-xs-6 thumb noPadding grow">
         <div className="overlayOfflineText">
           <div className="overlayOffline">
            <a className="list-group-item" target="_blank" href={domainInfo.href}>

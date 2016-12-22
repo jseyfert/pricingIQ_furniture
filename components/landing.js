@@ -107,7 +107,6 @@ var Landing = React.createClass({
                 </form>
               <br/>
             </div>
-              <br/>
             <div className="container">
               <br/>
               <div className="row">

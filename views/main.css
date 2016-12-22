@@ -156,7 +156,7 @@ a.navbarLink:hover:before {
 /*NAVBAR A TAGS*/
 
 
-/*HOLYWOOD SQUARES*/
+/*HOLYWOOD SQUARES///////////////////////////////////////////////////////////////*/
 div.noPadding{
   padding: 0px;
 }
@@ -167,8 +167,8 @@ a.list-group-item{
   overflow: auto;
   border-width-right: 5px;
   border-width-left: 5px;
-  border-color: #F5F5F5;
-  border-radius: 0px !important;  THIS MAKE THE THE BOXES SQUARE
+  border-color: #e2e1e1;
+  border-radius: 0px !important;  /*THIS MAKE THE THE BOXES SQUARE*/
 }
 
 img.Absolute-Center {
@@ -227,12 +227,12 @@ img.Absolute-Center {
   content:"Offline";
   font-weight: 700;
   text-align: center;
-  font-size: -webkit-xxx-large;
+  font-size: xx-large;
   z-index: 1;
   position: absolute;
   right: 30px;
   left: 30px;
-  bottom: 65px;
+  bottom: 75px;
   color: white;
   background-color: red;
   opacity: .9;
@@ -313,8 +313,7 @@ img.Absolute-Center {
   font-size: initial;
 }
 
-
-/*HOLYWOOD SQUARES*/
+/*HOLYWOOD SQUARES///////////////////////////////////////////////////////////////*/
 
 
 /*BACKGROUND COLOR ANIMATION*/
@@ -416,6 +415,7 @@ body{
 
 
 /*BETA RIBBBON*/
+
 .betaRibbon{
   top: 25px;
   left: -50px;
@@ -427,11 +427,47 @@ body{
   letter-spacing: 1px;
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
-  z-index: -10;
   font-weight: bold;
   color: #FFF;
   background: #79A70A;
   background: linear-gradient(#F79E05 25%, #8F5408 115%);
   box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
 }
+
 /*BETA RIBBBON*/
+
+
+@media (max-width: 767px) {
+
+  h1.mainLogo {
+    font-size: 80px;
+  }
+
+  .navbar-fixed-bottom {
+    position: relative;
+    min-height: 50px;
+    margin-top: 20px;
+    border: 1px solid transparent;
+  }
+
+  .betaRibbon{
+    top: 25px;
+    left: inherit;
+    right: -50px;
+    width: 200px;
+    z-index: 10;
+    position: fixed;
+    text-align: center;
+    line-height: 35px;
+    letter-spacing: 1px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    font-weight: normal;
+    font-size: 14px;
+    color: #FFF;
+    background: #79A70A;
+    background: linear-gradient(#F79E05 25%, #8F5408 115%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  }
+
+}

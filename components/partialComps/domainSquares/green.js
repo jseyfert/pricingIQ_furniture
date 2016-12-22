@@ -9,7 +9,7 @@ var DomainGreen = React.createClass({
     var urlCount = (obj.urlCount > 0) ? obj.urlCount : null;
     var countLeftToSubmit = (obj.countLeftToSubmit) ? obj.countLeftToSubmit : 15
     return (
-      <div className="col-lg-3 col-md-6 col-xs-12 thumb noPadding grow">
+      <div className="col-lg-3 col-md-6 col-xs-6 thumb noPadding grow">
           <div className="overlayThumbsUpText">
             <div className="overlayGreen">
               <a className="list-group-item" target="_blank" href={domainInfo.href}>
