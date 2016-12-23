@@ -120,7 +120,7 @@ var OrderIncomplete = React.createClass({
     return (
       <div>
         <Logo delay={true} /> 
-        <h3 className="text-center">You have reach your limit or did not submit any online domains</h3>
+        <h3 className="text-center">You have reach your limit, or did not submit any online domains, or did not submit any domains we offer.</h3>
         <br/>
         <div className="container">
           <div className="col-sm-6 col-sm-offset-3">
