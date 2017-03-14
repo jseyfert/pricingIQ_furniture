@@ -31,6 +31,9 @@ var Index = React.createClass({
       rawText: '',
       allUrls: [],
       allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
+      
+      customers: [],
+      sites: [],
 		}
 	},
 
@@ -47,6 +50,16 @@ var Index = React.createClass({
     var urlArray = text.split("\n");
     var allDomains = this.state.allDomains;
     var domains = allDomains.map(function(arr){ return arr[0]})
+    // var domains = allDomains.map(function(arr){ 
+    //   console.log(arr[0])
+    //   if (arr[0] === 'https://www.southshorefurniture.com/ca-fr'){
+    //     return 'southshorefurniture.com/ca-fr'
+    //   } else if (arr[0] === 'https://www.southshorefurniture.com/us-en'){
+    //     return 'southshorefurniture.com/us-en'
+    //   } else {
+    //     return arr[0]
+    //   }
+    // })
     var distinctDomains = [];
     var domainsAndUrls = [];
     var arrOfObj = [];
@@ -54,10 +67,16 @@ var Index = React.createClass({
 
     urlArray.map(function(url){
         if (validator.isURL(url) && parseDomain(url)){
-          var getDomain = parseDomain(url).domain
-          var lowerCaseDomain = getDomain.toLowerCase()
-          domains.push(lowerCaseDomain)
-          domainsAndUrls.push([lowerCaseDomain, url])
+          if (url.indexOf('ca-fr') >= 0) {
+            var lowerCaseFullDomain = 'southshorefurniture.com/ca-fr'
+          } else if (url.indexOf('us-en') >= 0){
+            var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
+          } else {
+            var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
+            var lowerCaseFullDomain = getFullDomain.toLowerCase()
+          }
+          domains.push(lowerCaseFullDomain)
+          domainsAndUrls.push([lowerCaseFullDomain, url])
         } else {
           return null;
         }
@@ -73,10 +92,19 @@ var Index = React.createClass({
 
       temp.domain = domain
 
+      console.log(domain)
+
       temp.domainActive = function(){
         for(var i = 0; i < allDomains.length ; i++) {
           if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
           if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
+        }
+      }()
+
+      temp.siteId = function(){
+        for(var i = 0; i < allDomains.length ; i++) {
+          if (domain === allDomains[i][0]){ return allDomains[i][2];} 
+          // if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
         }
       }()
 
@@ -528,6 +556,53 @@ var Index = React.createClass({
     })
   },
 
+  getCustomers: function(){
+    var self = this;
+    $.ajax({
+      method: 'GET', 
+      url: '/getCustomers'
+    }).done(function(data){
+      self.setState({ 
+        customers: data,
+        activeComponent: 'landing',
+        message: null,
+        // userLoading: false,
+      });
+      // if(!self.state.domainsLoading){ self.runCreateUrlObj(text); }
+    })
+  },
+
+  getDomains: function(){
+    var self = this;
+    $.ajax({
+      method: 'GET', 
+      url: '/getDomains'
+    }).done(function(data){
+      var allDomains = [];
+      data.map(function(obj){
+        if (obj.siteDomainUrl === 'https://www.southshorefurniture.com/ca-fr'){
+          var lowerCaseFullDomain = 'southshorefurniture.com/ca-fr'
+        } else if (obj.siteDomainUrl === 'https://www.southshorefurniture.com/us-en'){
+          var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
+        } else {
+          var getFullDomain = parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
+          var lowerCaseFullDomain = getFullDomain.toLowerCase()
+        }
+        allDomains.push([lowerCaseFullDomain, true, obj.siteId, obj.siteName ])
+      })
+      // console.log('yes', allDomains)
+      self.setState({ 
+        allDomains: allDomains, // [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
+        domainsLoading: false,
+        activeComponent: 'landing',
+        message: null,
+      });
+      if(!self.state.userLoading){
+        self.runCreateUrlObj('dummyData');
+      }
+    })
+  },
+
   logoutUser: function(user){
     var self = this;
     $.ajax({
@@ -676,19 +751,21 @@ var Index = React.createClass({
   },
 
   componentWillMount: function(){
+      this.getCustomers();
+      this.getDomains();
+      this.getOneUserFromServer();
 
     // setTimeout(() => {
-      this.setState({  
-        allDomains: [['amazon', false ],['walmart', true ],['sears', true],['homedepot', false]],
-        domainsLoading: false
-      });
-      if(!this.state.userLoading){
-        this.runCreateUrlObj('dummyData');
-      }
+      // this.setState({  
+      //   allDomains: [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
+      //   domainsLoading: false
+      // });
+      // if(!this.state.userLoading){
+      //   this.runCreateUrlObj('dummyData');
+      // }
     // }, 1110);
 
     // setTimeout(() => {
-      this.getOneUserFromServer();
     // }, 1110);
   },
 
@@ -708,6 +785,7 @@ var Index = React.createClass({
         urlsUploading={ this.state.urlsUploading } 
         createUrlObj={ this.createUrlObj } 
         user={ this.state.user } 
+        customers={ this.state.customers } 
         message={ this.state.message } 
         allDomains={ this.state.allDomains } 
         allUrls={ this.state.allUrls } 

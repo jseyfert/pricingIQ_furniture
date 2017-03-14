@@ -31,6 +31,7 @@ var ShowWhichComponent = React.createClass({
         setActiveComponent={ this.props.setActiveComponent }
         allUrls = { this.props.allUrls }
         user={ this.props.user }
+        customers={ this.props.customers }
         rawText={ this.props.rawText } 
         />
       </div>

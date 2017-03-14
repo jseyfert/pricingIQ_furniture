@@ -36,6 +36,7 @@
     "fingerprintjs2": "^1.4.1",
     "install": "^0.8.2",
     "mongoose": "^4.5.0",
+    "mysql2": "^1.2.0",
     "npm": "^4.0.3",
     "parse-domain": "^1.0.0",
     "passport": "^0.3.2",

@@ -67,10 +67,12 @@ app.put( '/emailVerificationResend', user.emailVerificationResend);
 app.get( '/verifyPasswordReset/:passwordResetToken', user.verifyPasswordReset);
 app.put( '/resetPassword', user.resetPassword);
 
-app.post('/suggest', data.suggest);
-app.post('/submitUrlsId', data.submitUrlsId);
-app.post('/submitUrlsNoId', data.submitUrlsNoId);
+// app.post('/suggest', data.suggest);
+// app.post('/submitUrlsId', data.submitUrlsId);
+// app.post('/submitUrlsNoId', data.submitUrlsNoId);
 
+app.get('/getCustomers', data.getCustomers);
+app.get('/getDomains', data.getDomains);
 
 
 if (process.env.NODE_ENV === 'production') {
