@@ -4,7 +4,6 @@ var Sequelize = require('sequelize')
 var sequelize = new Sequelize(process.env.SQL_URI);
 
 
-
 module.exports = {
 
   getCustomers: function(req, res){
@@ -19,15 +18,13 @@ module.exports = {
     }, {
       timestamps: false
     });
-
+    
     Customer.findAll().then(function(customer) {
       res.json(customer)
     })
   },
 
   getDomains: function(req, res){
-    console.log('in get Sites');
-
     var Site = sequelize.define('sites', {
       siteId: {
         type: Sequelize.INTEGER,
@@ -50,9 +47,8 @@ module.exports = {
 
   submitUrls: function(req, res){
     var sequelize2 = new Sequelize('mssql://appUser:appUser@54.70.87.41:1433/pricingIQ');
-
-    console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
-    var urlsToSubmit = req.body.urlsToSubmit
+    // console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
+    // var urlsToSubmit = req.body.urlsToSubmit
     var InputQueue_discovery3 = sequelize2.define('inputQueue_discovery3', {
       id: {
         type: Sequelize.INTEGER,
@@ -69,7 +65,7 @@ module.exports = {
       tableName: 'inputQueue_discovery3'
     })  
 
-    urlsToSubmit.map(function(item){
+    req.body.urlsToSubmit.map(function(item){
       InputQueue_discovery3.create({
         SiteId: item.SiteId,
         customerId: item.customerId,
@@ -77,6 +73,7 @@ module.exports = {
         inputCategoryUrl: item.inputCategoryUrl,
       });
     })
+
     res.json({
       activeComponent: 'orderComplete',
       // message: {message: "Order ID: " + order.dataValues.orderId , alert: null},
@@ -165,12 +162,12 @@ module.exports = {
   //     Orders.create({
   //       userId: userId,
   //       email: email,
-  //     }).then(function(order){
-        // urlsToSubmit.map(function(url){
-        //   Urls.create({
-        //     orderId: order.dataValues.orderId,
-        //     url: url,
-        //   })
+      // }).then(function(order){
+      //   urlsToSubmit.map(function(url){
+      //     Urls.create({
+      //       orderId: order.dataValues.orderId,
+      //       url: url,
+      //     })
         // })
   //       if(user) {
   //         mongoose.model('User').findById({ _id: userId },

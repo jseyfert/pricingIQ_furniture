@@ -58,12 +58,12 @@ var SendMail = function(name, email, link, passwordResetToken){
     };
   }
 
-  transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-        return console.log(error);
-      }
-      console.log('Message sent: ' + info.response);
-  });
+  // transporter.sendMail(mailOptions, function(error, info){
+  //     if(error){
+  //       return console.log(error);
+  //     }
+  //     console.log('Message sent: ' + info.response);
+  // });
 
 }
 

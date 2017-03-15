@@ -183,12 +183,7 @@ var Index = React.createClass({
 
   submitUrls: function(user, allUrls){
     var self = this;
-
     var urlsToSubmit = [];
-    // var newCountLeftToSubmit = [];
-
-    // console.log('self.state.customerId',allUrls)
-
     allUrls.map(function(obj){
       if (obj.domainActive === true && obj.urlCount > 0){
         obj.urls.map(function(item){
@@ -202,36 +197,21 @@ var Index = React.createClass({
           console.log(newObj)
         })
       }
-
-        // urlsToSubmit.push(obj)
-        // console.log('obj',obj)
-      // if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
-        // var temp = []
-        // temp.domain = obj.domain
-        // temp = obj.urls.slice(0, obj.countToSubmitNow)
-        // obj.urls.slice(0, obj.countToSubmitNow).map(function(url){
-        //   urlsToSubmit.push(url)
-        // })
-      // if (obj.domainOffered === true){
-      //   newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
-      // }
     })
-    console.log('urlsToSubmit',urlsToSubmit)
+
     $.ajax({
       method: 'POST',
       url: '/submitUrls',
       data: { urlsToSubmit: urlsToSubmit },
-      // data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: [], customerId:self.state.customerId },
       success: function(data){
         self.setState({ 
-          // user: data.user,
           activeComponent: data.activeComponent,
           message: data.message,
           urlsUploading: false
         });
       },
       error: function(xhr, status, err){
-        console.error('/submitUrlsId', status, err.toString())
+        console.error('/submitUrls', status, err.toString())
       }
     })
   },  
@@ -332,10 +312,10 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   handleCustomerSelect: function(customerId, customerName){
     // e.preventDefault();
-    console.log(customerId, customerName, 'in handleCustomerSelect')
+    // console.log(customerId, customerName, 'in handleCustomerSelect')
     this.setState({
       customerId: customerId,
-      customerName: customerName
+      customerName: customerName,
     });
   },
 
@@ -690,6 +670,8 @@ var Index = React.createClass({
             emailVerificationCount: 0,
             passwordResetCount: 0,
             urlsUploading: false,
+            customerId: null,
+            customerName: 'Select Customer',
           });
         })
         self.runCreateUrlObj('dummyData');

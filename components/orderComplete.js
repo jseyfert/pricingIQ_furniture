@@ -59,11 +59,11 @@ var OrderComplete = React.createClass({
 
       if(urlCount > 0){
         if(domainActive && countLeftToSubmit > 0){
-          rows.unshift( 
+          rows.push( 
             <UrlGroupGreen urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemGreen} countLeftToSubmit={countLeftToSubmit}  /> 
             )
         } else {
-          rows.push( 
+          rows.unshift( 
             <UrlGroupRed urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemRed} countLeftToSubmit={countLeftToSubmit} domainOffered={domainOffered} domainActive={domainActive} /> 
           )
         }

@@ -7,10 +7,7 @@ var session = require('express-session');
 var Sequelize = require('sequelize')
 var Fingerprint = require('express-fingerprint');
 var session = require('express-session');
-// var MongoStore = require('connect-mongo')(session);
 var FileStore = require('session-file-store')(session);
-// var cookieParser = require('cookie-parser')
-
 
 require('dotenv').config();
 require('./config/passport.js')(passport);
@@ -31,13 +28,6 @@ app.use(Fingerprint({
     ]
 }))
 
-// app.use(session({
-//     store: new FileStore(options),
-//     secret: 'keyboard cat'
-// }));
-// app.use(cookieParser())
-// app.use(session({ secret: 'thisIsPricingIQ' }));  
-// app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
