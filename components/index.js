@@ -181,6 +181,61 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  submitUrls: function(user, allUrls){
+    var self = this;
+
+    var urlsToSubmit = [];
+    // var newCountLeftToSubmit = [];
+
+    // console.log('self.state.customerId',allUrls)
+
+    allUrls.map(function(obj){
+      if (obj.domainActive === true && obj.urlCount > 0){
+        obj.urls.map(function(item){
+          // console.log(item)
+          var newObj = {}
+          newObj.customerId = self.state.customerId
+          newObj.SiteId = obj.siteId
+          newObj.spiderName = obj.spiderName
+          newObj.inputCategoryUrl = item
+          urlsToSubmit.push(newObj)
+          console.log(newObj)
+        })
+      }
+
+        // urlsToSubmit.push(obj)
+        // console.log('obj',obj)
+      // if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
+        // var temp = []
+        // temp.domain = obj.domain
+        // temp = obj.urls.slice(0, obj.countToSubmitNow)
+        // obj.urls.slice(0, obj.countToSubmitNow).map(function(url){
+        //   urlsToSubmit.push(url)
+        // })
+      // if (obj.domainOffered === true){
+      //   newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
+      // }
+    })
+    console.log('urlsToSubmit',urlsToSubmit)
+    $.ajax({
+      method: 'POST',
+      url: '/submitUrls',
+      data: { urlsToSubmit: urlsToSubmit },
+      // data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: [], customerId:self.state.customerId },
+      success: function(data){
+        self.setState({ 
+          user: data.user,
+          activeComponent: data.activeComponent,
+          message: data.message,
+          urlsUploading: false
+        });
+      },
+      error: function(xhr, status, err){
+        console.error('/submitUrlsId', status, err.toString())
+      }
+    })
+  },  
+
   submitUrlsID: function(user, allUrls){
     var self = this;
 
@@ -221,12 +276,20 @@ var Index = React.createClass({
 
   submitUrlsNoID: function(allUrls){
 
-    var urlsToSubmit = [];
-    allUrls.map(function(obj){
-      if (obj.urlCount > 0){ 
-        obj.urls.map(function(url){ urlsToSubmit.push(url)})
-      }
+    var self = this;
+    self.setState({ 
+      activeComponent: 'login', 
+      message: null,
     })
+
+    // var urlsToSubmit = [];
+    // allUrls.map(function(obj){
+    //   if (obj.urlCount > 0){ 
+    //     obj.urls.map(function(url){ urlsToSubmit.push(url)})
+    //   }
+    // })
+
+
 
   //   var fingerprint2 = {}
 
@@ -244,29 +307,37 @@ var Index = React.createClass({
 
   // console.log('hashFingerprintJs2', fingerprint2, test2, test3)
 
-    var self = this;
-    $.ajax({
-      method: 'POST',
-      url: '/submitUrlsNoId',
-      data: {urlsToSubmit: urlsToSubmit},
-      success: function(data){
-        // console.log(data, 'in success')
-        var activeComponent = data.activeComponent
-        self.setState({ 
-          activeComponent: activeComponent, 
-          message: null,
+    // var self = this;
+    // $.ajax({
+    //   method: 'POST',
+    //   url: '/submitUrlsNoId',
+    //   data: {urlsToSubmit: urlsToSubmit},
+    //   success: function(data){
+    //     // console.log(data, 'in success')
+    //     var activeComponent = data.activeComponent
+    //     self.setState({ 
+    //       activeComponent: activeComponent, 
+    //       message: null,
 
-        })
-      },
-      error: function(xhr, status, err){
-        console.error('/submitUrlsNoId', status, err.toString())
-      }
-    })
+    //     })
+    //   },
+    //   error: function(xhr, status, err){
+    //     console.error('/submitUrlsNoId', status, err.toString())
+    //   }
+    // })
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  handleCustomerSelect: function(customerId, customerName){
+    // e.preventDefault();
+    console.log(customerId, customerName, 'in handleCustomerSelect')
+    this.setState({
+      customerId: customerId,
+      customerName: customerName
+    });
+  },
 
   signupUserFromServer: function(userForm){
     var self = this;
@@ -295,14 +366,6 @@ var Index = React.createClass({
     })
   },
 
-  handleCustomerSelect: function(customerId, customerName){
-    // e.preventDefault();
-    console.log(customerId, customerName, 'in handleCustomerSelect')
-    this.setState({
-      customerId: customerId,
-      customerName: customerName
-    });
-  },
 
   handleUrlSubmit: function(e){
     e.preventDefault();
@@ -366,7 +429,7 @@ var Index = React.createClass({
       // })
       } else {
         this.setState({ urlsUploading: true })
-        this.submitUrlsID(this.state.user, allUrls);  /////////////////////////////////////////////////////////
+        this.submitUrls(this.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
     } else if (!userLoggedIn) {   
       if (noUrls) {
@@ -442,7 +505,7 @@ var Index = React.createClass({
         //   })
         } else {
           self.setState({ urlsUploading: true })
-          self.submitUrlsID(user, allUrls);  /////////////////////////////////////////////////////////
+          self.submitUrls(user, allUrls);  /////////////////////////////////////////////////////////
         }
       },
       error: function(xhr, status, err){
@@ -504,7 +567,7 @@ var Index = React.createClass({
       })
       } else {
         self.setState({ urlsUploading: true })
-        self.submitUrlsID(self.state.user, allUrls);  /////////////////////////////////////////////////////////
+        self.submitUrls(self.state.user, allUrls);  /////////////////////////////////////////////////////////
       }
     })
   },
