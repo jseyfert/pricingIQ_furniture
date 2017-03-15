@@ -13,13 +13,32 @@ var DomainYellow = require('./partialComps/domainSquares/yellow');
 
 var Landing = React.createClass({
 
-  displayCustomers: function(){
-    var allUrls = this.props.customers;
+  displayCustomerDropDown: function(){
+    var customers = this.props.customers;
     var rows = [];
-    allUrls.map(function(obj){
-      rows.push( <li key={obj.customerId} ><a href="#">{obj.Name}</a></li> )
-    })
-    return rows;
+    customers.map(function(obj){
+      rows.push( <li key={obj.customerId}><a  onClick={ this.props.handleCustomerSelect.bind(null, obj.customerId, obj.Name)  } >{obj.Name}</a></li> )
+    }, this)
+
+    return(
+           <div className="btn-group" role="group">
+            <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             {this.props.customerName} &nbsp;
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+             {rows}
+            </ul>
+          </div>
+      )
+  },
+
+  disableButton: function(){
+    if (this.props.customerId){
+      return false;
+    } else {
+      return true;
+    }
   },
 
   displayDomains: function(){
@@ -70,9 +89,10 @@ var Landing = React.createClass({
     // console.log('this.props.submitSuggestedDomains2',this.props.customers);
       var domainsLoading= this.props.domainsLoading
       var userLoading = this.props.userLoading
+      var customersLoading = this.props.customersLoading
       var urlsUploading = this.props.urlsUploading
       // console.log('urlsUploading', urlsUploading)
-      if (domainsLoading || userLoading || urlsUploading){
+      if (domainsLoading || userLoading || customersLoading || urlsUploading){
         return (
           <div>
             <Logo delay={true} />
@@ -98,20 +118,14 @@ var Landing = React.createClass({
             <ModalDialog submitSuggestedDomains={ this.props.submitSuggestedDomains }/>
             <Logo delay={false} />
             <div className="container text-center">
+                  {this.displayCustomerDropDown()}
+                  <br/>
+                  <br/>
                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-                  <div className="btn-group" role="group">
-                    <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Customer &nbsp;
-                      <span className="caret"></span>
-                    </button>
-                    <ul className="dropdown-menu">
-                      {this.displayCustomers()}
-                    </ul>
-                  </div>
                   <div className="form-group">
                     <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
                   </div>
-                  <button className="btn btn-warning btn-md">Extract</button>
+                  <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                   <Message message={this.props.message} />
                 </form>
               <br/>

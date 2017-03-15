@@ -17,6 +17,7 @@ var Index = React.createClass({
 		return {
       userLoading: true,
       domainsLoading: true,
+      customersLoading: true,
       urlsUploading: false,
 
       user: null,
@@ -33,6 +34,8 @@ var Index = React.createClass({
       allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
       
       customers: [],
+      customerId: null,
+      customerName: 'Select Customer',
       sites: [],
 		}
 	},
@@ -46,20 +49,9 @@ var Index = React.createClass({
     } else {
       var userLoggedIn = false
     }
-    // console.log('userLoggedIn', userLoggedIn)
     var urlArray = text.split("\n");
     var allDomains = this.state.allDomains;
     var domains = allDomains.map(function(arr){ return arr[0]})
-    // var domains = allDomains.map(function(arr){ 
-    //   console.log(arr[0])
-    //   if (arr[0] === 'https://www.southshorefurniture.com/ca-fr'){
-    //     return 'southshorefurniture.com/ca-fr'
-    //   } else if (arr[0] === 'https://www.southshorefurniture.com/us-en'){
-    //     return 'southshorefurniture.com/us-en'
-    //   } else {
-    //     return arr[0]
-    //   }
-    // })
     var distinctDomains = [];
     var domainsAndUrls = [];
     var arrOfObj = [];
@@ -92,8 +84,6 @@ var Index = React.createClass({
 
       temp.domain = domain
 
-      console.log(domain)
-
       temp.domainActive = function(){
         for(var i = 0; i < allDomains.length ; i++) {
           if (domain === allDomains[i][0] && allDomains[i][1] === true ){ return true;} 
@@ -104,7 +94,12 @@ var Index = React.createClass({
       temp.siteId = function(){
         for(var i = 0; i < allDomains.length ; i++) {
           if (domain === allDomains[i][0]){ return allDomains[i][2];} 
-          // if (domain === allDomains[i][0] && allDomains[i][1] === false ){return false;} 
+        }
+      }()
+
+      temp.spiderName = function(){
+        for(var i = 0; i < allDomains.length ; i++) {
+          if (domain === allDomains[i][0]){ return allDomains[i][3] + "_d" ;} 
         }
       }()
 
@@ -298,6 +293,15 @@ var Index = React.createClass({
         });
       }
     })
+  },
+
+  handleCustomerSelect: function(customerId, customerName){
+    // e.preventDefault();
+    console.log(customerId, customerName, 'in handleCustomerSelect')
+    this.setState({
+      customerId: customerId,
+      customerName: customerName
+    });
   },
 
   handleUrlSubmit: function(e){
@@ -566,7 +570,7 @@ var Index = React.createClass({
         customers: data,
         activeComponent: 'landing',
         message: null,
-        // userLoading: false,
+        customersLoading: false,
       });
       // if(!self.state.domainsLoading){ self.runCreateUrlObj(text); }
     })
@@ -769,10 +773,11 @@ var Index = React.createClass({
     // }, 1110);
   },
 
-	render: function(){
-  	return (
+  render: function(){
+      // console.log(this.state.customerId)
+    return (
       <div>
-  			<Header 
+        <Header 
         user={ this.state.user } 
         logoutUser={ this.logoutUser }
         setActiveComponent={ this.setActiveComponent }
@@ -781,12 +786,15 @@ var Index = React.createClass({
         />
         <ShowWhichComponent 
         userLoading={ this.state.userLoading } 
+        customersLoading={ this.state.customersLoading } 
         domainsLoading={ this.state.domainsLoading } 
         urlsUploading={ this.state.urlsUploading } 
         createUrlObj={ this.createUrlObj } 
         user={ this.state.user } 
         customers={ this.state.customers } 
         message={ this.state.message } 
+        customerId={ this.state.customerId } 
+        customerName={ this.state.customerName } 
         allDomains={ this.state.allDomains } 
         allUrls={ this.state.allUrls } 
         activeComponent={ this.state.activeComponent } 
@@ -798,6 +806,7 @@ var Index = React.createClass({
         emailVerification={ this.emailVerification }
         logoutUser={ this.logoutUser } 
         handleUrlSubmit={ this.handleUrlSubmit } 
+        handleCustomerSelect={ this.handleCustomerSelect } 
         verifyPasswordReset={ this.verifyPasswordReset } 
         emailVerificationResend={ this.emailVerificationResend } 
         resetPassword={ this.resetPassword } 

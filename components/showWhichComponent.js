@@ -15,18 +15,23 @@ var OrderIncomplete = require('./orderIncomplete.js');
 
 var ShowWhichComponent = React.createClass({
   setActiveComponent: function() {
+  // console.log(this.props.customerId )
     var activeComponent = this.props.activeComponent
     if (activeComponent === 'landing'){
      return (
       <div>
         <Landing
         submitSuggestedDomains={ this.props.submitSuggestedDomains }
+        customersLoading={ this.props.customersLoading } 
         domainsLoading={ this.props.domainsLoading } 
         urlsUploading={ this.props.urlsUploading } 
         userLoading={ this.props.userLoading } 
         message={ this.props.message } 
+        customerId={ this.props.customerId } 
+        customerName={ this.props.customerName } 
         allDomains={ this.props.allDomains }
         handleUrlSubmit={ this.props.handleUrlSubmit }
+        handleCustomerSelect={ this.props.handleCustomerSelect }
         onTextChange={ this.props.onTextChange }
         setActiveComponent={ this.props.setActiveComponent }
         allUrls = { this.props.allUrls }
