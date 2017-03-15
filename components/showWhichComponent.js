@@ -58,6 +58,7 @@ var ShowWhichComponent = React.createClass({
           message={ this.props.message } 
           allDomains={ this.props.allDomains }
           allUrls = { this.props.allUrls }
+          customerName={ this.props.customerName }
           />
         </div>
         )

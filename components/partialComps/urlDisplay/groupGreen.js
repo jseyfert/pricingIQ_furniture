@@ -13,7 +13,7 @@ var UrlGroupGreen = React.createClass({
       <div className="panel-group" id={"faqAccordion" + index} >
         <div className="panel panel-success">
           <li className="list-group-item list-group-item-success" data-toggle="collapse" data-parent={"#faqAccordion" + index} data-target={"#question" + index}>
-            <span className="badge greenBackground">{urlCount} of {urlCount} processed</span>
+            <span className="badge greenBackground">{urlCount} submitted</span>
             <span className="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
             <strong> {domain}</strong>
           </li>

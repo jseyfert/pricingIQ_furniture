@@ -59,15 +59,9 @@ var OrderComplete = React.createClass({
 
       if(urlCount > 0){
         if(domainActive && countLeftToSubmit > 0){
-          if (urlCount > 15 || urlCount > countLeftToSubmit) {
-            rows.unshift( 
-              <UrlGroupYellow urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemYellow} countLeftToSubmit={countLeftToSubmit} /> 
-              )
-          } else {
-            rows.unshift( 
-              <UrlGroupGreen urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemGreen} countLeftToSubmit={countLeftToSubmit}  /> 
-              )
-          }
+          rows.unshift( 
+            <UrlGroupGreen urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemGreen} countLeftToSubmit={countLeftToSubmit}  /> 
+            )
         } else {
           rows.push( 
             <UrlGroupRed urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemRed} countLeftToSubmit={countLeftToSubmit} domainOffered={domainOffered} domainActive={domainActive} /> 
@@ -79,11 +73,11 @@ var OrderComplete = React.createClass({
   },
 
   render: function(){
+        // <Logo delay={false} /> 
     return (
       <div>
-        <Logo delay={false} /> 
         <div className="container">   
-          <h3 className="text-center">Urls in green are being processed. Check your email to recieve your data.</h3>
+        <h2 className="text-center">Customer - {this.props.customerName}</h2>
           <div className="text-center"><Message message={this.props.message} /></div>
           <br/>
           {this.displayRow()}

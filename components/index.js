@@ -224,7 +224,7 @@ var Index = React.createClass({
       // data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: [], customerId:self.state.customerId },
       success: function(data){
         self.setState({ 
-          user: data.user,
+          // user: data.user,
           activeComponent: data.activeComponent,
           message: data.message,
           urlsUploading: false
@@ -787,9 +787,11 @@ var Index = React.createClass({
   },
 
   setActiveComponent: function(componentName) {
-    if (componentName === 'login'){
+    if (componentName === 'login' || componentName === 'landing' ){
       this.setState({
         activeComponent: componentName,
+        customerName: 'Select Customer',
+        customerId: null,
         message: null,
         rawText: '',
       })

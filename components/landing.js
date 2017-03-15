@@ -122,11 +122,13 @@ var Landing = React.createClass({
                   <br/>
                   <br/>
                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
-                  <div className="form-group">
-                    <textarea className="form-control" placeholder="Copy and Paste URLs here" style={{textAlign: 'center'}} name="rawText" rows="1" cols="40" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
-                  </div>
-                  <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                   <Message message={this.props.message} />
+                  <div className="form-group">
+                    <textarea className="form-control" placeholder="Paste URLs here"  name="rawText" rows="13" cols="130" id="url" onChange={ this.props.onTextChange } value={ this.props.rawText } required/>
+                  </div>
+                 <br/>
+                 <br/>
+                  <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                 </form>
               <br/>
             </div>
@@ -135,8 +137,8 @@ var Landing = React.createClass({
               <div className="row">
               </div>
             </div> 
-            <Footer setActiveComponent={ this.props.setActiveComponent } />
           </div>
+            // <Footer setActiveComponent={ this.props.setActiveComponent } />
                 // {this.displayDomains()}
         )
       }

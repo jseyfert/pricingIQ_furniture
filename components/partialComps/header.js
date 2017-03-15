@@ -16,7 +16,7 @@ var Header = React.createClass({
             </div>
         </div>
         )
-    } else if(activeComponent === 'faq') {
+    } else if(activeComponent !== 'landing') {
       if (this.props.user.user !== 'anonymous'){
         return(
           <div className="container">
