@@ -46,10 +46,8 @@ module.exports = {
   },
 
   submitUrls: function(req, res){
-    var sequelize2 = new Sequelize('mssql://appUser:appUser@54.70.87.41:1433/pricingIQ');
     // console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
-    // var urlsToSubmit = req.body.urlsToSubmit
-    var InputQueue_discovery3 = sequelize2.define('inputQueue_discovery3', {
+    var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -62,11 +60,11 @@ module.exports = {
     }, {
       timestamps: false,
       freezeTableName: true,
-      tableName: 'inputQueue_discovery3'
+      tableName: 'inputQueue_discovery'
     })  
 
     req.body.urlsToSubmit.map(function(item){
-      InputQueue_discovery3.create({
+      InputQueue_discovery.create({
         SiteId: item.SiteId,
         customerId: item.customerId,
         spiderName: item.spiderName,
