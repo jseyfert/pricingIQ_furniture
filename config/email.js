@@ -34,7 +34,7 @@ var SendMail = function(name, email, link, passwordResetToken){
 
   if(link){
     var mailOptions = {
-      from: '"pricingIQ" <johnseyfert@gmail.com>',
+      from: '"pricingIQ" <@gmail.com>',
       to: email,
       subject: 'Validate Your Email ✔',
       html : htmlValidate,
@@ -42,7 +42,7 @@ var SendMail = function(name, email, link, passwordResetToken){
     };
   } else if (passwordResetToken){
     var mailOptions = {
-      from: '"pricingIQ" <johnseyfert@gmail.com>', 
+      from: '"pricingIQ" <@gmail.com>', 
       to: email,
       subject: 'Reset Your Password ✔',
       html : htmlReset,
@@ -50,7 +50,7 @@ var SendMail = function(name, email, link, passwordResetToken){
     };
   } else {
     var mailOptions = {
-      from: '"pricingIQ" <johnseyfertfake@gmail.com>',
+      from: '"pricingIQ" <@gmail.com>',
       to: email,
       subject: 'Your password has been reset ✔',
       html : htmlResetNotify,
