@@ -59,12 +59,16 @@ var Index = React.createClass({
 
     urlArray.map(function(url){
         if (validator.isURL(url) && parseDomain(url)){
-          if (url.indexOf('ca-fr') >= 0) {
+          if (url.indexOf('southshorefurniture.com/ca-fr') >= 0) {
             var lowerCaseFullDomain = 'southshorefurniture.com/ca-fr'
-          } else if (url.indexOf('us-en') >= 0){
+          } else if (url.indexOf('southshorefurniture.com/us-en') >= 0){
             var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
           } else {
-            var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
+            if (parseDomain(obj.siteDomainUrl).subdomain){
+              var getFullDomain = parseDomain(url).subdomain + '.' + parseDomain(url).domain + '.' +  parseDomain(url).tld
+            } else {
+              var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
+            }
             var lowerCaseFullDomain = getFullDomain.toLowerCase()
           }
           domains.push(lowerCaseFullDomain)
@@ -73,7 +77,8 @@ var Index = React.createClass({
           return null;
         }
     })
-
+    // console.log("domains", domains)
+    // console.log("domainsAndUrls", domainsAndUrls)
     // use underscore to select only unique domains
     distinctDomains = _.uniq(domains) 
 
@@ -96,10 +101,31 @@ var Index = React.createClass({
           if (domain === allDomains[i][0]){ return allDomains[i][2];} 
         }
       }()
-
+      
       temp.spiderName = function(){
         for(var i = 0; i < allDomains.length ; i++) {
-          if (domain === allDomains[i][0]){ return allDomains[i][3] + "_d" ;} 
+          if (domain === allDomains[i][0]){
+            // console.log("domain", domain)
+            var spiderNameTld = parseDomain(domain).tld
+            var spiderNameDomain = parseDomain(allDomains[i][0]).domain
+            if (domain === "southshorefurniture.com/ca-fr"){
+              spiderNameDomain = "southshore_dca"
+            } else if (domain === "southshorefurniture.com/us-en"){
+              spiderNameDomain = "southshore_d"
+            } else if (domain === "argos.uk"){
+              spiderNameDomain = "argos_d"
+            } else if (domain === "uk.insight.com"){
+              spiderNameDomain = "insight_duk"
+            } else if (spiderNameTld === 'com'){
+              spiderNameDomain = spiderNameDomain + "_d" ;
+            } else if (spiderNameTld === 'co.uk') {
+              spiderNameDomain = spiderNameDomain + "_duk" ;
+            } else {
+              spiderNameDomain = spiderNameDomain + "_d" + spiderNameTld
+            }
+            // console.log(spiderNameDomain)
+            return spiderNameDomain.toLowerCase()
+          } 
         }
       }()
 
@@ -632,8 +658,13 @@ var Index = React.createClass({
         } else if (obj.siteDomainUrl === 'https://www.southshorefurniture.com/us-en'){
           var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
         } else {
-          var getFullDomain = parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
+          if (parseDomain(obj.siteDomainUrl).subdomain){
+            var getFullDomain = parseDomain(obj.siteDomainUrl).subdomain + '.' + parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
+          } else {
+            var getFullDomain = parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
+          }
           var lowerCaseFullDomain = getFullDomain.toLowerCase()
+          console.log(lowerCaseFullDomain)
         }
         allDomains.push([lowerCaseFullDomain, true, obj.siteId, obj.siteName ])
       })
