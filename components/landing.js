@@ -73,9 +73,11 @@ var Landing = React.createClass({
         return (
             <div className="row">
               <div className="col-sm-6">
+              The following domains will not be submitted:
                   {rowsNotOffered}
               </div>
               <div className="col-sm-6">
+              To be submitted:
                   {rowsOffered}
               </div>
             </div>
@@ -83,12 +85,14 @@ var Landing = React.createClass({
       } else if (rowsOffered.length > 0){
         return (
             <div>
+                  To be submitted:
                   {rowsOffered}
             </div>
           )
       } else if (rowsNotOffered.length > 0){
         return (
             <div>
+                  The following domains will not be submitted:
                   {rowsNotOffered}
             </div>
           )
