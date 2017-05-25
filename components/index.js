@@ -78,7 +78,7 @@ var Index = React.createClass({
         }
     })
     // console.log("domains", domains)
-    console.log("domainsAndUrls", domainsAndUrls)
+    // console.log("domainsAndUrls", domainsAndUrls)
     // use underscore to select only unique domains
     distinctDomains = _.uniq(domains) 
 

@@ -130,6 +130,8 @@ var Landing = React.createClass({
                  <br/>
                   <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                 </form>
+
+                
               <br/>
             </div>
             <div className="container">
@@ -138,8 +140,8 @@ var Landing = React.createClass({
               </div>
             </div> 
           </div>
-            // <Footer setActiveComponent={ this.props.setActiveComponent } />
                 // {this.displayDomains()}
+            // <Footer setActiveComponent={ this.props.setActiveComponent } />
         )
       }
     }
