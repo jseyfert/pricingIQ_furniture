@@ -121,9 +121,9 @@ var Index = React.createClass({
             } else if (spiderNameTld === 'co.uk') {
               spiderNameDomain = spiderNameDomain + "_duk" ;
             } else {
-              spiderNameDomain = 'spiderNameDomain + "_d" + spiderNameTld'
+              spiderNameDomain = spiderNameDomain + "_d" + spiderNameTld
             }
-            // console.log(spiderNameDomain)
+            console.log(spiderNameDomain)
             return spiderNameDomain.toLowerCase()
           } 
         }

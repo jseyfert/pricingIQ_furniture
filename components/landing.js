@@ -41,7 +41,7 @@ var Landing = React.createClass({
     }
   },
 
-  displayDomains: function(){
+  displayDomainWarning: function(){
       var user = (this.props.user.user !== 'anonymous') ? this.props.user : false
       var allUrls = this.props.allUrls;
       var rows = [];
@@ -51,36 +51,14 @@ var Landing = React.createClass({
         var domainActive = obj.domainActive
         var domainOffered = obj.domainOffered
         var urlCount = obj.urlCount
-        // console.log( 'domainActive', obj.countLeftToSubmit)
-        if(user){
-          if(domainOffered){
-            if(domainActive && obj.countLeftToSubmit > 0){
-              if(urlCount === 0){
-                rows.push( <DomainWhite obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              } else if (urlCount > 15 || urlCount > obj.countLeftToSubmit) {
-                rows.push( <DomainYellow obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              } else {
-                rows.push( <DomainGreen obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              }
-            } else {
-              rows.push( <DomainRed obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-            }
-          }
-        } else {
-          if(domainOffered){
-            if(domainActive){
-              if(urlCount === 0){
-                rows.push( <DomainWhite obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              } else if (urlCount > 15) {
-                rows.push( <DomainYellow obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              } else {
-                rows.push( <DomainGreen obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-              }
-            } else {
-              rows.push( <DomainRed obj={obj} domainInfo={DomainInfo[domain]} key={domain}/> )
-            }
-          }
-        }
+
+        if(!domainOffered){
+          rows.push( 
+           <div>
+             <span className="label label-danger">WARNING - {domain} - is not registered</span>
+           </div>
+           )
+        } 
       })  
       return rows;
     },
@@ -131,6 +109,7 @@ var Landing = React.createClass({
                   <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                 </form>
 
+                {this.displayDomainWarning()}
                 
               <br/>
             </div>
@@ -140,7 +119,6 @@ var Landing = React.createClass({
               </div>
             </div> 
           </div>
-                // {this.displayDomains()}
             // <Footer setActiveComponent={ this.props.setActiveComponent } />
         )
       }
