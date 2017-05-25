@@ -60,17 +60,15 @@ var Index = React.createClass({
     urlArray.map(function(url){
         if (validator.isURL(url) && parseDomain(url)){
           if (url.indexOf('southshorefurniture.com/ca-fr') >= 0) {
-            var lowerCaseFullDomain = 'southshorefurniture.com/ca-fr'
+            var getFullDomain = 'southshorefurniture.com/ca-fr'
           } else if (url.indexOf('southshorefurniture.com/us-en') >= 0){
-            var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
+            var getFullDomain = 'southshorefurniture.com/us-en'
+          } else if (url.indexOf('uk.insite.com') >= 0){
+            var lowerCaseFullDomain = 'uk.insight.com'
           } else {
-            if (parseDomain(obj.siteDomainUrl).subdomain){
-              var getFullDomain = parseDomain(url).subdomain + '.' + parseDomain(url).domain + '.' +  parseDomain(url).tld
-            } else {
-              var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
-            }
-            var lowerCaseFullDomain = getFullDomain.toLowerCase()
+            var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
           }
+          var lowerCaseFullDomain = getFullDomain.toLowerCase()
           domains.push(lowerCaseFullDomain)
           domainsAndUrls.push([lowerCaseFullDomain, url])
         } else {
@@ -121,7 +119,7 @@ var Index = React.createClass({
             } else if (spiderNameTld === 'co.uk') {
               spiderNameDomain = spiderNameDomain + "_duk" ;
             } else {
-              spiderNameDomain = spiderNameDomain + "_d" + spiderNameTld
+              spiderNameDomain = 'spiderNameDomain + "_d" + spiderNameTld'
             }
             // console.log(spiderNameDomain)
             return spiderNameDomain.toLowerCase()
@@ -653,20 +651,20 @@ var Index = React.createClass({
     }).done(function(data){
       var allDomains = [];
       data.map(function(obj){
-        if (obj.siteDomainUrl === 'https://www.southshorefurniture.com/ca-fr'){
-          var lowerCaseFullDomain = 'southshorefurniture.com/ca-fr'
-        } else if (obj.siteDomainUrl === 'https://www.southshorefurniture.com/us-en'){
-          var lowerCaseFullDomain = 'southshorefurniture.com/us-en'
+        var siteDomainUrlLowerCase = obj.siteDomainUrl.toLowerCase()
+        console.log(siteDomainUrlLowerCase)
+        if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/ca-fr'){
+          var getFullDomain = 'southshorefurniture.com/ca-fr'
+        } else if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/us-en'){
+          var getFullDomain = 'southshorefurniture.com/us-en'
+        } else if (siteDomainUrlLowerCase === 'uk.insight.com'){
+          var getFullDomain = 'uk.insight.com'
         } else {
-          if (parseDomain(obj.siteDomainUrl).subdomain){
-            var getFullDomain = parseDomain(obj.siteDomainUrl).subdomain + '.' + parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
-          } else {
-            var getFullDomain = parseDomain(obj.siteDomainUrl).domain + '.' +  parseDomain(obj.siteDomainUrl).tld
-          }
-          var lowerCaseFullDomain = getFullDomain.toLowerCase()
-          console.log(lowerCaseFullDomain)
+          var getFullDomain = parseDomain(siteDomainUrlLowerCase).domain + '.' +  parseDomain(siteDomainUrlLowerCase).tld
         }
-        allDomains.push([lowerCaseFullDomain, true, obj.siteId, obj.siteName ])
+        // var lowerCaseFullDomain = getFullDomain.toLowerCase()
+        // console.log(lowerCaseFullDomain)
+        allDomains.push([getFullDomain, true, obj.siteId, obj.siteName ])
       })
       // console.log('yes', allDomains)
       self.setState({ 
