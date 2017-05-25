@@ -59,24 +59,26 @@ var Index = React.createClass({
 
     urlArray.map(function(url){
         if (validator.isURL(url) && parseDomain(url)){
+          url = url.toLowerCase()
           if (url.indexOf('southshorefurniture.com/ca-fr') >= 0) {
             var getFullDomain = 'southshorefurniture.com/ca-fr'
           } else if (url.indexOf('southshorefurniture.com/us-en') >= 0){
             var getFullDomain = 'southshorefurniture.com/us-en'
-          } else if (url.indexOf('uk.insite.com') >= 0){
-            var lowerCaseFullDomain = 'uk.insight.com'
+          } else if (url.indexOf('uk.insight.com') >= 0){
+            var getFullDomain = 'uk.insight.com'
           } else {
             var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
           }
-          var lowerCaseFullDomain = getFullDomain.toLowerCase()
-          domains.push(lowerCaseFullDomain)
-          domainsAndUrls.push([lowerCaseFullDomain, url])
+          // var lowerCaseFullDomain = getFullDomain
+          // .toLowerCase()
+          domains.push(getFullDomain)
+          domainsAndUrls.push([getFullDomain, url])
         } else {
           return null;
         }
     })
     // console.log("domains", domains)
-    // console.log("domainsAndUrls", domainsAndUrls)
+    console.log("domainsAndUrls", domainsAndUrls)
     // use underscore to select only unique domains
     distinctDomains = _.uniq(domains) 
 
@@ -652,7 +654,7 @@ var Index = React.createClass({
       var allDomains = [];
       data.map(function(obj){
         var siteDomainUrlLowerCase = obj.siteDomainUrl.toLowerCase()
-        console.log(siteDomainUrlLowerCase)
+        // console.log(siteDomainUrlLowerCase)
         if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/ca-fr'){
           var getFullDomain = 'southshorefurniture.com/ca-fr'
         } else if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/us-en'){
