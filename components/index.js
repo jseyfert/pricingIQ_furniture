@@ -40,6 +40,42 @@ var Index = React.createClass({
 		}
 	},
 
+  getDomains: function(){
+    var self = this;
+    $.ajax({
+      method: 'GET', 
+      url: '/getDomains'
+    }).done(function(data){
+      var allDomains = [];
+      data.map(function(obj){
+        var siteDomainUrlLowerCase = obj.siteDomainUrl.toLowerCase()
+        // console.log(siteDomainUrlLowerCase)
+        if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/ca-fr'){
+          var getFullDomain = 'southshorefurniture.com/ca-fr'
+        } else if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/us-en'){
+          var getFullDomain = 'southshorefurniture.com/us-en'
+        } else if (siteDomainUrlLowerCase === 'uk.insight.com'){
+          var getFullDomain = 'uk.insight.com'
+        } else {
+          var getFullDomain = parseDomain(siteDomainUrlLowerCase).domain + '.' +  parseDomain(siteDomainUrlLowerCase).tld
+        }
+        // var lowerCaseFullDomain = getFullDomain.toLowerCase()
+        // console.log(lowerCaseFullDomain)
+        allDomains.push([getFullDomain, true, obj.siteId, obj.siteName ])
+      })
+      // console.log('yes', allDomains)
+      self.setState({ 
+        allDomains: allDomains, // [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
+        domainsLoading: false,
+        activeComponent: 'landing',
+        message: null,
+      });
+      if(!self.state.userLoading){
+        self.runCreateUrlObj('dummyData');
+      }
+    })
+  },
+  
   createUrlObj: function(text){
     // console.log('process.env', process.env)
     if (this.state.user.user !== 'anonymous'){
@@ -58,8 +94,9 @@ var Index = React.createClass({
 
 
     urlArray.map(function(url){
+        url = url.toLowerCase().trim()
+        // console.log('url', url)
         if (validator.isURL(url) && parseDomain(url)){
-          url = url.toLowerCase()
           if (url.indexOf('southshorefurniture.com/ca-fr') >= 0) {
             var getFullDomain = 'southshorefurniture.com/ca-fr'
           } else if (url.indexOf('southshorefurniture.com/us-en') >= 0){
@@ -123,7 +160,7 @@ var Index = React.createClass({
             } else {
               spiderNameDomain = spiderNameDomain + "_d" + spiderNameTld
             }
-            console.log(spiderNameDomain)
+            // console.log(spiderNameDomain)
             return spiderNameDomain.toLowerCase()
           } 
         }
@@ -281,56 +318,11 @@ var Index = React.createClass({
   },  
 
   submitUrlsNoID: function(allUrls){
-
     var self = this;
     self.setState({ 
       activeComponent: 'login', 
       message: null,
     })
-
-    // var urlsToSubmit = [];
-    // allUrls.map(function(obj){
-    //   if (obj.urlCount > 0){ 
-    //     obj.urls.map(function(url){ urlsToSubmit.push(url)})
-    //   }
-    // })
-
-
-
-  //   var fingerprint2 = {}
-
-  //   new Fingerprint2().get(function(result, components){
-  //     fingerprint2.result = result
-  //     components.filter(function(obj){
-  //       if (obj.key === 'timezone_offset'){
-  //         fingerprint2.timezone = obj.value
-  //       }
-  //     })
-  //   });
-
-  //   var test2 = fingerprint2.result
-  //   var test3 = fingerprint2.timezone
-
-  // console.log('hashFingerprintJs2', fingerprint2, test2, test3)
-
-    // var self = this;
-    // $.ajax({
-    //   method: 'POST',
-    //   url: '/submitUrlsNoId',
-    //   data: {urlsToSubmit: urlsToSubmit},
-    //   success: function(data){
-    //     // console.log(data, 'in success')
-    //     var activeComponent = data.activeComponent
-    //     self.setState({ 
-    //       activeComponent: activeComponent, 
-    //       message: null,
-
-    //     })
-    //   },
-    //   error: function(xhr, status, err){
-    //     console.error('/submitUrlsNoId', status, err.toString())
-    //   }
-    // })
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -582,6 +574,7 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
   emailVerificationResend: function() {
     var addOne = this.state.emailVerificationCount + 1;
     var resendMessage = {};
@@ -642,42 +635,6 @@ var Index = React.createClass({
         customersLoading: false,
       });
       // if(!self.state.domainsLoading){ self.runCreateUrlObj(text); }
-    })
-  },
-
-  getDomains: function(){
-    var self = this;
-    $.ajax({
-      method: 'GET', 
-      url: '/getDomains'
-    }).done(function(data){
-      var allDomains = [];
-      data.map(function(obj){
-        var siteDomainUrlLowerCase = obj.siteDomainUrl.toLowerCase()
-        // console.log(siteDomainUrlLowerCase)
-        if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/ca-fr'){
-          var getFullDomain = 'southshorefurniture.com/ca-fr'
-        } else if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/us-en'){
-          var getFullDomain = 'southshorefurniture.com/us-en'
-        } else if (siteDomainUrlLowerCase === 'uk.insight.com'){
-          var getFullDomain = 'uk.insight.com'
-        } else {
-          var getFullDomain = parseDomain(siteDomainUrlLowerCase).domain + '.' +  parseDomain(siteDomainUrlLowerCase).tld
-        }
-        // var lowerCaseFullDomain = getFullDomain.toLowerCase()
-        // console.log(lowerCaseFullDomain)
-        allDomains.push([getFullDomain, true, obj.siteId, obj.siteName ])
-      })
-      // console.log('yes', allDomains)
-      self.setState({ 
-        allDomains: allDomains, // [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
-        domainsLoading: false,
-        activeComponent: 'landing',
-        message: null,
-      });
-      if(!self.state.userLoading){
-        self.runCreateUrlObj('dummyData');
-      }
     })
   },
 

@@ -20,11 +20,11 @@ var Logo = React.createClass({
 
           <div className="container text-center">
             <h1 className="mainLogo">pricingIQ</h1>
-            <div><p className="lead whiteText">Product Pricing Done Right</p></div>
             <br/>
           </div>
 
         </div>
+            // <div><p className="lead whiteText">Product Pricing Done Right</p></div>
       )
     // }
   }

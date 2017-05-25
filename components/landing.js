@@ -44,24 +44,58 @@ var Landing = React.createClass({
   displayDomainWarning: function(){
       var user = (this.props.user.user !== 'anonymous') ? this.props.user : false
       var allUrls = this.props.allUrls;
-      var rows = [];
+      var rowsOffered = [];
+      var rowsNotOffered = [];
 
       allUrls.map(function(obj){
         var domain = obj.domain
+        var siteId = obj.siteId
+        var spiderName = obj.spiderName
         var domainActive = obj.domainActive
         var domainOffered = obj.domainOffered
         var urlCount = obj.urlCount
 
         if(!domainOffered){
-          rows.push( 
-           <div>
-             <span className="label label-danger">WARNING - {domain} - is not registered</span>
-           </div>
+          rowsNotOffered.push( 
+            <div key={domain} >
+                <span className="label label-danger"  >WARNING - {domain} - is not registered</span>
+            </div>
            )
-        } 
-      })  
-      return rows;
+        } else if (domainOffered && urlCount >= 1){
+          rowsOffered.push( 
+             <div key={domain} >
+               <span className="label label-success" >Domain: {domain}, Name: {spiderName}, SiteId: {siteId}, UrlCount: {urlCount}</span>
+             </div>
+           )
+        }
+      }) 
+      if (rowsOffered.length > 0 && rowsNotOffered.length > 0){
+        return (
+            <div className="row">
+              <div className="col-sm-6">
+                  {rowsNotOffered}
+              </div>
+              <div className="col-sm-6">
+                  {rowsOffered}
+              </div>
+            </div>
+          )
+      } else if (rowsOffered.length > 0){
+        return (
+            <div>
+                  {rowsOffered}
+            </div>
+          )
+      } else if (rowsNotOffered.length > 0){
+        return (
+            <div>
+                  {rowsNotOffered}
+            </div>
+          )
+      }
     },
+
+
 
   render: function(){
     // console.log('this.props.submitSuggestedDomains2',this.props.customers);
@@ -109,7 +143,7 @@ var Landing = React.createClass({
                   <button className="btn btn-warning btn-md" disabled={this.disableButton()}>Submit</button>
                 </form>
 
-                {this.displayDomainWarning()}
+                  {this.displayDomainWarning()}
                 
               <br/>
             </div>
