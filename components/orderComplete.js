@@ -13,7 +13,6 @@ var OrderComplete = React.createClass({
   displayRow: function(){
     
     var rows = [];
-
     var allUrls = this.props.allUrls;
     var allDomains = this.props.allDomains;
 
@@ -33,34 +32,20 @@ var OrderComplete = React.createClass({
       return listItem;
     }
 
-    var displayListItemYellow = function(urls, urlCount, countLeftToSubmit, index){
-      var listItem = [];
-      // console.log('urls',urls)
-      urls.map(function(url, thisIndex){
-        // console.log('homedepot.com',thisIndex)
-        if(thisIndex < countLeftToSubmit ) {
-          listItem.push( <UrlItemGreen url={url} index={index} key={thisIndex} /> ) 
-        } else {
-
-          listItem.push( <UrlItemRed url={url} index={index} key={thisIndex} />)
-        }
-      })
-      return listItem;
-    }
-
     allUrls.map(function(obj, index){
-      var domain = obj.domain.toUpperCase()
+      var domain = obj.domain
+      var siteId = obj.siteId
+      var spiderName = obj.spiderName
       var domainActive = obj.domainActive
       var domainOffered = obj.domainOffered
       var countLeftToSubmit = obj.countLeftToSubmit
       var urlCount = obj.urlCount
       var urls = obj.urls
-      // console.log('in them urls', urls)
 
       if(urlCount > 0){
-        if(domainActive && countLeftToSubmit > 0){
+        if(domainActive){
           rows.push( 
-            <UrlGroupGreen urls={urls} urlCount={urlCount} domain={domain} index={index} key={index} displayListItem={displayListItemGreen} countLeftToSubmit={countLeftToSubmit}  /> 
+            <UrlGroupGreen urls={urls} urlCount={urlCount} domain={domain} siteId={siteId} spiderName={spiderName} index={index} key={index} displayListItem={displayListItemGreen} countLeftToSubmit={countLeftToSubmit}  /> 
             )
         } else {
           rows.unshift( 
@@ -73,7 +58,6 @@ var OrderComplete = React.createClass({
   },
 
   render: function(){
-        // <Logo delay={false} /> 
     return (
       <div>
         <div className="container">   

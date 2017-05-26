@@ -10,24 +10,12 @@ var UrlGroupRed = React.createClass({
     var countLeftToSubmit = this.props.countLeftToSubmit
     var domainOffered = this.props.domainOffered
     var domainActive = this.props.domainActive
-    // var badgeCount = null //(this.props.domainActive) ? urlCount + ' of 0'  : urlCount + ' of ' + countLeftToSubmit
-    // var badgeText = (this.props.domainActive) ? 'Limit Reached' : 'Offline'
-
-    var displayBadgeText = function(){
-      if(!domainOffered){
-        return 'Not Offered'
-      } else if (domainActive){
-        return 'Limit Reached'
-      } else {
-        return 'Offline'
-      }
-    }
-            // <span className="badge redBackground">{badgeCount}</span>
+    
     return (
       <div className="panel-group" id={"faqAccordion" + index} >
         <div className="panel panel-danger">
           <li className="list-group-item list-group-item-danger" data-toggle="collapse" data-parent={"#faqAccordion" + index} data-target={"#question" + index}>
-            <span className="badge redBackground">{displayBadgeText()}</span>
+            <span className="badge redBackground">Not Offered</span>
             <span className="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
             <strong> {domain}</strong>
           </li>
