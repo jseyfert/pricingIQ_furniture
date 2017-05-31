@@ -31,7 +31,7 @@ var Index = React.createClass({
       
       rawText: '',
       allUrls: [],
-      allDomains: [], //[['amazon', true ],['walmart', true ],['sears', false]],
+      allDomains: [], 
       
       customers: [],
       customerId: null,
@@ -49,7 +49,6 @@ var Index = React.createClass({
       var allDomains = [];
       data.map(function(obj){
         var siteDomainUrlLowerCase = obj.siteDomainUrl.toLowerCase()
-        // console.log(siteDomainUrlLowerCase)
         if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/ca-fr'){
           var getFullDomain = 'southshorefurniture.com/ca-fr'
         } else if (siteDomainUrlLowerCase === 'https://www.southshorefurniture.com/us-en'){
@@ -59,13 +58,10 @@ var Index = React.createClass({
         } else {
           var getFullDomain = parseDomain(siteDomainUrlLowerCase).domain + '.' +  parseDomain(siteDomainUrlLowerCase).tld
         }
-        // var lowerCaseFullDomain = getFullDomain.toLowerCase()
-        // console.log(lowerCaseFullDomain)
         allDomains.push([getFullDomain, true, obj.siteId, obj.siteName ])
       })
-      // console.log('yes', allDomains)
       self.setState({ 
-        allDomains: allDomains, // [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
+        allDomains: allDomains,
         domainsLoading: false,
         activeComponent: 'landing',
         message: null,
@@ -94,7 +90,8 @@ var Index = React.createClass({
 
 
     urlArray.map(function(url){
-        url = url.toLowerCase().trim()
+        // url = url.toLowerCase().trim()
+        url = url.trim()
         // console.log('url', url)
         if (validator.isURL(url) && parseDomain(url)){
           if (url.indexOf('southshorefurniture.com/ca-fr') >= 0) {
@@ -106,8 +103,6 @@ var Index = React.createClass({
           } else {
             var getFullDomain = parseDomain(url).domain + '.' +  parseDomain(url).tld
           }
-          // var lowerCaseFullDomain = getFullDomain
-          // .toLowerCase()
           domains.push(getFullDomain)
           domainsAndUrls.push([getFullDomain, url])
         } else {
