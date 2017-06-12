@@ -235,6 +235,7 @@ var Index = React.createClass({
     })
   },
 
+
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,19 +370,14 @@ var Index = React.createClass({
       var verified = this.state.user.verified
   
       var countUrls = 0;
-      var countLeftToSubmit = 0;
       var countActiveDomains = 0;
       var countUrlFromActiveDomains = 0;
- 
       allUrls.map(function(obj){
         countUrls += obj.urlCount;
-        if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
         if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
         if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
       })
- 
       var noUrls = (countUrls <= 0)
-      var submittedToday = (countLeftToSubmit === 0)
       var noActiveDomains = (countActiveDomains <= 0)
       var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
   
@@ -405,21 +401,12 @@ var Index = React.createClass({
           activeComponent: 'confirmEmail',
           message: { message: 'You have not yet verified your email. Please check your email.',  alert: "alert alert-danger" }
         })
-      // } else if (submittedToday) {
-      //   this.setState({
-      //     activeComponent: 'submittedToday',
-      //     urlsSubmitted: true,
-      //   })
-      } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
+
+      } else if (noActiveDomains || noUrlsFromActiveDomains){
         this.setState({ 
           activeComponent: 'orderIncomplete',
-          message: null//{ message: 'You have reach your limit, or you did not submit any online domains.',  alert: "alert alert-danger" }
+          message: null//{ message: 'You did not submit any online domains.',  alert: "alert alert-danger" }
         })
-      // } else if (noUrlsFromActiveDomains){
-      //   this.setState({ 
-      //     activeComponent: 'orderIncomplete',
-      //     message: { message: 'You already submitted your allotment these domains',  alert: "alert alert-danger" }
-      // })
       } else {
         this.setState({ urlsUploading: true })
         this.submitUrls(this.state.user, allUrls);  /////////////////////////////////////////////////////////
@@ -431,7 +418,6 @@ var Index = React.createClass({
           message: { message: 'Please submit at least one valid Url',  alert: null }
         })
       } else {
-        // console.log('urls', allUrls)
         this.submitUrlsNoID(allUrls) // *******************************************************************************
       }
     }
@@ -455,19 +441,16 @@ var Index = React.createClass({
         var verified = data.user.verified
 
         var countUrls = 0;
-        var countLeftToSubmit = 0;
         var countActiveDomains = 0;
         var countUrlFromActiveDomains = 0;
    
         allUrls.map(function(obj){
           countUrls += obj.urlCount;
-          if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
           if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
           if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
         })
    
         var noUrls = (countUrls <= 0)
-        var submittedToday = (countLeftToSubmit === 0)
         var noActiveDomains = (countActiveDomains <= 0)
         var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
 
@@ -481,21 +464,11 @@ var Index = React.createClass({
             activeComponent: 'landing',
             message: null,
           })
-        // } else if (submittedToday) {
-        //   self.setState({ 
-        //     activeComponent: 'submittedToday',
-        //     message: null,
-        //   })
-        } else if (noActiveDomains || noUrlsFromActiveDomains || submittedToday){
+        } else if (noActiveDomains || noUrlsFromActiveDomains){
           self.setState({ 
             activeComponent: 'orderIncomplete',
             message: null //{ message: 'You did not submit any active domains',  alert: "alert alert-danger" }
           })
-        // } else if (noUrlsFromActiveDomains){
-        //   self.setState({ 
-        //     activeComponent: 'orderIncomplete',
-        //     message: { message: 'You already submitted your allotment of these domains',  alert: "alert alert-danger" }
-        //   })
         } else {
           self.setState({ urlsUploading: true })
           self.submitUrls(user, allUrls);  /////////////////////////////////////////////////////////
@@ -516,19 +489,14 @@ var Index = React.createClass({
     var allUrls = self.state.allUrls
 
     var countUrls = 0;
-    var countLeftToSubmit = 0;
     var countActiveDomains = 0;
     var countUrlFromActiveDomains = 0;
-
     allUrls.map(function(obj){
       countUrls += obj.urlCount;
-      if(obj.domainActive && obj.countLeftToSubmit > 0){countLeftToSubmit += 1};
       if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
       if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
     })
-
     var noUrls = (countUrls <= 0)
-    var submittedToday = (countLeftToSubmit === 0)
     var noActiveDomains = (countActiveDomains <= 0)
     var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0) 
 
@@ -548,11 +516,6 @@ var Index = React.createClass({
           activeComponent: 'landing',
           message: null,
         })
-      // }else if (noActiveDomains){
-      //   self.setState({ 
-      //     activeComponent: 'noActiveDomains',
-      //     message: { message: 'You did not submit any active domains',  alert: "alert alert-danger" },
-      //   })
       } else if (noUrlsFromActiveDomains || noActiveDomains){
         self.setState({ 
           activeComponent: 'orderIncomplete',

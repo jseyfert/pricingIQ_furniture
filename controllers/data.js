@@ -46,8 +46,10 @@ module.exports = {
   },
 
   submitUrls: function(req, res){
-    // console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
+    console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
     
+    // DISSABLE WHEN TESTING vvvv
+
     var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
       id: {
         type: Sequelize.INTEGER,
@@ -72,10 +74,11 @@ module.exports = {
         inputCategoryUrl: item.inputCategoryUrl,
       });
     })
+    
+    // DISSABLE WHEN TESTING ^^^^
 
     res.json({
       activeComponent: 'orderComplete',
-      // message: {message: "Order ID: " + order.dataValues.orderId , alert: null},
     })
   },
 

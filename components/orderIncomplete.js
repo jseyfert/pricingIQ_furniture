@@ -74,7 +74,7 @@ var OrderIncomplete = React.createClass({
         <div className="panel panel-danger"> 
           <div className="panel-heading"> 
             <h3 className="panel-title text-center">
-              <strong>Domain Not Offered:</strong>
+              <strong>Domain Not Registered:</strong>
             </h3> 
           </div> 
           <div className="list-group"> 
@@ -90,7 +90,7 @@ var OrderIncomplete = React.createClass({
     var allUrls = this.props.allUrls;
 
     allUrls.map(function(obj){
-      console.log(obj)
+      // console.log(obj)
       if (obj.domainActive && obj.countLeftToSubmit === 0 && obj.urlCount > 0){
         rows.push( 
           <li className="list-group-item text-center redText hover" key={ obj.domain }>
