@@ -36,6 +36,7 @@ var Index = React.createClass({
       customers: [],
       customerId: null,
       customerName: 'Select Customer',
+      urlType: 'Select Url Type',
       sites: [],
 		}
 	},
@@ -325,13 +326,19 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   handleCustomerSelect: function(customerId, customerName){
-    // e.preventDefault();
-    // console.log(customerId, customerName, 'in handleCustomerSelect')
     this.setState({
       customerId: customerId,
       customerName: customerName,
     });
   },
+
+  handleUrlTypeSelect: function(urlType){
+    this.setState({
+      urlType: urlType,
+    });
+  },
+
+
 
   signupUserFromServer: function(userForm){
     var self = this;
@@ -618,6 +625,7 @@ var Index = React.createClass({
             urlsUploading: false,
             customerId: null,
             customerName: 'Select Customer',
+            urlType: 'Select Url Type',
           });
         })
         self.runCreateUrlObj('dummyData');
@@ -719,6 +727,7 @@ var Index = React.createClass({
       this.setState({
         activeComponent: componentName,
         customerName: 'Select Customer',
+        urlType: 'Select Url Type',
         customerId: null,
         message: null,
         rawText: '',
@@ -788,6 +797,7 @@ var Index = React.createClass({
         message={ this.state.message } 
         customerId={ this.state.customerId } 
         customerName={ this.state.customerName } 
+        urlType={ this.state.urlType } 
         allDomains={ this.state.allDomains } 
         allUrls={ this.state.allUrls } 
         activeComponent={ this.state.activeComponent } 
@@ -800,6 +810,7 @@ var Index = React.createClass({
         logoutUser={ this.logoutUser } 
         handleUrlSubmit={ this.handleUrlSubmit } 
         handleCustomerSelect={ this.handleCustomerSelect } 
+        handleUrlTypeSelect={ this.handleUrlTypeSelect } 
         verifyPasswordReset={ this.verifyPasswordReset } 
         emailVerificationResend={ this.emailVerificationResend } 
         resetPassword={ this.resetPassword } 

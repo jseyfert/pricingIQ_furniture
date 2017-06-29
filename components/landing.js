@@ -33,8 +33,29 @@ var Landing = React.createClass({
       )
   },
 
+  displayUrlTypeDropDown: function(){
+    var UrlType = ["Detail", "Discovery"]
+    var rows = [];
+    UrlType.map(function(arr){
+      console.log(arr);
+      rows.push( <li key={arr}><a  onClick={ this.props.handleUrlTypeSelect.bind(null, arr)  } >{arr}</a></li> )
+    }, this)
+
+    return(
+           <div className="btn-group" role="group">
+            <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             {this.props.urlType} &nbsp;
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+             {rows}
+            </ul>
+          </div>
+      )
+  },
+
   disableButton: function(){
-    if (this.props.customerId){
+    if (this.props.customerId && this.props.urlType !== "Select Url Type"){
       return false;
     } else {
       return true;
@@ -135,6 +156,8 @@ var Landing = React.createClass({
             <Logo delay={false} />
             <div className="container text-center">
                   {this.displayCustomerDropDown()}
+                  &nbsp;
+                  {this.displayUrlTypeDropDown()}
                   <br/>
                   <br/>
                 <form className="form-inline" onSubmit={ this.props.handleUrlSubmit }>
