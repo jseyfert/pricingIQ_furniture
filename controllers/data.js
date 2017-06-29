@@ -58,6 +58,7 @@ module.exports = {
     //   },
     //     SiteId: Sequelize.INTEGER,
     //     customerId: Sequelize.INTEGER,
+    //     urlType: Sequelize.TEXT,
     //     spiderName: Sequelize.TEXT,
     //     inputCategoryUrl: Sequelize.TEXT,
     // }, {
@@ -70,6 +71,7 @@ module.exports = {
     //   InputQueue_discovery.create({
     //     SiteId: item.SiteId,
     //     customerId: item.customerId,
+    //     urlType: item.urlType,
     //     spiderName: item.spiderName,
     //     inputCategoryUrl: item.inputCategoryUrl,
     //   });

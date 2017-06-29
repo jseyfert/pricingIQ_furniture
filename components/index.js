@@ -149,7 +149,9 @@ var Index = React.createClass({
             // console.log("domain", domain)
             var spiderNameTld = parseDomain(domain).tld
             var spiderNameDomain = parseDomain(allDomains[i][0]).domain
-            if (domain === "southshorefurniture.com/ca-fr"){
+            if (domain === "amazon.com" && spiderType === "_detail"){
+              spiderNameDomain = "amazon_detailx"
+            } else if (domain === "southshorefurniture.com/ca-fr"){
               spiderNameDomain = "southshore" + spiderType + "ca"
             } else if (domain === "southshorefurniture.com/us-en"){
               spiderNameDomain = "southshore" + spiderType
@@ -270,11 +272,12 @@ var Index = React.createClass({
           // console.log(item)
           var newObj = {}
           newObj.customerId = self.state.customerId
+          newObj.urlType = self.state.urlType
           newObj.SiteId = obj.siteId
           newObj.spiderName = obj.spiderName
           newObj.inputCategoryUrl = item
           urlsToSubmit.push(newObj)
-          console.log(newObj)
+          // console.log(newObj)
         })
       }
     })
