@@ -68,13 +68,13 @@ var Index = React.createClass({
         message: null,
       });
       if(!self.state.userLoading){
-        self.runCreateUrlObj('dummyData');
+        self.runCreateUrlObj('dummyData', self.state.urlType);
       }
     })
   },
   
-  createUrlObj: function(text){
-    // console.log('process.env', process.env)
+  createUrlObj: function(text, urlType){
+    // console.log('process.env', urlType)
     if (this.state.user.user !== 'anonymous'){
       var userLoggedIn = true
       var user = this.state.user
@@ -136,25 +136,33 @@ var Index = React.createClass({
       }()
       
       temp.spiderName = function(){
+        if (urlType === "Discovery"){
+          var spiderType = "_d"
+        } else if (urlType === "Detail"){
+          var spiderType = "_detail"
+        } else {
+          var spiderType = ""
+        }
+        // console.log(spiderType)
         for(var i = 0; i < allDomains.length ; i++) {
           if (domain === allDomains[i][0]){
             // console.log("domain", domain)
             var spiderNameTld = parseDomain(domain).tld
             var spiderNameDomain = parseDomain(allDomains[i][0]).domain
             if (domain === "southshorefurniture.com/ca-fr"){
-              spiderNameDomain = "southshore_dca"
+              spiderNameDomain = "southshore" + spiderType + "ca"
             } else if (domain === "southshorefurniture.com/us-en"){
-              spiderNameDomain = "southshore_d"
+              spiderNameDomain = "southshore" + spiderType
             } else if (domain === "argos.uk"){
-              spiderNameDomain = "argos_d"
+              spiderNameDomain = "argos" + spiderType
             } else if (domain === "uk.insight.com"){
-              spiderNameDomain = "insight_duk"
+              spiderNameDomain = "insight" + spiderType + "uk"
             } else if (spiderNameTld === 'com'){
-              spiderNameDomain = spiderNameDomain + "_d" ;
+              spiderNameDomain = spiderNameDomain + spiderType ;
             } else if (spiderNameTld === 'co.uk') {
-              spiderNameDomain = spiderNameDomain + "_duk" ;
+              spiderNameDomain = spiderNameDomain + spiderType + "uk" ;
             } else {
-              spiderNameDomain = spiderNameDomain + "_d" + spiderNameTld
+              spiderNameDomain = spiderNameDomain + spiderType + spiderNameTld
             }
             // console.log(spiderNameDomain)
             return spiderNameDomain.toLowerCase()
@@ -217,30 +225,42 @@ var Index = React.createClass({
     createObjPerDomain(distinctDomains)
 
     return arrOfObj;
-  },   
+  }, 
 
   onTextChange: function(e){ 
     var text = e.target.value;
-    var allUrls = this.createUrlObj(text);
+    var allUrls = this.createUrlObj(text, this.state.urlType);
     this.setState({ 
       allUrls: allUrls,
       rawText: text
     })
   },
 
-  runCreateUrlObj: function(text){
-    // console.log('in runCreateUrlObj')
-    var allUrls = this.createUrlObj(text);
+  handleUrlTypeSelect: function(urlType){
+    this.setState({
+      urlType: urlType,
+    });
+    this.runCreateUrlObj(this.state.rawText, urlType);
+  },  
+
+  runCreateUrlObj: function(text, urlType){
+    var allUrls = this.createUrlObj(text, urlType);
     this.setState({ 
       allUrls: allUrls,
     })
+  },
+
+  handleCustomerSelect: function(customerId, customerName){
+    this.setState({
+      customerId: customerId,
+      customerName: customerName,
+    });
   },
 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
   submitUrls: function(user, allUrls){
     var self = this;
     var urlsToSubmit = [];
@@ -275,98 +295,6 @@ var Index = React.createClass({
       }
     })
   },  
-
-  submitUrlsID: function(user, allUrls){
-    var self = this;
-
-    var urlsToSubmit = [];
-    var newCountLeftToSubmit = [];
-
-    allUrls.map(function(obj){
-      if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
-        // var temp = []
-        // temp.domain = obj.domain
-        // temp = obj.urls.slice(0, obj.countToSubmitNow)
-        obj.urls.slice(0, obj.countToSubmitNow).map(function(url){
-          urlsToSubmit.push(url)
-        })
-      }
-      if (obj.domainOffered === true){
-        newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
-      }
-    })
-
-    $.ajax({
-      method: 'POST',
-      url: '/submitUrlsId',
-      data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: newCountLeftToSubmit },
-      success: function(data){
-        self.setState({ 
-          user: data.user,
-          activeComponent: data.activeComponent,
-          message: data.message,
-          urlsUploading: false
-        });
-      },
-      error: function(xhr, status, err){
-        console.error('/submitUrlsId', status, err.toString())
-      }
-    })
-  },  
-
-  submitUrlsNoID: function(allUrls){
-    var self = this;
-    self.setState({ 
-      activeComponent: 'login', 
-      message: null,
-    })
-  },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  handleCustomerSelect: function(customerId, customerName){
-    this.setState({
-      customerId: customerId,
-      customerName: customerName,
-    });
-  },
-
-  handleUrlTypeSelect: function(urlType){
-    this.setState({
-      urlType: urlType,
-    });
-  },
-
-
-
-  signupUserFromServer: function(userForm){
-    var self = this;
-    var text = self.state.rawText
-
-    $.ajax({
-      method: 'POST',
-      url: '/signup',
-      data: userForm, 
-      success: function(data){
-        var user = data.user
-        self.setState({ 
-          user: user,
-          activeComponent: 'confirmEmail',
-          message: { message: 'Please check email to verify user.', alert: 'alert alert-danger' },
-        })
-        self.runCreateUrlObj(text)
-      },
-      error: function(xhr, status, err){
-        // console.log('xhr', xhr.responseJSON.message)
-        self.setState({ 
-          activeComponent: 'signup',
-          message: {message: xhr.responseJSON.message, alert: 'alert alert-danger' },
-        });
-      }
-    })
-  },
-
 
   handleUrlSubmit: function(e){
     e.preventDefault();
@@ -442,7 +370,7 @@ var Index = React.createClass({
       success: function(data){
         var user = data.user
         self.setState({ user: user })
-        self.runCreateUrlObj(text)
+        self.runCreateUrlObj(text,null)
 
         var allUrls = self.state.allUrls
         var verified = data.user.verified
@@ -491,6 +419,191 @@ var Index = React.createClass({
     })  
   },
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  getOneUserFromServer: function(){
+    var self = this;
+    var text = self.state.rawText
+    $.ajax({
+      method: 'GET', 
+      url: '/oneUser'
+    }).done(function(data){
+      self.setState({ 
+        user: data,
+        activeComponent: 'landing',
+        message: null,
+        userLoading: false,
+      });
+      if(!self.state.domainsLoading){ self.runCreateUrlObj(text,null); }
+    })
+  },
+
+  getCustomers: function(){
+    var self = this;
+    $.ajax({
+      method: 'GET', 
+      url: '/getCustomers'
+    }).done(function(data){
+      self.setState({ 
+        customers: data,
+        activeComponent: 'landing',
+        message: null,
+        customersLoading: false,
+      });
+      // if(!self.state.domainsLoading){ self.runCreateUrlObj(text,null); }
+    })
+  },
+
+  logoutUser: function(user){
+    var self = this;
+    $.ajax({
+      url: '/logout',
+      method: 'GET', 
+      success: function(data){
+        $.ajax({
+          method: 'GET', 
+          url: '/oneUser'
+        }).done(function(data){
+          self.setState({ 
+            user: data,
+            activeComponent: 'landing',
+            message: null,
+            rawText: '',
+            passwordResetToken: null,
+            passwordResetEmail: null,
+            emailVerificationCount: 0,
+            passwordResetCount: 0,
+            urlsUploading: false,
+            customerId: null,
+            customerName: 'Select Customer',
+            urlType: 'Select Url Type',
+          });
+        })
+        self.runCreateUrlObj('dummyData', null);
+      }.bind(self),
+      error: function(xhr, status, err){
+        console.error('/logout', status, err.toString());
+      }
+    })
+  },
+
+  setActiveComponent: function(componentName) {
+    if (componentName === 'login' || componentName === 'landing' ){
+      this.setState({
+        activeComponent: componentName,
+        customerName: 'Select Customer',
+        urlType: 'Select Url Type',
+        customerId: null,
+        message: null,
+        rawText: '',
+      })
+      this.runCreateUrlObj('dummyData', this.state.urlType);
+    } else {
+      this.setState({
+        activeComponent: componentName,
+        message: null,
+      })
+    }
+  },
+
+  componentWillMount: function(){
+      this.getCustomers();
+      this.getDomains();
+      this.getOneUserFromServer();
+
+    // setTimeout(() => {
+      // this.setState({  
+      //   allDomains: [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
+      //   domainsLoading: false
+      // });
+      // if(!this.state.userLoading){
+      //   this.runCreateUrlObj('dummyData', null);
+      // }
+    // }, 1110);
+
+    // setTimeout(() => {
+    // }, 1110);
+  },
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // NOT USED 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  submitUrlsID: function(user, allUrls){
+    var self = this;
+
+    var urlsToSubmit = [];
+    var newCountLeftToSubmit = [];
+
+    allUrls.map(function(obj){
+      if (obj.domainActive === true && obj.urlCount > 0 && obj.countToSubmitNow > 0){
+        // var temp = []
+        // temp.domain = obj.domain
+        // temp = obj.urls.slice(0, obj.countToSubmitNow)
+        obj.urls.slice(0, obj.countToSubmitNow).map(function(url){
+          urlsToSubmit.push(url)
+        })
+      }
+      if (obj.domainOffered === true){
+        newCountLeftToSubmit.push({domain: obj.domain, count: obj.countLeftAfterSubmit})
+      }
+    })
+
+    $.ajax({
+      method: 'POST',
+      url: '/submitUrlsId',
+      data: { user: user, urlsToSubmit: urlsToSubmit, newCountLeftToSubmit: newCountLeftToSubmit },
+      success: function(data){
+        self.setState({ 
+          user: data.user,
+          activeComponent: data.activeComponent,
+          message: data.message,
+          urlsUploading: false
+        });
+      },
+      error: function(xhr, status, err){
+        console.error('/submitUrlsId', status, err.toString())
+      }
+    })
+  },  
+  submitUrlsNoID: function(allUrls){
+    var self = this;
+    self.setState({ 
+      activeComponent: 'login', 
+      message: null,
+    })
+  },
+  signupUserFromServer: function(userForm){
+    var self = this;
+    var text = self.state.rawText
+
+    $.ajax({
+      method: 'POST',
+      url: '/signup',
+      data: userForm, 
+      success: function(data){
+        var user = data.user
+        self.setState({ 
+          user: user,
+          activeComponent: 'confirmEmail',
+          message: { message: 'Please check email to verify user.', alert: 'alert alert-danger' },
+        })
+        self.runCreateUrlObj(text,null)
+      },
+      error: function(xhr, status, err){
+        // console.log('xhr', xhr.responseJSON.message)
+        self.setState({ 
+          activeComponent: 'signup',
+          message: {message: xhr.responseJSON.message, alert: 'alert alert-danger' },
+        });
+      }
+    })
+  },
   emailVerification: function(){
     var self = this;
     var allUrls = self.state.allUrls
@@ -534,12 +647,6 @@ var Index = React.createClass({
       }
     })
   },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
   emailVerificationResend: function() {
     var addOne = this.state.emailVerificationCount + 1;
     var resendMessage = {};
@@ -569,92 +676,56 @@ var Index = React.createClass({
         }
       })
   },
-
-  getOneUserFromServer: function(){
-    var self = this;
-    var text = self.state.rawText
-    $.ajax({
-      method: 'GET', 
-      url: '/oneUser'
-    }).done(function(data){
-      self.setState({ 
-        user: data,
-        activeComponent: 'landing',
-        message: null,
-        userLoading: false,
-      });
-      if(!self.state.domainsLoading){ self.runCreateUrlObj(text); }
-    })
-  },
-
-  getCustomers: function(){
-    var self = this;
-    $.ajax({
-      method: 'GET', 
-      url: '/getCustomers'
-    }).done(function(data){
-      self.setState({ 
-        customers: data,
-        activeComponent: 'landing',
-        message: null,
-        customersLoading: false,
-      });
-      // if(!self.state.domainsLoading){ self.runCreateUrlObj(text); }
-    })
-  },
-
-  logoutUser: function(user){
-    var self = this;
-    $.ajax({
-      url: '/logout',
-      method: 'GET', 
-      success: function(data){
-        $.ajax({
-          method: 'GET', 
-          url: '/oneUser'
-        }).done(function(data){
-          self.setState({ 
-            user: data,
-            activeComponent: 'landing',
-            message: null,
-            rawText: '',
-            passwordResetToken: null,
-            passwordResetEmail: null,
-            emailVerificationCount: 0,
-            passwordResetCount: 0,
-            urlsUploading: false,
-            customerId: null,
-            customerName: 'Select Customer',
-            urlType: 'Select Url Type',
-          });
-        })
-        self.runCreateUrlObj('dummyData');
-      }.bind(self),
-      error: function(xhr, status, err){
-        console.error('/logout', status, err.toString());
-      }
-    })
-  },
-
-  forgotPassword: function(passwordResetEmail){
+  submitSuggestedDomains: function(arr) {
     var self = this;
       $.ajax({
         method: 'POST',
-        url: '/forgotPassword',
-        data: {passwordResetEmail: passwordResetEmail},
+        url: '/suggest',
+        data: { arr: arr},
+        success: function(data){
+          // console.log('submitSuggestedDomains success', data)
+        },
+        error: function(xhr, status, err){
+          console.error('/suggest', status, err.toString())
+        }
+      })
+  },
+  resetPassword: function(password) {
+    var passwordResetToken = this.state.passwordResetToken
+    var self = this;
+      $.ajax({
+        method: 'PUT',
+        url: '/resetPassword',
+        data: { password: password, passwordResetToken: passwordResetToken },
         success: function(data){
           self.setState({ 
-            activeComponent: data.activeComponent,
-            message: data.message,
-            passwordResetEmail: data.passwordResetEmail,
+              message: data.message,
+              activeComponent: data.activeComponent,
           });
         },
         error: function(xhr, status, err){
-          console.error('/forgotPassword', status, err.toString())
+          console.error('/resetPassword', status, err.toString())
         }
       })
-  },  
- 
+  },
+  verifyPasswordReset: function(passwordResetToken) {
+    var self = this;
+      $.ajax({
+        method: 'GET',
+        url: '/verifyPasswordReset/' + passwordResetToken,
+        data: { passwordResetToken: passwordResetToken},
+        success: function(data){
+          self.setState({ 
+              activeComponent: data.activeComponent,
+              passwordResetToken: data.passwordResetToken ? data.passwordResetToken : null,
+              message: data.message,
+          });
+        },
+        error: function(xhr, status, err){
+          console.error('/verifyPasswordReset', status, err.toString())
+        }
+      })
+  }, 
   forgotPasswordResend: function() {
     var addOne = this.state.passwordResetCount + 1;
     var resendMessage = {};
@@ -683,97 +754,31 @@ var Index = React.createClass({
         }
       })
   },
-
-  verifyPasswordReset: function(passwordResetToken) {
-    var self = this;
-      $.ajax({
-        method: 'GET',
-        url: '/verifyPasswordReset/' + passwordResetToken,
-        data: { passwordResetToken: passwordResetToken},
-        success: function(data){
-          self.setState({ 
-              activeComponent: data.activeComponent,
-              passwordResetToken: data.passwordResetToken ? data.passwordResetToken : null,
-              message: data.message,
-          });
-        },
-        error: function(xhr, status, err){
-          console.error('/verifyPasswordReset', status, err.toString())
-        }
-      })
-  }, 
-
-  resetPassword: function(password) {
-    var passwordResetToken = this.state.passwordResetToken
-    var self = this;
-      $.ajax({
-        method: 'PUT',
-        url: '/resetPassword',
-        data: { password: password, passwordResetToken: passwordResetToken },
-        success: function(data){
-          self.setState({ 
-              message: data.message,
-              activeComponent: data.activeComponent,
-          });
-        },
-        error: function(xhr, status, err){
-          console.error('/resetPassword', status, err.toString())
-        }
-      })
-  },
-
-  setActiveComponent: function(componentName) {
-    if (componentName === 'login' || componentName === 'landing' ){
-      this.setState({
-        activeComponent: componentName,
-        customerName: 'Select Customer',
-        urlType: 'Select Url Type',
-        customerId: null,
-        message: null,
-        rawText: '',
-      })
-      this.runCreateUrlObj('dummyData');
-    } else {
-      this.setState({
-        activeComponent: componentName,
-        message: null,
-      })
-    }
-  },
-
-  submitSuggestedDomains: function(arr) {
+  forgotPassword: function(passwordResetEmail){
     var self = this;
       $.ajax({
         method: 'POST',
-        url: '/suggest',
-        data: { arr: arr},
+        url: '/forgotPassword',
+        data: {passwordResetEmail: passwordResetEmail},
         success: function(data){
-          // console.log('submitSuggestedDomains success', data)
+          self.setState({ 
+            activeComponent: data.activeComponent,
+            message: data.message,
+            passwordResetEmail: data.passwordResetEmail,
+          });
         },
         error: function(xhr, status, err){
-          console.error('/suggest', status, err.toString())
+          console.error('/forgotPassword', status, err.toString())
         }
       })
-  },
-
-  componentWillMount: function(){
-      this.getCustomers();
-      this.getDomains();
-      this.getOneUserFromServer();
-
-    // setTimeout(() => {
-      // this.setState({  
-      //   allDomains: [['amazon.com', false ],['walmart.ca', true ],['sears', true],['homedepot', false]],
-      //   domainsLoading: false
-      // });
-      // if(!this.state.userLoading){
-      //   this.runCreateUrlObj('dummyData');
-      // }
-    // }, 1110);
-
-    // setTimeout(() => {
-    // }, 1110);
-  },
+  }, 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // NOT USED 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   render: function(){
       // console.log(this.state.customerId)

@@ -37,7 +37,7 @@ var Landing = React.createClass({
     var UrlType = ["Detail", "Discovery"]
     var rows = [];
     UrlType.map(function(arr){
-      console.log(arr);
+      // console.log(arr);
       rows.push( <li key={arr}><a  onClick={ this.props.handleUrlTypeSelect.bind(null, arr)  } >{arr}</a></li> )
     }, this)
 
