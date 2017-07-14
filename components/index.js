@@ -141,7 +141,7 @@ var Index = React.createClass({
         } else if (urlType === "Detail"){
           var spiderType = "_detail"
         } else {
-          var spiderType = ""
+          var spiderType = "_?"
         }
         // console.log(spiderType)
         for(var i = 0; i < allDomains.length ; i++) {

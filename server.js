@@ -13,10 +13,10 @@ require('dotenv').config();
 require('./config/passport.js')(passport);
 
 var app = express();
- 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // // app.use(bodyParser.urlencoded());
+
+app.use(bodyParser.json({limit: '50mb', parameterLimit: 1000000}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 
 app.use(express.static(__dirname + '/views'));
 
