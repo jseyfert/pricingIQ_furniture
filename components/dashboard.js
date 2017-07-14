@@ -1,8 +1,8 @@
 var Logo = require('./partialComps/logo');
 var Footer = require('./partialComps/footer');
 var React = require('react');
-var ItemGreenDashboard = require('./partialComps/urlDisplay/itemGreenDashboard');
-var GroupGreenDashboard = require('./partialComps/urlDisplay/groupGreenDashboard');
+var ItemRedDashboard = require('./partialComps/urlDisplay/itemRedDashboard');
+var ItemDashboard = require('./partialComps/urlDisplay/itemDashboard');
 
 var dashboard = React.createClass({
 
@@ -55,8 +55,27 @@ var dashboard = React.createClass({
     }
   },
 
+  disableDeleteButton: function(){
+    return true
+    // if (this.props.customerIdDashboard && this.props.urlTypeDashboard !== "Select Url Type"){
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+  },
+
+  displaySelectAllButton: function(){
+    var selectAll = true 
+    if (selectAll){
+      return(<button className="btn btn-warning btn-md" disabled="true">Select All</button> )
+    } else {
+      return(<button className="btn btn-warning btn-md" disabled="true">Select None</button> )
+    }
+  },
+
   displayUrls: function(){
-    console.log("this.props.urlsDownloading", this.props.urlsDownloading)
+    console.log("this.props.urlsDownloading", this.props.handleSelectUrlToDelete)
+    var handleSelectUrlToDelete = this.props.handleSelectUrlToDelete
     var rows = [];
     var allUrls = this.props.allSubmittedUrlsPerCustomer;
     console.log("allUrls", allUrls)
@@ -85,8 +104,13 @@ var dashboard = React.createClass({
         var inputCategoryUrl = obj.inputCategoryUrl
         var spiderName = obj.spiderName
         var urlType = obj.urlType
+        var checked = obj.checked
 
-        rows.push(<ItemGreenDashboard SiteId={SiteId} customerId={customerId} id={id} inputCategoryUrl={inputCategoryUrl} spiderName={spiderName} urlType={urlType} index={index} /> )
+        if (checked){
+          rows.push(<ItemRedDashboard handleSelectUrlToDelete={handleSelectUrlToDelete} SiteId={SiteId} customerId={customerId} id={id} inputCategoryUrl={inputCategoryUrl} spiderName={spiderName} urlType={urlType} index={index} /> )
+        } else {
+          rows.push(<ItemDashboard handleSelectUrlToDelete={handleSelectUrlToDelete} SiteId={SiteId} customerId={customerId} id={id} inputCategoryUrl={inputCategoryUrl} spiderName={spiderName} urlType={urlType} index={index} /> )
+        }
       })
       return rows;
     }
@@ -97,6 +121,7 @@ var dashboard = React.createClass({
   render: function(){
     console.log("this.props.allSubmittedUrlsPerCustomer",this.props.allSubmittedUrlsPerCustomer)
       var handleGetSubmitedUrls = this.props.handleGetSubmitedUrls
+      var handleDeleteUrls = this.props.handleDeleteUrls
       var domainsLoading = this.props.domainsLoading
       var userLoading = this.props.userLoading
       var customersLoading = this.props.customersLoading
@@ -125,15 +150,22 @@ var dashboard = React.createClass({
       <div>
         <Logo delay={false} />
         <div className="container text-center">
-              {this.displayCustomerDropDown()}
-              &nbsp;
-              {this.displayUrlTypeDropDown()}
-              &nbsp;
-              <button onClick={handleGetSubmitedUrls}  className="btn btn-warning btn-md" disabled={this.disableButton()}>Query</button>
+              <div >
+                {this.displayCustomerDropDown()}
+                &nbsp;
+                {this.displayUrlTypeDropDown()}
+                &nbsp;
+                <button onClick={handleGetSubmitedUrls}  className="btn btn-warning btn-md" disabled={this.disableButton()}>Query</button>
+              </div>
               <br/>
-          <br/>
+              <div >
+                {this.displaySelectAllButton()}
+                &nbsp;
+                <button onClick={handleDeleteUrls}  className="btn btn-warning btn-md" disabled={this.disableDeleteButton()}>Delete Selected</button>
+              </div>
         </div>
         <div className="container">
+       
           <br/>
           <div className="row">
           

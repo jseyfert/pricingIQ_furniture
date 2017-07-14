@@ -60,6 +60,7 @@ var ShowWhichComponent = React.createClass({
             urlsDownloading={ this.props.urlsDownloading } 
             showSubmittedUrls={ this.props.showSubmittedUrls } 
             
+            handleSelectUrlToDelete={ this.props.handleSelectUrlToDelete }
             handleCustomerSelectDashboard={ this.props.handleCustomerSelectDashboard }
             handleUrlTypeSelectDashboard={ this.props.handleUrlTypeSelectDashboard }
             handleGetSubmitedUrls={ this.props.handleGetSubmitedUrls } 

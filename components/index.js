@@ -270,6 +270,27 @@ var Index = React.createClass({
     })
   },
 
+  handleSelectUrlToDelete: function(urlId){
+    console.log("in index   handleSelectUrlToDelete", urlId)
+    
+    var newAllSubmittedUrlsPerCustomer = []
+    var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
+    allSubmittedUrlsPerCustomer.map(function(obj){
+      if (obj.id === urlId){
+        if (obj.checked === false) {
+          obj.checked = true
+        } else {
+          obj.checked = false
+        }
+        newAllSubmittedUrlsPerCustomer.push(obj)
+        // console.log(obj)
+      }
+    })
+    this.setState({
+      allSubmittedUrlsPerCustomer: allSubmittedUrlsPerCustomer,
+    });
+  }, 
+
   handleCustomerSelect: function(customerId, customerName){
     this.setState({
       customerId: customerId,
@@ -308,6 +329,7 @@ var Index = React.createClass({
         data.map(function(obj){
           if (obj.customerId === customerIdDashboard){
             if (obj.urlType === urlTypeDashboard){
+              obj.checked = false
               allSubmittedUrlsPerCustomer.push(obj)
             }
           }
@@ -907,6 +929,7 @@ var Index = React.createClass({
 
         handleGetSubmitedUrls={ this.handleGetSubmitedUrls } 
         handleUrlSubmit={ this.handleUrlSubmit } 
+        handleSelectUrlToDelete={ this.handleSelectUrlToDelete } 
         handleCustomerSelect={ this.handleCustomerSelect } 
         handleCustomerSelectDashboard={ this.handleCustomerSelectDashboard } 
         handleUrlTypeSelect={ this.handleUrlTypeSelect } 
