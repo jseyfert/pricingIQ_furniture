@@ -75,32 +75,32 @@ module.exports = {
     
     // DISSABLE WHEN TESTING vvvv
 
-    // var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
-    //   id: {
-    //     type: Sequelize.INTEGER,
-    //     primaryKey: true,
-    //     autoIncrement: true 
-    //   },
-    //     SiteId: Sequelize.INTEGER,
-    //     customerId: Sequelize.INTEGER,
-    //     urlType: Sequelize.TEXT,
-    //     spiderName: Sequelize.TEXT,
-    //     inputCategoryUrl: Sequelize.TEXT,
-    // }, {
-    //   timestamps: false,
-    //   freezeTableName: true,
-    //   tableName: 'inputQueue_discovery'
-    // })  
+    var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true 
+      },
+        SiteId: Sequelize.INTEGER,
+        customerId: Sequelize.INTEGER,
+        urlType: Sequelize.TEXT,
+        spiderName: Sequelize.TEXT,
+        inputCategoryUrl: Sequelize.TEXT,
+    }, {
+      timestamps: false,
+      freezeTableName: true,
+      tableName: 'inputQueue_discovery'
+    })  
 
-    // req.body.urlsToSubmit.map(function(item){
-    //   InputQueue_discovery.create({
-    //     SiteId: item.SiteId,
-    //     customerId: item.customerId,
-    //     urlType: item.urlType,
-    //     spiderName: item.spiderName,
-    //     inputCategoryUrl: item.inputCategoryUrl,
-    //   });
-    // })
+    req.body.urlsToSubmit.map(function(item){
+      InputQueue_discovery.create({
+        SiteId: item.SiteId,
+        customerId: item.customerId,
+        urlType: item.urlType,
+        spiderName: item.spiderName,
+        inputCategoryUrl: item.inputCategoryUrl,
+      });
+    })
     
     // DISSABLE WHEN TESTING ^^^^
 
