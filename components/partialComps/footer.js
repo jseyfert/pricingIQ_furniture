@@ -7,10 +7,12 @@ var Footer = React.createClass({
     return (
       <footer className="navbar-fixed-bottom">
         <div className="container text-center whiteText">
-          <a onClick={ this.props.setActiveComponent.bind(null, 'faq') } >FAQ</a> | Want us to add a new Domain? <a data-toggle="modal" data-target="#exampleModal">Suggest&nbsp;One</a>
         </div>
         <br/>
       </footer>
+          // <p className="navbar-text navbar-right navbarLink">
+          //   version 2.0
+          // </p>
     )
   }
 });

@@ -24,6 +24,8 @@ var Header = React.createClass({
               Welcome { this.props.user.user }&nbsp;
               <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
               <span className="makeOrange"> | </span>
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'dashboard') }>Dashboard</a>
+              <span className="makeOrange"> | </span>
               <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }>Logout</a> 
             </p>
           </div>
@@ -44,7 +46,12 @@ var Header = React.createClass({
         return(
           <div className="container">
             <p className="navbar-text navbar-right navbarLink">
-              Welcome { this.props.user.user } <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }>Logout</a> 
+              Welcome { this.props.user.user }&nbsp;
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'landing') }>Home</a>
+              <span className="makeOrange"> | </span>
+              <a className="navbar-link navbarLink" onClick={ this.props.setActiveComponent.bind(null, 'dashboard') }>Dashboard</a>
+              <span className="makeOrange"> | </span>
+              <a className="navbar-link navbarLink" onClick={ this.props.logoutUser }>Logout</a> 
             </p>
           </div>
         )

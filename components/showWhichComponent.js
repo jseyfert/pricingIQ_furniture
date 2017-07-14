@@ -11,6 +11,7 @@ var Faq = require('./faq.js');
 var Landing = require('./landing.js');
 var OrderComplete = require('./orderComplete.js');
 var OrderIncomplete = require('./orderIncomplete.js');
+var Dashboard = require('./dashboard.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -43,6 +44,28 @@ var ShowWhichComponent = React.createClass({
         />
       </div>
       )
+    } else if(activeComponent === 'dashboard'){
+      return (
+        <div>
+          <Dashboard
+            customers={ this.props.customers }
+            customerIdDashboard={ this.props.customerIdDashboard }
+            domainsLoading={ this.props.domainsLoading }
+            userLoading={ this.props.userLoading }
+            customersLoading={ this.props.customersLoading }
+            urlsUploading={ this.props.urlsUploading }
+            customerNameDashboard={ this.props.customerNameDashboard } 
+            urlTypeDashboard={ this.props.urlTypeDashboard } 
+            allSubmittedUrlsPerCustomer={ this.props.allSubmittedUrlsPerCustomer } 
+            urlsDownloading={ this.props.urlsDownloading } 
+            showSubmittedUrls={ this.props.showSubmittedUrls } 
+            
+            handleCustomerSelectDashboard={ this.props.handleCustomerSelectDashboard }
+            handleUrlTypeSelectDashboard={ this.props.handleUrlTypeSelectDashboard }
+            handleGetSubmitedUrls={ this.props.handleGetSubmitedUrls } 
+          />
+        </div>
+        )
     } else if(activeComponent === 'orderIncomplete'){
       return (
         <div>

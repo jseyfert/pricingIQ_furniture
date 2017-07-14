@@ -45,10 +45,7 @@ module.exports = {
     })
   },
 
-  submitUrls: function(req, res){
-    console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
-    
-    // DISSABLE WHEN TESTING vvvv
+  getSubmitedUrls: function(req, res){
 
     var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
       id: {
@@ -67,15 +64,43 @@ module.exports = {
       tableName: 'inputQueue_discovery'
     })  
 
-    req.body.urlsToSubmit.map(function(item){
-      InputQueue_discovery.create({
-        SiteId: item.SiteId,
-        customerId: item.customerId,
-        urlType: item.urlType,
-        spiderName: item.spiderName,
-        inputCategoryUrl: item.inputCategoryUrl,
-      });
+    InputQueue_discovery.findAll().then(function(urls) {
+      res.json(urls)
     })
+
+  },
+
+  submitUrls: function(req, res){
+    console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
+    
+    // DISSABLE WHEN TESTING vvvv
+
+    // var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
+    //   id: {
+    //     type: Sequelize.INTEGER,
+    //     primaryKey: true,
+    //     autoIncrement: true 
+    //   },
+    //     SiteId: Sequelize.INTEGER,
+    //     customerId: Sequelize.INTEGER,
+    //     urlType: Sequelize.TEXT,
+    //     spiderName: Sequelize.TEXT,
+    //     inputCategoryUrl: Sequelize.TEXT,
+    // }, {
+    //   timestamps: false,
+    //   freezeTableName: true,
+    //   tableName: 'inputQueue_discovery'
+    // })  
+
+    // req.body.urlsToSubmit.map(function(item){
+    //   InputQueue_discovery.create({
+    //     SiteId: item.SiteId,
+    //     customerId: item.customerId,
+    //     urlType: item.urlType,
+    //     spiderName: item.spiderName,
+    //     inputCategoryUrl: item.inputCategoryUrl,
+    //   });
+    // })
     
     // DISSABLE WHEN TESTING ^^^^
 

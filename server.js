@@ -63,6 +63,7 @@ app.put( '/resetPassword', user.resetPassword);
 
 app.get('/getDomains', data.getDomains);
 app.get('/getCustomers', data.getCustomers);
+app.get('/getSubmitedUrls', data.getSubmitedUrls);
 app.post('/submitUrls', data.submitUrls);
 
 

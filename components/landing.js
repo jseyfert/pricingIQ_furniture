@@ -179,8 +179,8 @@ var Landing = React.createClass({
               <div className="row">
               </div>
             </div> 
+            <Footer />
           </div>
-            // <Footer setActiveComponent={ this.props.setActiveComponent } />
         )
       }
     }
