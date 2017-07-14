@@ -3,6 +3,7 @@ var Footer = require('./partialComps/footer');
 var React = require('react');
 var ItemRedDashboard = require('./partialComps/urlDisplay/itemRedDashboard');
 var ItemDashboard = require('./partialComps/urlDisplay/itemDashboard');
+var ModalDialog = require('./partialComps/modalDialog');
 
 var dashboard = React.createClass({
 
@@ -56,7 +57,7 @@ var dashboard = React.createClass({
   },
 
   disableDeleteButton: function(){
-    return true
+    return false
     // if (this.props.customerIdDashboard && this.props.urlTypeDashboard !== "Select Url Type"){
     //   return false;
     // } else {
@@ -161,7 +162,8 @@ var dashboard = React.createClass({
               <div >
                 {this.displaySelectAllButton()}
                 &nbsp;
-                <button onClick={handleDeleteUrls}  className="btn btn-warning btn-md" disabled={this.disableDeleteButton()}>Delete Selected</button>
+                <ModalDialog/>
+                <button onClick={handleDeleteUrls}  className="btn btn-danger btn-md" disabled={this.disableDeleteButton()} type="button" data-toggle="modal" data-target="#exampleModal">Delete Selected</button>
               </div>
         </div>
         <div className="container">
