@@ -46,6 +46,9 @@ module.exports = {
   },
 
   getSubmitedUrls: function(req, res){
+    console.log("req.body", req.body)
+    var customerIdDashboard = req.body.customerIdDashboard
+    var urlTypeDashboard = req.body.urlTypeDashboard
 
     var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
       id: {
@@ -64,7 +67,12 @@ module.exports = {
       tableName: 'inputQueue_discovery'
     })  
 
-    InputQueue_discovery.findAll().then(function(urls) {
+    InputQueue_discovery.findAll({
+    where: {
+      urlType: urlTypeDashboard,
+      customerId: customerIdDashboard,
+    }
+    }).then(function(urls) {
       res.json(urls)
     })
 

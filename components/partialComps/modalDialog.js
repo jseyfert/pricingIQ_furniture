@@ -40,9 +40,9 @@ var ModalDialog = React.createClass({
               <h4 className="modal-title blackText" id="exampleModalLabel">You sure?</h4>
             </div>
             <div className="modal-body">
-                <button onClick={ console.log("working")} type="submit" className="btn btn-danger" data-dismiss="modal" aria-label="Close" >Yes</button>
+                <button type="submit" className="btn btn-danger" data-dismiss="modal" aria-label="Close" >Yes</button>
                 &nbsp;
-                <button onClick={ console.log("working")} type="submit" className="btn btn-success" data-dismiss="modal" aria-label="Close" >No</button>
+                <button  type="submit" className="btn btn-success" data-dismiss="modal" aria-label="Close" >No</button>
             </div>
           </div>
         </div>

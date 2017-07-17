@@ -16,8 +16,6 @@ var Logo = React.createClass({
       return (
         <div>
 
-          <div className="betaRibbon">Beta Release</div>
-
           <div className="container text-center">
             <h1 className="mainLogo">pricingIQ</h1>
             <br/>

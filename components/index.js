@@ -255,13 +255,13 @@ var Index = React.createClass({
     this.runCreateUrlObj(this.state.rawText, urlType);
   },  
 
-  handleUrlTypeSelectDashboard: function(urlTypeDashboard){
-    this.setState({
-      urlTypeDashboard: urlTypeDashboard,
-      showSubmittedUrls: false
-    });
-    // this.runCreateUrlObj(this.state.rawText, urlType);
-  },  
+  // handleUrlTypeSelectDashboard: function(urlTypeDashboard){
+  //   this.setState({
+  //     urlTypeDashboard: urlTypeDashboard,
+  //     showSubmittedUrls: false
+  //   });
+  //   // this.runCreateUrlObj(this.state.rawText, urlType);
+  // },  
 
   runCreateUrlObj: function(text, urlType){
     var allUrls = this.createUrlObj(text, urlType);
@@ -271,7 +271,7 @@ var Index = React.createClass({
   },
 
   handleSelectUrlToDelete: function(urlId){
-    console.log("in index   handleSelectUrlToDelete", urlId)
+    // console.log("in index   handleSelectUrlToDelete", urlId)
     
     var newAllSubmittedUrlsPerCustomer = []
     var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
@@ -298,41 +298,53 @@ var Index = React.createClass({
     });
   },  
 
-  handleCustomerSelectDashboard: function(customerIdDashboard, customerNameDashboard){
+  handleUrlTypeSelectDashboard: function(urlTypeDashboard, customerIdDashboard,){
+    // console.log("in handleUrlTypeSelectDashboard",urlTypeDashboard, customerIdDashboard)
+    this.setState({
+      urlTypeDashboard: urlTypeDashboard,
+      showSubmittedUrls: false
+    });
+    this.handleGetSubmitedUrls(urlTypeDashboard, customerIdDashboard)
+  },  
+
+  handleCustomerSelectDashboard: function(urlTypeDashboard, customerIdDashboard, customerNameDashboard){
+    // console.log("in handleCustomerSelectDashboard",urlTypeDashboard, customerIdDashboard)
     this.setState({
       customerIdDashboard: customerIdDashboard,
       customerNameDashboard: customerNameDashboard,
       showSubmittedUrls: false
     });
+    this.handleGetSubmitedUrls(urlTypeDashboard, customerIdDashboard)
   },
 
-  handleGetSubmitedUrls: function(){
-    // console.log("in handleGetSubmitedUrls")
-    this.setState({ 
-      urlsDownloading: true,
-    });
-    this.getSubmitedUrls()
+  handleGetSubmitedUrls: function(urlTypeDashboard, customerIdDashboard){
+    // console.log("in handleGetSubmitedUrls", urlTypeDashboard, customerIdDashboard)
+    if (urlTypeDashboard === "Select Url Type" || !customerIdDashboard){
+      console.log("DONT RUN")
+    } else {
+      console.log("RUN")
+      this.setState({ 
+        urlsDownloading: true,
+      });
+      this.getSubmitedUrls(urlTypeDashboard, customerIdDashboard)
+    }
 
   },
 
-  getSubmitedUrls: function(){
-    var customerIdDashboard = this.state.customerIdDashboard
-    var urlTypeDashboard = this.state.urlTypeDashboard
+  getSubmitedUrls: function(urlTypeDashboard, customerIdDashboard){
+    // console.log("in getSubmitedUrls1111", urlTypeDashboard, customerIdDashboard )
 
     var self = this;
     $.ajax({
-      method: 'GET', 
+      method: 'POST', 
       url: '/getSubmitedUrls',
-      // data: { customerIdDashboard: customerIdDashboard, urlTypeDashboard: urlTypeDashboard },
+      data: { customerIdDashboard: customerIdDashboard, urlTypeDashboard: urlTypeDashboard },
     }).done(function(data){
+        // console.log("in getSubmitedUrls2222", data)
         var allSubmittedUrlsPerCustomer = []
         data.map(function(obj){
-          if (obj.customerId === customerIdDashboard){
-            if (obj.urlType === urlTypeDashboard){
-              obj.checked = false
-              allSubmittedUrlsPerCustomer.push(obj)
-            }
-          }
+          obj.checked = false
+          allSubmittedUrlsPerCustomer.push(obj)
         })
         // console.log("allSubmittedUrlsPerCustomer", allSubmittedUrlsPerCustomer)
       self.setState({ 

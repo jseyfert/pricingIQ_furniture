@@ -12,12 +12,10 @@ var ItemRedDashboard = React.createClass({
     var urlCount = this.props.index + 1
     return (
  
-
-           <li className="list-group-item redText smallText hover"  onClick={this.handleClick} >
+           <li className="list-group-item list-group-item-danger smallText" onClick={this.handleClick}>
              <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
              {urlCount}) {this.props.inputCategoryUrl} 
            </li>
-
       )
     }
 });

@@ -48,6 +48,72 @@ var dashboard = React.createClass({
       )
   },
 
+  onClickCustomer: function(customerIdDashboard, customerNameDashboard){
+      this.props.handleCustomerSelectDashboard(this.props.urlTypeDashboard, customerIdDashboard, customerNameDashboard)
+      // console.log("onClickCustomer", this.props.urlTypeDashboard, customerIdDashboard, customerNameDashboard)
+   },  
+  
+  onClickUrlType: function(urlTypeDashboard){
+      this.props.handleUrlTypeSelectDashboard(urlTypeDashboard ,this.props.customerIdDashboard)
+    // console.log("onClickUrlType", urlTypeDashboard,this.props.customerIdDashboard)
+  },
+
+  buttonClicked: function(){
+    // return "btn btn-default"
+    console.log("buttonClicked", this.props.urlTypeDashboard)
+    if (this.props.urlTypeDashboard === "Detail"){
+      return "btn btn-default buttonClicked"
+    } else if (this.props.urlTypeDashboard === "Discovery"){
+      return "btn btn-default buttonClicked"
+    } else {
+      return "btn btn-default"
+    }
+  },
+
+
+  displayCustomer: function(){
+
+
+    var UrlType = ["Detail", "Discovery"]
+    var UrlTyperows = [];
+    var UrlTypeState = this.props.urlTypeDashboard
+    // console.log("this.props.urlTypeDashboard", this.props.urlTypeDashboard)
+    UrlType.map(function(arr){
+      // console.log("UrlTypeState", UrlTypeState)
+        if (UrlTypeState === arr){
+          UrlTyperows.push(  <button type="button" key={arr} className="btn btn-default buttonClicked" onClick={ this.onClickUrlType.bind(null, arr)}>{arr}</button>)
+          // console.log("one")
+        } else {
+          UrlTyperows.push(  <button type="button" key={arr} className="btn btn-default" onClick={ this.onClickUrlType.bind(null, arr)}>{arr}</button>)
+          // console.log("two")
+        }
+      }, this)
+
+
+
+    var customers = this.props.customers;
+    var rows = [];
+    customers.map(function(obj){
+        if (this.props.customerIdDashboard === obj.customerId){
+          rows.push( <button type="button" className="btn btn-default buttonClicked" key={obj.customerId} onClick={ this.onClickCustomer.bind(null, obj.customerId, obj.Name) } >{obj.Name}</button> )
+        } else {
+          rows.push( <button type="button" className="btn btn-default" key={obj.customerId} onClick={ this.onClickCustomer.bind(null, obj.customerId, obj.Name) } >{obj.Name}</button> ) 
+        }
+      }, this)
+    
+    return(
+            <div className="btn-group-vertical" role="group" aria-label="...">
+              <button type="submit" className="btn btn-success">Select Url Type </button>
+              {UrlTyperows}
+              <button type="submit" className="btn btn-success">Select Customer</button>
+              {rows}
+              <button type="submit" className="btn btn-success">Filter By Spider</button>
+            </div>
+          
+      )
+  },
+
+
   disableButton: function(){
     if (this.props.customerIdDashboard && this.props.urlTypeDashboard !== "Select Url Type"){
       return false;
@@ -75,11 +141,12 @@ var dashboard = React.createClass({
   },
 
   displayUrls: function(){
-    console.log("this.props.urlsDownloading", this.props.handleSelectUrlToDelete)
+    // console.log("this.props.urlsDownloading", this.props.handleSelectUrlToDelete)
     var handleSelectUrlToDelete = this.props.handleSelectUrlToDelete
     var rows = [];
+    var selectedCount = 0
     var allUrls = this.props.allSubmittedUrlsPerCustomer;
-    console.log("allUrls", allUrls)
+    // console.log("allUrls", allUrls)
 
     if (this.props.urlsDownloading){
       return(
@@ -108,19 +175,43 @@ var dashboard = React.createClass({
         var checked = obj.checked
 
         if (checked){
+          selectedCount += 1
           rows.push(<ItemRedDashboard handleSelectUrlToDelete={handleSelectUrlToDelete} SiteId={SiteId} customerId={customerId} id={id} inputCategoryUrl={inputCategoryUrl} spiderName={spiderName} urlType={urlType} index={index} /> )
         } else {
           rows.push(<ItemDashboard handleSelectUrlToDelete={handleSelectUrlToDelete} SiteId={SiteId} customerId={customerId} id={id} inputCategoryUrl={inputCategoryUrl} spiderName={spiderName} urlType={urlType} index={index} /> )
         }
       })
-      return rows;
+      return (
+        <div className="panel panel-success">
+          <div className="panel-heading">
+          {this.props.urlTypeDashboard}&nbsp;>&nbsp;
+          {this.props.customerNameDashboard}&nbsp;>&nbsp;
+
+          <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
+            <div className="btn-group" role="group" aria-label="..."><button className="btn btn-warning btn-sm">Select All</button></div>
+            <div className="btn-group" role="group" aria-label="..."><button className="btn btn-danger btn-sm">Delete</button></div>
+          </div>
+          <div className="btn-toolbar navbar-right" >
+          Total {allUrls.length}&nbsp;|
+          Selected {selectedCount}&nbsp;&nbsp;
+          </div>
+
+
+
+           </div>
+
+          <ul className="list-group">
+          {rows}
+            </ul>
+          </div>
+          )
     }
 
   },
 
 
   render: function(){
-    console.log("this.props.allSubmittedUrlsPerCustomer",this.props.allSubmittedUrlsPerCustomer)
+    // console.log("this.props.allSubmittedUrlsPerCustomer",this.props.allSubmittedUrlsPerCustomer)
       var handleGetSubmitedUrls = this.props.handleGetSubmitedUrls
       var handleDeleteUrls = this.props.handleDeleteUrls
       var domainsLoading = this.props.domainsLoading
@@ -148,37 +239,41 @@ var dashboard = React.createClass({
         )
       } else{
     return (
-      <div>
-        <Logo delay={false} />
-        <div className="container text-center">
-              <div >
-                {this.displayCustomerDropDown()}
-                &nbsp;
-                {this.displayUrlTypeDropDown()}
-                &nbsp;
-                <button onClick={handleGetSubmitedUrls}  className="btn btn-warning btn-md" disabled={this.disableButton()}>Query</button>
-              </div>
-              <br/>
-              <div >
-                {this.displaySelectAllButton()}
-                &nbsp;
-                <ModalDialog/>
-                <button onClick={handleDeleteUrls}  className="btn btn-danger btn-md" disabled={this.disableDeleteButton()} type="button" data-toggle="modal" data-target="#exampleModal">Delete Selected</button>
-              </div>
-        </div>
-        <div className="container">
-       
-          <br/>
-          <div className="row">
-          
-          {this.displayUrls()}
+        // <div className="container text-center">
+        //       <div >
+        //         {this.displayCustomerDropDown()}
+        //         &nbsp;
+        //         {this.displayUrlTypeDropDown()}
+        //         &nbsp;
+        //         <button onClick={handleGetSubmitedUrls}  className="btn btn-warning btn-md" disabled={this.disableButton()}>Query</button>
+        //       </div>
+        //       <br/>
+        //       <div >
+        //         {this.displaySelectAllButton()}
+        //         &nbsp;
+        //         <ModalDialog/>
+        //         <button onClick={handleDeleteUrls}  className="btn btn-danger btn-md" disabled={this.disableDeleteButton()} type="button" data-toggle="modal" data-target="#exampleModal">Delete Selected</button>
+        //       </div>
+        // </div>
+<div>
+  <Logo delay={false} />
+    <div className="row">
+      <div className="col-sm-2">
+       <div className="container">
 
-      
+      {this.displayCustomer()}
 
-          </div>
-        </div> 
-        <Footer />
       </div>
+      </div>
+      <div className="col-sm-10">
+       <div className="container">
+
+        {this.displayUrls()}
+
+      </div>
+      </div>
+    </div>
+</div>
 
     )
   }}
