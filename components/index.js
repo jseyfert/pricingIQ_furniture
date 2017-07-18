@@ -1,18 +1,13 @@
-
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ShowWhichComponent = require('./showWhichComponent.js');
 var Header = require('./partialComps/header.js');
 var Footer = require('./partialComps/footer.js');
-
 var validator = require('validator');
 var parseDomain = require("parse-domain");
 var _ = require("underscore");
 
-// var Fingerprint2 = require('fingerprintjs2');
-
 var Index = React.createClass({
-	
   getInitialState: function(){
 		return {
       userLoading: true,
@@ -260,14 +255,6 @@ var Index = React.createClass({
     this.runCreateUrlObj(this.state.rawText, urlType);
   },  
 
-  // handleUrlTypeSelectDashboard: function(urlTypeDashboard){
-  //   this.setState({
-  //     urlTypeDashboard: urlTypeDashboard,
-  //     showSubmittedUrls: false
-  //   });
-  //   // this.runCreateUrlObj(this.state.rawText, urlType);
-  // },  
-
   runCreateUrlObj: function(text, urlType){
     var allUrls = this.createUrlObj(text, urlType);
     this.setState({ 
@@ -275,9 +262,24 @@ var Index = React.createClass({
     })
   },
 
+  handleCustomerSelect: function(customerId, customerName){
+    this.setState({
+      customerId: customerId,
+      customerName: customerName,
+    });
+  },  
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // DASHBOARD 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   handleSelectUrlToDelete: function(urlId){
     // console.log("in index   handleSelectUrlToDelete", urlId)
-    
     var newAllSubmittedUrlsPerCustomer = []
     var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
     allSubmittedUrlsPerCustomer.map(function(obj){
@@ -288,7 +290,6 @@ var Index = React.createClass({
           obj.checked = false
         }
         newAllSubmittedUrlsPerCustomer.push(obj)
-        // console.log(obj)
       }
     })
     this.setState({
@@ -297,8 +298,6 @@ var Index = React.createClass({
   }, 
 
   handleSelectAllUrlToDelete: function(){
-    // console.log("in index   handleSelectAllUrlToDelete")
-    
     var newAllSubmittedUrlsPerCustomer = []
     var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
     allSubmittedUrlsPerCustomer.map(function(obj){
@@ -338,13 +337,6 @@ var Index = React.createClass({
     });
   }, 
 
-  handleCustomerSelect: function(customerId, customerName){
-    this.setState({
-      customerId: customerId,
-      customerName: customerName,
-    });
-  },  
-
   handleUrlTypeSelectDashboard: function(urlTypeDashboard, customerIdDashboard,){
     // console.log("in handleUrlTypeSelectDashboard",urlTypeDashboard, customerIdDashboard)
     this.setState({
@@ -377,12 +369,10 @@ var Index = React.createClass({
       });
       this.getSubmitedUrls(urlTypeDashboard, customerIdDashboard)
     }
-
   },
 
   getSubmitedUrls: function(urlTypeDashboard, customerIdDashboard){
     // console.log("in getSubmitedUrls1111", urlTypeDashboard, customerIdDashboard )
-
     var self = this;
     $.ajax({
       method: 'POST', 
@@ -405,9 +395,6 @@ var Index = React.createClass({
   },
 
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   handleDeleteUrls: function(){
     var urlsToDelete = [];
     var urls = this.state.allSubmittedUrlsPerCustomer
@@ -442,6 +429,22 @@ var Index = React.createClass({
       }
     })
   },  
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // DASHBOARD 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
 
   submitUrls: function(user, allUrls){
     var self = this;
@@ -461,7 +464,6 @@ var Index = React.createClass({
         })
       }
     })
-
     $.ajax({
       method: 'POST',
       url: '/submitUrls',
@@ -544,56 +546,32 @@ var Index = React.createClass({
   loginUserFromServer: function(userForm){
     var self = this;
     var text = self.state.rawText
-    // var currentTime = new Date().getTime()
-    // console.log('user',user)
+    self.runCreateUrlObj('dummyData', null);
     $.ajax({
       method: 'POST',
       url: '/login',
       data: userForm,
       success: function(data){
-        var user = data.user
-        self.setState({ user: user })
-        self.runCreateUrlObj(text,null)
-
-        var allUrls = self.state.allUrls
-        var verified = data.user.verified
-
-        var countUrls = 0;
-        var countActiveDomains = 0;
-        var countUrlFromActiveDomains = 0;
-   
-        allUrls.map(function(obj){
-          countUrls += obj.urlCount;
-          if(obj.domainActive && obj.urlCount > 0){countActiveDomains += 1};
-          if(obj.domainActive && obj.countToSubmitNow > 0){countUrlFromActiveDomains += 1};
+        self.setState({ 
+          user: data.user,
+          activeComponent: 'landing',
+          message: null,
+          passwordResetToken: null,
+          passwordResetEmail: null,
+          emailVerificationCount: 0,
+          passwordResetCount: 0,
+          rawText: '',
+          urlsUploading: false,
+          customerIdDashboard: null,
+          customerId: null,
+          showSubmittedUrls: false,
+          urlType: 'Select Url Type',
+          customerName: 'Select Customer',
+          urlTypeDashboard: 'Select Url Type',
+          customerNameDashboard: 'Select Customer'
         })
-   
-        var noUrls = (countUrls <= 0)
-        var noActiveDomains = (countActiveDomains <= 0)
-        var noUrlsFromActiveDomains = (countUrlFromActiveDomains <= 0)
-
-        if (!verified) {
-          self.setState({ 
-            activeComponent: 'confirmEmail',
-            message: { message: 'You have not yet verified your email. Please check your email.', alert: "alert alert-danger" },
-          })
-        } else if (noUrls){
-          self.setState({ 
-            activeComponent: 'landing',
-            message: null,
-          })
-        } else if (noActiveDomains || noUrlsFromActiveDomains){
-          self.setState({ 
-            activeComponent: 'orderIncomplete',
-            message: null //{ message: 'You did not submit any active domains',  alert: "alert alert-danger" }
-          })
-        } else {
-          self.setState({ urlsUploading: true })
-          self.submitUrls(user, allUrls);  /////////////////////////////////////////////////////////
-        }
-      },
+      }, 
       error: function(xhr, status, err){
-        // console.error('/login', status, err, xhr.responseJSON)
         self.setState({ 
           activeComponent: 'login',
           message: {message: xhr.responseJSON, alert: 'alert alert-danger'},
@@ -635,7 +613,6 @@ var Index = React.createClass({
         message: null,
         customersLoading: false,
       });
-      // if(!self.state.domainsLoading){ self.runCreateUrlObj(text,null); }
     })
   },
 
@@ -655,7 +632,6 @@ var Index = React.createClass({
             passwordResetEmail: null,
             emailVerificationCount: 0,
             passwordResetCount: 0,
-
             activeComponent: 'landing',
             rawText: '',
             message: null,
@@ -684,13 +660,16 @@ var Index = React.createClass({
         rawText: '',
         message: null,
         urlsUploading: false,
-        customerIdDashboard: null,
         customerId: null,
+        customerIdDashboard: null,
         showSubmittedUrls: false,
         urlType: 'Select Url Type',
         customerName: 'Select Customer',
         urlTypeDashboard: 'Select Url Type',
         customerNameDashboard: 'Select Customer',
+        allSubmittedUrlsPerCustomer: [],
+        urlsDownloading: false,
+        selectAll: true,
       })
       this.runCreateUrlObj('dummyData', this.state.urlType);
     } else {

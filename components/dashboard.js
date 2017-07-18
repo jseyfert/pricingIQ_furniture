@@ -1,23 +1,11 @@
+var React = require('react');
 var Logo = require('./partialComps/logo');
 var Footer = require('./partialComps/footer');
-var React = require('react');
 var ItemRedDashboard = require('./partialComps/urlDisplay/itemRedDashboard');
 var ItemDashboard = require('./partialComps/urlDisplay/itemDashboard');
 var ModalDialog = require('./partialComps/modalDialog');
 
 var dashboard = React.createClass({
-
-  // getInitialState: function(){
-  //   return {
-  //     showSpiderName: true,
-  //   }
-  // },
-
-  // getInitialState: function(){
-  //   return {
-  //     domain1: '',
-  //   };
-  // },
 
   onClickCustomer: function(customerIdDashboard, customerNameDashboard){
       this.props.handleCustomerSelectDashboard(this.props.urlTypeDashboard, customerIdDashboard, customerNameDashboard)
@@ -36,7 +24,6 @@ var dashboard = React.createClass({
   },
 
   displaySpiderNameButton: function(){
-    // console.log("this.props.showSpiderName",this.props.showSpiderName)
     if (this.props.showSpiderName){
       return(<div className="btn-group" role="group" aria-label="..."><button onClick={this.props.handleShowSpiderName} className="btn btn-warning btn-sm">Hide SpiderName</button></div>)
     } else {
@@ -45,7 +32,6 @@ var dashboard = React.createClass({
   },
 
   displayCustomer: function(){
-
     var UrlType = ["Detail", "Discovery"]
     var UrlTyperows = [];
     var UrlTypeState = this.props.urlTypeDashboard
@@ -68,17 +54,13 @@ var dashboard = React.createClass({
       }, this)
     
     return(
-            <div className="btn-group-vertical" role="group" aria-label="...">
-              <button type="submit" className="btn btn-success dissableButton">Select Url Type </button>
-              
-              {UrlTyperows}
-              
-              <br/>
-              <button type="submit" className="btn btn-success dissableButton">Select Customer</button>
-              
-              {rows}
-
-            </div>
+      <div className="btn-group-vertical" role="group" aria-label="...">
+        <button type="submit" className="btn btn-success dissableButton justify">Select Url Type </button>
+        {UrlTyperows}
+        <br/>
+        <button type="submit" className="btn btn-success dissableButton">Select Customer</button>
+        {rows}
+      </div>
       )
   },
 
@@ -91,7 +73,6 @@ var dashboard = React.createClass({
     var rows = [];
     var selectedCount = 0
     var allUrls = this.props.allSubmittedUrlsPerCustomer;
-    // console.log("allUrls", allUrls)
 
     if (this.props.urlsDownloading){
       return(
@@ -103,17 +84,14 @@ var dashboard = React.createClass({
       return <h2 className="text-center">Select Url Type & Customer</h2>
     } else if (allUrls.length === 0) {
       return(
-
         <div className="container">
-        <div className="alert alert-danger text-center">
-          <strong>{this.props.customerNameDashboard}</strong> does not have any <strong>{this.props.urlTypeDashboard}</strong> Urls
-        </div>
+          <div className="alert alert-danger text-center">
+            <strong>{this.props.customerNameDashboard}</strong> does not have any <strong>{this.props.urlTypeDashboard}</strong> Urls
+          </div>
         </div>
         )
     }else {
-
       allUrls.map(function(obj, index){
-
         var SiteId = obj.SiteId
         var customerId = obj.customerId
         var id = obj.id
@@ -121,8 +99,6 @@ var dashboard = React.createClass({
         var spiderName = obj.spiderName
         var urlType = obj.urlType
         var checked = obj.checked
-        // var enableDelete = false ? true : false
-        // console.log("enableDelete", enableDelete)
 
         if (checked){
           selectedCount += 1
@@ -134,71 +110,63 @@ var dashboard = React.createClass({
       return (
         <div className="panel panel-success">
           <div className="panel-heading">
-          <strong>{this.props.customerNameDashboard} > </strong>
-          <strong>{this.props.urlTypeDashboard}:</strong>&nbsp;
-          <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
-          {this.displaySpiderNameButton()}
-          {this.displaySelectAllButton()}
-          <ModalDialog handleDeleteUrls={this.props.handleDeleteUrls}/>
-          <div className="btn-group" role="group" aria-label="..."><button className="btn btn-danger btn-sm" disabled={selectedCount > 0 ? false : true } type="button" data-toggle="modal" data-target="#exampleModal">Delete</button></div>
+            <strong>{this.props.customerNameDashboard} > </strong>
+            <strong>{this.props.urlTypeDashboard}:</strong>&nbsp;
+            <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
+              {this.displaySpiderNameButton()}
+              {this.displaySelectAllButton()}
+              <ModalDialog handleDeleteUrls={this.props.handleDeleteUrls}/>
+              <button className="btn btn-danger btn-sm" disabled={selectedCount > 0 ? false : true } type="button" data-toggle="modal" data-target="#exampleModal">Delete</button>
           </div>
-          Total {allUrls.length}&nbsp;|
-          Selected {selectedCount}&nbsp;&nbsp;
+            Total {allUrls.length}&nbsp;|
+            Selected {selectedCount}&nbsp;&nbsp;
           </div>
           <ul className="list-group">
-          {rows}
+            {rows}
           </ul>
         </div>
-          )
+      )
     }
   },
 
   render: function(){
-      var domainsLoading = this.props.domainsLoading
-      var userLoading = this.props.userLoading
-      var customersLoading = this.props.customersLoading
-      var urlsUploading = this.props.urlsUploading
-      if (domainsLoading || userLoading || customersLoading || urlsUploading){
-        return (
-          <div>
-            <Logo delay={true} />
-            <div className="container text-center">
-              <br/>
-            </div>
-              <br/>
-            <div className="container">
-              <br/>
-              <br/>
-              <br/>
-              <div className="row text-center">
-              <i className="fa fa-spinner w3-spin" style={{fontSize:'44px'}}></i>
-              </div>
-            </div> 
-            <Footer />
+    var domainsLoading = this.props.domainsLoading
+    var userLoading = this.props.userLoading
+    var customersLoading = this.props.customersLoading
+    var urlsUploading = this.props.urlsUploading
+    if (domainsLoading || userLoading || customersLoading || urlsUploading){
+      return (
+        <div>
+          <Logo delay={true} />
+          <div className="container text-center">
+            <br/>
           </div>
-        )
-      } else {
-        return (
-              <div>
-                  <div className="row">
-                    <div className="col-sm-2">
-                     <div className="container">
-
-                      {this.displayCustomer()}
-
-                    </div>
-                    </div>
-                    <div className="col-sm-10">
-                     <div className="container">
-
-
-                      {this.displayUrls()}
-
-                    </div>
-                    </div>
-                  </div>
+            <br/>
+          <div className="container">
+            <br/>
+            <br/>
+            <br/>
+            <div className="row text-center">
+            <i className="fa fa-spinner w3-spin" style={{fontSize:'44px'}}></i>
+            </div>
+          </div> 
+        </div>
+      )
+    } else {
+      return (        
+        <div className="container-fluid">
+          <div className="row">
+            <nav className="col-sm-3 col-md-2">
+              {this.displayCustomer()}
+            </nav>
+            <main className="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+              <div className="table-responsive">
+                {this.displayUrls()}
               </div>
-        )
+            </main>
+          </div>
+        </div>
+      )
   }}
 });
 
