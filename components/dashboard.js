@@ -103,11 +103,17 @@ var dashboard = React.createClass({
     
     return(
             <div className="btn-group-vertical" role="group" aria-label="...">
-              <button type="submit" className="btn btn-success">Select Url Type </button>
+              
+              <button type="submit" className="btn btn-success dissableButton">Select Url Type </button>
               {UrlTyperows}
-              <button type="submit" className="btn btn-success">Select Customer</button>
+              
+              <br/>
+              <button type="submit" className="btn btn-success dissableButton">Select Customer</button>
               {rows}
-              <button type="submit" className="btn btn-success">Filter By Spider</button>
+
+              <br/>
+              <button type="submit" className="btn btn-success dissableButton">Filter By Spider</button>
+
             </div>
           
       )
@@ -132,11 +138,10 @@ var dashboard = React.createClass({
   },
 
   displaySelectAllButton: function(){
-    var selectAll = true 
-    if (selectAll){
-      return(<button className="btn btn-warning btn-md" disabled="true">Select All</button> )
+    if (this.props.selectAll){
+      return(<div className="btn-group" role="group" aria-label="..."><button onClick={this.props.handleSelectAllUrlToDelete} className="btn btn-warning btn-sm">Select All</button></div> )
     } else {
-      return(<button className="btn btn-warning btn-md" disabled="true">Select None</button> )
+      return(<div className="btn-group" role="group" aria-label="..."><button onClick={this.props.handleSelectNoneUrlToDelete} className="btn btn-warning btn-sm">Select None</button></div>)
     }
   },
 
@@ -158,8 +163,11 @@ var dashboard = React.createClass({
       return null
     } else if (allUrls.length === 0) {
       return(
-        <div className="row text-center">
-          {this.props.customerNameDashboard} does not have any {this.props.urlTypeDashboard} Urls
+
+        <div className="container">
+        <div className="alert alert-danger text-center">
+          <strong>{this.props.customerNameDashboard}</strong> does not have any <strong>{this.props.urlTypeDashboard}</strong> Urls
+        </div>
         </div>
         )
     }else {
@@ -184,11 +192,12 @@ var dashboard = React.createClass({
       return (
         <div className="panel panel-success">
           <div className="panel-heading">
-          {this.props.urlTypeDashboard}&nbsp;>&nbsp;
-          {this.props.customerNameDashboard}&nbsp;>&nbsp;
+          {this.props.urlTypeDashboard}&nbsp;|&nbsp;
+          {this.props.customerNameDashboard}&nbsp;|&nbsp;
+          All Spiders
 
           <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
-            <div className="btn-group" role="group" aria-label="..."><button className="btn btn-warning btn-sm">Select All</button></div>
+          {this.displaySelectAllButton()}
             <div className="btn-group" role="group" aria-label="..."><button className="btn btn-danger btn-sm">Delete</button></div>
           </div>
           <div className="btn-toolbar navbar-right" >

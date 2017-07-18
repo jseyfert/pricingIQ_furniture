@@ -44,6 +44,7 @@ var Index = React.createClass({
       customerIdDashboard: null,
       customerNameDashboard: 'Select Customer',
       urlTypeDashboard: 'Select Url Type',
+      selectAll: true,
       
       allSubmittedUrlsPerCustomer: [],
 
@@ -288,6 +289,36 @@ var Index = React.createClass({
     })
     this.setState({
       allSubmittedUrlsPerCustomer: allSubmittedUrlsPerCustomer,
+    });
+  }, 
+
+  handleSelectAllUrlToDelete: function(){
+    console.log("in index   handleSelectAllUrlToDelete")
+    
+    var newAllSubmittedUrlsPerCustomer = []
+    var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
+    allSubmittedUrlsPerCustomer.map(function(obj){
+        obj.checked = true
+        newAllSubmittedUrlsPerCustomer.push(obj)
+    })
+    this.setState({
+      allSubmittedUrlsPerCustomer: allSubmittedUrlsPerCustomer,
+      selectAll: false
+    });
+  }, 
+
+  handleSelectNoneUrlToDelete: function(){
+    console.log("in index   handleSelectAllUrlToDelete")
+    
+    var newAllSubmittedUrlsPerCustomer = []
+    var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
+    allSubmittedUrlsPerCustomer.map(function(obj){
+        obj.checked = false
+        newAllSubmittedUrlsPerCustomer.push(obj)
+    })
+    this.setState({
+      allSubmittedUrlsPerCustomer: allSubmittedUrlsPerCustomer,
+      selectAll: true
     });
   }, 
 
@@ -934,6 +965,7 @@ var Index = React.createClass({
         passwordResetCount={ this.state.passwordResetCount } 
         
         urlTypeDashboard={ this.state.urlTypeDashboard } 
+        selectAll={ this.state.selectAll } 
         customerNameDashboard={ this.state.customerNameDashboard } 
         customerIdDashboard={ this.state.customerIdDashboard } 
         allSubmittedUrlsPerCustomer={ this.state.allSubmittedUrlsPerCustomer } 
@@ -942,6 +974,8 @@ var Index = React.createClass({
         handleGetSubmitedUrls={ this.handleGetSubmitedUrls } 
         handleUrlSubmit={ this.handleUrlSubmit } 
         handleSelectUrlToDelete={ this.handleSelectUrlToDelete } 
+        handleSelectAllUrlToDelete={ this.handleSelectAllUrlToDelete } 
+        handleSelectNoneUrlToDelete={ this.handleSelectNoneUrlToDelete } 
         handleCustomerSelect={ this.handleCustomerSelect } 
         handleCustomerSelectDashboard={ this.handleCustomerSelectDashboard } 
         handleUrlTypeSelect={ this.handleUrlTypeSelect } 

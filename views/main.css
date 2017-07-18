@@ -17,7 +17,11 @@
   box-shadow:         inset 0 0 0px white;
 }
 
-
+.dissableButton{
+  color: #fff;
+   background-color: #449d44; 
+   border-color: #398439; 
+}
 /*************************************************/
 
 body {
