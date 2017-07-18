@@ -384,7 +384,7 @@ var Index = React.createClass({
       self.setState({ 
         allSubmittedUrlsPerCustomer: allSubmittedUrlsPerCustomer,
         urlsDownloading: false,
-        showSubmittedUrls: true
+        showSubmittedUrls: true,
       });
     })
   },
@@ -394,27 +394,31 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   handleDeleteUrls: function(){
-    var self = this;
-    // console.log("in handleDeleteUrls")
     var urlsToDelete = [];
     var urls = this.state.allSubmittedUrlsPerCustomer
+    var self = this;
+    self.setState({ 
+      urlsDownloading: true,
+    });
     urls.map(function(obj){
       if (obj.checked){
         urlsToDelete.push(obj.id)
       }
-      // console.log("urls", urlsToDelete)
     })
     $.ajax({
       method: 'POST',
       url: '/deleteUrls',
       data: { urlsToDelete: urlsToDelete },
       success: function(data){
-        console.log("in data")
-        // self.setState({ 
-        //   activeComponent: data.activeComponent,
-        //   message: data.message,
-        //   urlsUploading: true
-        // });
+        self.setState({ 
+          activeComponent: data.activeComponent,
+          allSubmittedUrlsPerCustomer: [],
+          urlsDownloading: false,
+          selectAll: true,
+          customerIdDashboard: null,
+          urlTypeDashboard: 'Select Url Type',
+          customerNameDashboard: 'Select Customer',
+        });
       },
       error: function(xhr, status, err){
         console.error('/deleteUrls', status, err.toString())

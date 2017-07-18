@@ -181,6 +181,7 @@ var dashboard = React.createClass({
           <span className="badge greenBackground">All Spiders</span>
 
           <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
+          
           {this.displaySelectAllButton()}
 
           <ModalDialog handleDeleteUrls={this.props.handleDeleteUrls}/>

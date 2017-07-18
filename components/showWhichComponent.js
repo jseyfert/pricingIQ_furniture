@@ -9,6 +9,7 @@ var Signup = require('./partialComps/user/signup.js');
 
 var Faq = require('./faq.js');
 var Landing = require('./landing.js');
+var DeleteComplete = require('./deleteComplete.js');
 var OrderComplete = require('./orderComplete.js');
 var OrderIncomplete = require('./orderIncomplete.js');
 var Dashboard = require('./dashboard.js');
@@ -71,7 +72,14 @@ var ShowWhichComponent = React.createClass({
           />
         </div>
         )
-    } else if(activeComponent === 'orderIncomplete'){
+    } else if(activeComponent === 'deleteComplete'){
+      return (
+        <div>
+          <DeleteComplete
+          />
+        </div>
+        )
+    }else if(activeComponent === 'orderIncomplete'){
       return (
         <div>
           <OrderIncomplete

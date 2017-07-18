@@ -107,6 +107,14 @@ module.exports = {
     // }).then(function(urls) {
     //   res.json(urls)
     // })
+
+
+    res.json({
+      activeComponent: 'deleteComplete',
+    })
+
+
+
   },
 
   submitUrls: function(req, res){
