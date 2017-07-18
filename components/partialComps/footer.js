@@ -10,9 +10,6 @@ var Footer = React.createClass({
         </div>
         <br/>
       </footer>
-          // <p className="navbar-text navbar-right navbarLink">
-          //   version 2.0
-          // </p>
     )
   }
 });

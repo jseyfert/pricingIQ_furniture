@@ -7,14 +7,28 @@ var ItemRedDashboard = React.createClass({
       this.props.handleSelectUrlToDelete(this.props.id)
   },
 
+  showSpiderName: function(id){
+    var showSpiderName = this.props.showSpiderName
+    // var showSpiderName = true
+    if (showSpiderName){
+      return (
+        <span className="badge redBackground">{this.props.spiderName} </span>
+        )
+    } else {
+      return null
+    }
+    
+  },
+
 
   render: function(){
     var urlCount = this.props.index + 1
     return (
  
            <li className="list-group-item list-group-item-danger smallText" onClick={this.handleClick}>
-             <span className="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-             {urlCount}) {this.props.inputCategoryUrl} 
+            {this.showSpiderName()}
+             <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;
+             {this.props.inputCategoryUrl} 
            </li>
       )
     }

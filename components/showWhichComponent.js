@@ -61,6 +61,8 @@ var ShowWhichComponent = React.createClass({
             urlsDownloading={ this.props.urlsDownloading } 
             showSubmittedUrls={ this.props.showSubmittedUrls } 
             selectAll={ this.props.selectAll } 
+            showSpiderName={ this.props.showSpiderName } 
+            handleShowSpiderName={ this.props.handleShowSpiderName} 
             
             handleDeleteUrls={this.props.handleDeleteUrls }
             handleSelectUrlToDelete={ this.props.handleSelectUrlToDelete }
@@ -76,6 +78,7 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <DeleteComplete
+          deleteCount={ this.props.deleteCount }
           />
         </div>
         )

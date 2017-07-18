@@ -46,6 +46,8 @@ var Index = React.createClass({
       customerNameDashboard: 'Select Customer',
       urlTypeDashboard: 'Select Url Type',
       selectAll: true,
+      showSpiderName: false,
+      deleteCount: 0,
       // dahsboard ^^^^
       
       allSubmittedUrlsPerCustomer: [],
@@ -309,6 +311,18 @@ var Index = React.createClass({
     });
   }, 
 
+  handleShowSpiderName: function(){
+    if (this.state.showSpiderName){
+      this.setState({
+        showSpiderName: false,
+      });
+    } else {
+      this.setState({
+        showSpiderName: true,
+      });
+    }
+  }, 
+
   handleSelectNoneUrlToDelete: function(){
     // console.log("in index   handleSelectAllUrlToDelete")
     
@@ -358,7 +372,8 @@ var Index = React.createClass({
       console.log("RUN")
       this.setState({ 
         urlsDownloading: true,
-        selectAll: true
+        selectAll: true,
+        showSpiderName: false,
       });
       this.getSubmitedUrls(urlTypeDashboard, customerIdDashboard)
     }
@@ -410,7 +425,9 @@ var Index = React.createClass({
       url: '/deleteUrls',
       data: { urlsToDelete: urlsToDelete },
       success: function(data){
+        console.log("data.deleteCount", data)
         self.setState({ 
+          deleteCount: data.deleteCount,
           activeComponent: data.activeComponent,
           allSubmittedUrlsPerCustomer: [],
           urlsDownloading: false,
@@ -1006,7 +1023,10 @@ var Index = React.createClass({
         customerIdDashboard={ this.state.customerIdDashboard } 
         allSubmittedUrlsPerCustomer={ this.state.allSubmittedUrlsPerCustomer } 
         showSubmittedUrls={ this.state.showSubmittedUrls } 
+        showSpiderName={ this.state.showSpiderName } 
+        deleteCount={ this.state.deleteCount } 
 
+        handleShowSpiderName={ this.handleShowSpiderName} 
         handleDeleteUrls={ this.handleDeleteUrls } 
         handleGetSubmitedUrls={ this.handleGetSubmitedUrls } 
         handleUrlSubmit={ this.handleUrlSubmit } 

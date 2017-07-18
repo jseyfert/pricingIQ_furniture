@@ -78,76 +78,70 @@ module.exports = {
   },
 
   deleteUrls: function(req, res){
-    console.log("deleteUrls req.body", req.body)
-    // var customerIdDashboard = req.body.customerIdDashboard
-    // var urlTypeDashboard = req.body.urlTypeDashboard
+    var urlsToDelete = req.body.urlsToDelete
+    // console.log("deleteUrls", urlsToDelete)
 
-    // var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
-    //   id: {
-    //     type: Sequelize.INTEGER,
-    //     primaryKey: true,
-    //     autoIncrement: true 
-    //   },
-    //     SiteId: Sequelize.INTEGER,
-    //     customerId: Sequelize.INTEGER,
-    //     urlType: Sequelize.TEXT,
-    //     spiderName: Sequelize.TEXT,
-    //     inputCategoryUrl: Sequelize.TEXT,
-    // }, {
-    //   timestamps: false,
-    //   freezeTableName: true,
-    //   tableName: 'inputQueue_discovery'
-    // })  
+    // DISSABLE WHEN TESTING vvvv
+    var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true 
+      },
+        SiteId: Sequelize.INTEGER,
+        customerId: Sequelize.INTEGER,
+        urlType: Sequelize.TEXT,
+        spiderName: Sequelize.TEXT,
+        inputCategoryUrl: Sequelize.TEXT,
+    }, {
+      timestamps: false,
+      freezeTableName: true,
+      tableName: 'inputQueue_discovery'
+    })  
 
-    // InputQueue_discovery.findAll({
-    // where: {
-    //   urlType: urlTypeDashboard,
-    //   customerId: customerIdDashboard,
-    // }
-    // }).then(function(urls) {
-    //   res.json(urls)
-    // })
-
-
-    res.json({
-      activeComponent: 'deleteComplete',
+    InputQueue_discovery.destroy({
+    where: {
+      id: urlsToDelete
+    }
+    }).then(function(deleteCount) {
+      res.json({deleteCount: deleteCount, activeComponent: 'deleteComplete', })
+      console.log("deleteCount",deleteCount)
     })
-
-
+    // DISSABLE WHEN TESTING ^^^^
 
   },
 
   submitUrls: function(req, res){
-    console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
+    // console.log('######## SUBMIT URLS ########', req.body.urlsToSubmit);
     
     // DISSABLE WHEN TESTING vvvv
 
-    // var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
-    //   id: {
-    //     type: Sequelize.INTEGER,
-    //     primaryKey: true,
-    //     autoIncrement: true 
-    //   },
-    //     SiteId: Sequelize.INTEGER,
-    //     customerId: Sequelize.INTEGER,
-    //     urlType: Sequelize.TEXT,
-    //     spiderName: Sequelize.TEXT,
-    //     inputCategoryUrl: Sequelize.TEXT,
-    // }, {
-    //   timestamps: false,
-    //   freezeTableName: true,
-    //   tableName: 'inputQueue_discovery'
-    // })  
+    var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true 
+      },
+        SiteId: Sequelize.INTEGER,
+        customerId: Sequelize.INTEGER,
+        urlType: Sequelize.TEXT,
+        spiderName: Sequelize.TEXT,
+        inputCategoryUrl: Sequelize.TEXT,
+    }, {
+      timestamps: false,
+      freezeTableName: true,
+      tableName: 'inputQueue_discovery'
+    })  
 
-    // req.body.urlsToSubmit.map(function(item){
-    //   InputQueue_discovery.create({
-    //     SiteId: item.SiteId,
-    //     customerId: item.customerId,
-    //     urlType: item.urlType,
-    //     spiderName: item.spiderName,
-    //     inputCategoryUrl: item.inputCategoryUrl,
-    //   });
-    // })
+    req.body.urlsToSubmit.map(function(item){
+      InputQueue_discovery.create({
+        SiteId: item.SiteId,
+        customerId: item.customerId,
+        urlType: item.urlType,
+        spiderName: item.spiderName,
+        inputCategoryUrl: item.inputCategoryUrl,
+      });
+    })
     
     // DISSABLE WHEN TESTING ^^^^
 
