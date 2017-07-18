@@ -61,6 +61,7 @@ var ShowWhichComponent = React.createClass({
             showSubmittedUrls={ this.props.showSubmittedUrls } 
             selectAll={ this.props.selectAll } 
             
+            handleDeleteUrls={this.props.handleDeleteUrls }
             handleSelectUrlToDelete={ this.props.handleSelectUrlToDelete }
             handleSelectAllUrlToDelete={ this.props.handleSelectAllUrlToDelete }
             handleSelectNoneUrlToDelete={ this.props.handleSelectNoneUrlToDelete }

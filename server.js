@@ -65,6 +65,7 @@ app.get('/getDomains', data.getDomains);
 app.get('/getCustomers', data.getCustomers);
 app.post('/getSubmitedUrls', data.getSubmitedUrls);
 app.post('/submitUrls', data.submitUrls);
+app.post('/deleteUrls', data.deleteUrls);
 
 
 if (process.env.NODE_ENV === 'production') {

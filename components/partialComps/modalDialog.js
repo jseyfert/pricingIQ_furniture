@@ -3,32 +3,9 @@ var React = require('react');
 
 var ModalDialog = React.createClass({
 
-  // getInitialState: function(){
-  //   return {
-  //     domain1: '',
-  //     domain2: '',
-  //     domain3: '',
-  //     domain4: '',
-  //   };
-  // },
-
-  // onDomain1Change: function(e){ this.setState({ domain1: e.target.value }) },
-  // onDomain2Change: function(e){ this.setState({ domain2: e.target.value }) },
-  // onDomain3Change: function(e){ this.setState({ domain3: e.target.value }) },
-  // onDomain4Change: function(e){ this.setState({ domain4: e.target.value }) },
-
-  // handleUserLoginSubmit: function(e){
-  //   e.preventDefault();
-  //   var arr = [];
-  //   if (this.state.domain1) {arr.push(this.state.domain1)}
-  //   if (this.state.domain2) {arr.push(this.state.domain2)}
-  //   if (this.state.domain3) {arr.push(this.state.domain3)}
-  //   if (this.state.domain4) {arr.push(this.state.domain4)}
-  //   if (arr.length > 0){
-  //     this.props.submitSuggestedDomains(arr);
-  //     this.setState({ domain1:'', domain2: '', domain3: '', domain4: ''});
-  //   }  
-  // },
+  handleUserLoginSubmit: function(e){
+    this.props.handleDeleteUrls()
+  },
 
   render: function(){
     return (
@@ -37,13 +14,12 @@ var ModalDialog = React.createClass({
           <div className="modal-content">
             <div className="modal-header">
               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 className="modal-title blackText" id="exampleModalLabel">You sure?</h4>
+              <h4 className="modal-title blackText" id="exampleModalLabel">Delete Selected Urls?</h4>
             </div>
-            <div className="modal-body">
-                <button type="submit" className="btn btn-danger" data-dismiss="modal" aria-label="Close" >Yes</button>
-                &nbsp;
-                <button  type="submit" className="btn btn-success" data-dismiss="modal" aria-label="Close" >No</button>
-            </div>
+            <div className="modal-footer">
+                   <button  type="submit" onClick={this.handleUserLoginSubmit} className="btn btn-danger" data-dismiss="modal" aria-label="Close" >Yes</button>
+                   <button  type="submit" className="btn btn-success" data-dismiss="modal" aria-label="Close" >No</button>
+                 </div>
           </div>
         </div>
       </div>

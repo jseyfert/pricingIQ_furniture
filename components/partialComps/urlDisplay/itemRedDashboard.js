@@ -3,7 +3,7 @@ var React = require('react');
 
 var ItemRedDashboard = React.createClass({
   handleClick: function(id){
-      console.log("in handleClick", this.props.id)
+      // console.log("in handleClick", this.props.id)
       this.props.handleSelectUrlToDelete(this.props.id)
   },
 

@@ -7,46 +7,46 @@ var ModalDialog = require('./partialComps/modalDialog');
 
 var dashboard = React.createClass({
 
-  displayCustomerDropDown: function(){
-    var customers = this.props.customers;
-    var rows = [];
-    customers.map(function(obj){
-      rows.push( <li key={obj.customerId}><a  onClick={ this.props.handleCustomerSelectDashboard.bind(null, obj.customerId, obj.Name)  } >{obj.Name}</a></li> )
-    }, this)
+  // displayCustomerDropDown: function(){
+  //   var customers = this.props.customers;
+  //   var rows = [];
+  //   customers.map(function(obj){
+  //     rows.push( <li key={obj.customerId}><a  onClick={ this.props.handleCustomerSelectDashboard.bind(null, obj.customerId, obj.Name)  } >{obj.Name}</a></li> )
+  //   }, this)
 
-    return(
-           <div className="btn-group" role="group">
-            <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             {this.props.customerNameDashboard} &nbsp;
-              <span className="caret"></span>
-            </button>
-            <ul className="dropdown-menu">
-             {rows}
-            </ul>
-          </div>
-      )
-  },
+  //   return(
+  //          <div className="btn-group" role="group">
+  //           <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  //            {this.props.customerNameDashboard} &nbsp;
+  //             <span className="caret"></span>
+  //           </button>
+  //           <ul className="dropdown-menu">
+  //            {rows}
+  //           </ul>
+  //         </div>
+  //     )
+  // },
 
-  displayUrlTypeDropDown: function(){
-    var UrlType = ["Detail", "Discovery"]
-    var rows = [];
-    UrlType.map(function(arr){
-      // console.log(arr);
-      rows.push( <li key={arr}><a  onClick={ this.props.handleUrlTypeSelectDashboard.bind(null, arr)  } >{arr}</a></li> )
-    }, this)
+  // displayUrlTypeDropDown: function(){
+  //   var UrlType = ["Detail", "Discovery"]
+  //   var rows = [];
+  //   UrlType.map(function(arr){
+  //     // console.log(arr);
+  //     rows.push( <li key={arr}><a  onClick={ this.props.handleUrlTypeSelectDashboard.bind(null, arr)  } >{arr}</a></li> )
+  //   }, this)
 
-    return(
-           <div className="btn-group" role="group">
-            <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             {this.props.urlTypeDashboard} &nbsp;
-              <span className="caret"></span>
-            </button>
-            <ul className="dropdown-menu">
-             {rows}
-            </ul>
-          </div>
-      )
-  },
+  //   return(
+  //          <div className="btn-group" role="group">
+  //           <button type="button" className="btn btn-warning btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  //            {this.props.urlTypeDashboard} &nbsp;
+  //             <span className="caret"></span>
+  //           </button>
+  //           <ul className="dropdown-menu">
+  //            {rows}
+  //           </ul>
+  //         </div>
+  //     )
+  // },
 
   onClickCustomer: function(customerIdDashboard, customerNameDashboard){
       this.props.handleCustomerSelectDashboard(this.props.urlTypeDashboard, customerIdDashboard, customerNameDashboard)
@@ -72,7 +72,6 @@ var dashboard = React.createClass({
 
 
   displayCustomer: function(){
-
 
     var UrlType = ["Detail", "Discovery"]
     var UrlTyperows = [];
@@ -112,29 +111,11 @@ var dashboard = React.createClass({
               {rows}
 
               <br/>
-              <button type="submit" className="btn btn-success dissableButton">Filter By Spider</button>
+              <button type="submit" className="btn btn-success dissableButton"> <span className="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter By Spider</button>
 
             </div>
           
       )
-  },
-
-
-  disableButton: function(){
-    if (this.props.customerIdDashboard && this.props.urlTypeDashboard !== "Select Url Type"){
-      return false;
-    } else {
-      return true;
-    }
-  },
-
-  disableDeleteButton: function(){
-    return false
-    // if (this.props.customerIdDashboard && this.props.urlTypeDashboard !== "Select Url Type"){
-    //   return false;
-    // } else {
-    //   return true;
-    // }
   },
 
   displaySelectAllButton: function(){
@@ -148,6 +129,7 @@ var dashboard = React.createClass({
   displayUrls: function(){
     // console.log("this.props.urlsDownloading", this.props.handleSelectUrlToDelete)
     var handleSelectUrlToDelete = this.props.handleSelectUrlToDelete
+    var handleDeleteUrls = this.props.handleDeleteUrls
     var rows = [];
     var selectedCount = 0
     var allUrls = this.props.allSubmittedUrlsPerCustomer;
@@ -181,6 +163,8 @@ var dashboard = React.createClass({
         var spiderName = obj.spiderName
         var urlType = obj.urlType
         var checked = obj.checked
+        // var enableDelete = false ? true : false
+        // console.log("enableDelete", enableDelete)
 
         if (checked){
           selectedCount += 1
@@ -192,13 +176,15 @@ var dashboard = React.createClass({
       return (
         <div className="panel panel-success">
           <div className="panel-heading">
-          {this.props.urlTypeDashboard}&nbsp;|&nbsp;
-          {this.props.customerNameDashboard}&nbsp;|&nbsp;
-          All Spiders
+          <strong> {this.props.customerNameDashboard}: </strong>&nbsp;
+          <span className="badge greenBackground">{this.props.urlTypeDashboard}</span>&nbsp;
+          <span className="badge greenBackground">All Spiders</span>
 
           <div className="btn-toolbar navbar-right" role="toolbar" aria-label="...">
           {this.displaySelectAllButton()}
-            <div className="btn-group" role="group" aria-label="..."><button className="btn btn-danger btn-sm">Delete</button></div>
+
+          <ModalDialog handleDeleteUrls={this.props.handleDeleteUrls}/>
+          <div className="btn-group" role="group" aria-label="..."><button className="btn btn-danger btn-sm" disabled={selectedCount > 0 ? false : true } type="button" data-toggle="modal" data-target="#exampleModal">Delete</button></div>
           </div>
           <div className="btn-toolbar navbar-right" >
           Total {allUrls.length}&nbsp;|
@@ -248,42 +234,24 @@ var dashboard = React.createClass({
         )
       } else{
     return (
-        // <div className="container text-center">
-        //       <div >
-        //         {this.displayCustomerDropDown()}
-        //         &nbsp;
-        //         {this.displayUrlTypeDropDown()}
-        //         &nbsp;
-        //         <button onClick={handleGetSubmitedUrls}  className="btn btn-warning btn-md" disabled={this.disableButton()}>Query</button>
-        //       </div>
-        //       <br/>
-        //       <div >
-        //         {this.displaySelectAllButton()}
-        //         &nbsp;
-        //         <ModalDialog/>
-        //         <button onClick={handleDeleteUrls}  className="btn btn-danger btn-md" disabled={this.disableDeleteButton()} type="button" data-toggle="modal" data-target="#exampleModal">Delete Selected</button>
-        //       </div>
-        // </div>
-<div>
-  <Logo delay={false} />
-    <div className="row">
-      <div className="col-sm-2">
-       <div className="container">
+          <div>
+              <div className="row">
+                <div className="col-sm-2">
+                 <div className="container">
 
-      {this.displayCustomer()}
+                {this.displayCustomer()}
 
-      </div>
-      </div>
-      <div className="col-sm-10">
-       <div className="container">
+                </div>
+                </div>
+                <div className="col-sm-10">
+                 <div className="container">
 
-        {this.displayUrls()}
+                  {this.displayUrls()}
 
-      </div>
-      </div>
-    </div>
-</div>
-
+                </div>
+                </div>
+              </div>
+          </div>
     )
   }}
 });

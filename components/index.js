@@ -41,10 +41,12 @@ var Index = React.createClass({
       customerName: 'Select Customer',
       urlType: 'Select Url Type',
 
+      // dahsboard vvvv
       customerIdDashboard: null,
       customerNameDashboard: 'Select Customer',
       urlTypeDashboard: 'Select Url Type',
       selectAll: true,
+      // dahsboard ^^^^
       
       allSubmittedUrlsPerCustomer: [],
 
@@ -293,7 +295,7 @@ var Index = React.createClass({
   }, 
 
   handleSelectAllUrlToDelete: function(){
-    console.log("in index   handleSelectAllUrlToDelete")
+    // console.log("in index   handleSelectAllUrlToDelete")
     
     var newAllSubmittedUrlsPerCustomer = []
     var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
@@ -308,7 +310,7 @@ var Index = React.createClass({
   }, 
 
   handleSelectNoneUrlToDelete: function(){
-    console.log("in index   handleSelectAllUrlToDelete")
+    // console.log("in index   handleSelectAllUrlToDelete")
     
     var newAllSubmittedUrlsPerCustomer = []
     var allSubmittedUrlsPerCustomer = this.state.allSubmittedUrlsPerCustomer
@@ -356,6 +358,7 @@ var Index = React.createClass({
       console.log("RUN")
       this.setState({ 
         urlsDownloading: true,
+        selectAll: true
       });
       this.getSubmitedUrls(urlTypeDashboard, customerIdDashboard)
     }
@@ -390,6 +393,35 @@ var Index = React.createClass({
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  handleDeleteUrls: function(){
+    var self = this;
+    // console.log("in handleDeleteUrls")
+    var urlsToDelete = [];
+    var urls = this.state.allSubmittedUrlsPerCustomer
+    urls.map(function(obj){
+      if (obj.checked){
+        urlsToDelete.push(obj.id)
+      }
+      // console.log("urls", urlsToDelete)
+    })
+    $.ajax({
+      method: 'POST',
+      url: '/deleteUrls',
+      data: { urlsToDelete: urlsToDelete },
+      success: function(data){
+        console.log("in data")
+        // self.setState({ 
+        //   activeComponent: data.activeComponent,
+        //   message: data.message,
+        //   urlsUploading: true
+        // });
+      },
+      error: function(xhr, status, err){
+        console.error('/deleteUrls', status, err.toString())
+      }
+    })
+  },  
+
   submitUrls: function(user, allUrls){
     var self = this;
     var urlsToSubmit = [];
@@ -971,6 +1003,7 @@ var Index = React.createClass({
         allSubmittedUrlsPerCustomer={ this.state.allSubmittedUrlsPerCustomer } 
         showSubmittedUrls={ this.state.showSubmittedUrls } 
 
+        handleDeleteUrls={ this.handleDeleteUrls } 
         handleGetSubmitedUrls={ this.handleGetSubmitedUrls } 
         handleUrlSubmit={ this.handleUrlSubmit } 
         handleSelectUrlToDelete={ this.handleSelectUrlToDelete } 

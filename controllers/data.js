@@ -75,7 +75,38 @@ module.exports = {
     }).then(function(urls) {
       res.json(urls)
     })
+  },
 
+  deleteUrls: function(req, res){
+    console.log("deleteUrls req.body", req.body)
+    // var customerIdDashboard = req.body.customerIdDashboard
+    // var urlTypeDashboard = req.body.urlTypeDashboard
+
+    // var InputQueue_discovery = sequelize.define('inputQueue_discovery', {
+    //   id: {
+    //     type: Sequelize.INTEGER,
+    //     primaryKey: true,
+    //     autoIncrement: true 
+    //   },
+    //     SiteId: Sequelize.INTEGER,
+    //     customerId: Sequelize.INTEGER,
+    //     urlType: Sequelize.TEXT,
+    //     spiderName: Sequelize.TEXT,
+    //     inputCategoryUrl: Sequelize.TEXT,
+    // }, {
+    //   timestamps: false,
+    //   freezeTableName: true,
+    //   tableName: 'inputQueue_discovery'
+    // })  
+
+    // InputQueue_discovery.findAll({
+    // where: {
+    //   urlType: urlTypeDashboard,
+    //   customerId: customerIdDashboard,
+    // }
+    // }).then(function(urls) {
+    //   res.json(urls)
+    // })
   },
 
   submitUrls: function(req, res){
