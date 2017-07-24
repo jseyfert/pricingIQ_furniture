@@ -3,11 +3,10 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var session = require('express-session');
 var Sequelize = require('sequelize')
-var Fingerprint = require('express-fingerprint');
 var session = require('express-session');
-var FileStore = require('session-file-store')(session);
+// var FileStore = require('session-file-store')(session);
+var MongoStore = require('connect-mongo')(session);
 
 require('dotenv').config();
 require('./config/passport.js')(passport);
@@ -20,21 +19,19 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 10
 
 app.use(express.static(__dirname + '/views'));
 
-app.use(Fingerprint({
-    paramters:[
-        Fingerprint.useragent,
-        Fingerprint.acceptHeaders,
-        Fingerprint.geoip,
-    ]
-}))
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGO_URI);
+mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: { maxAge: 2629800000 }, // 1 month
-  store: new FileStore,
-  // store: new MongoStore,
+  resave: false,
+  saveUninitialized: false,
+  // cookie: { maxAge: 2629800000 }, // 1 month
+  // store: new FileStore,
+  store: new MongoStore({ 
+    mongooseConnection: mongoose.connection,
+     })
 }));
 
 
@@ -98,9 +95,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URI);
-mongoose.connection.once('open', function(){ console.log('Connected to database'); });
 
 
 app.get('/', function(req, res){
