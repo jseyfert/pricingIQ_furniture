@@ -13,6 +13,7 @@ var DeleteComplete = require('./deleteComplete.js');
 var OrderComplete = require('./orderComplete.js');
 var OrderIncomplete = require('./orderIncomplete.js');
 var Dashboard = require('./dashboard.js');
+var CustAdmin = require('./custAdmin.js');
 
 
 var ShowWhichComponent = React.createClass({
@@ -49,28 +50,35 @@ var ShowWhichComponent = React.createClass({
       return (
         <div>
           <Dashboard
-            customers={ this.props.customers }
-            customerIdDashboard={ this.props.customerIdDashboard }
-            domainsLoading={ this.props.domainsLoading }
-            userLoading={ this.props.userLoading }
-            customersLoading={ this.props.customersLoading }
-            urlsUploading={ this.props.urlsUploading }
-            customerNameDashboard={ this.props.customerNameDashboard } 
-            urlTypeDashboard={ this.props.urlTypeDashboard } 
-            allSubmittedUrlsPerCustomer={ this.props.allSubmittedUrlsPerCustomer } 
-            urlsDownloading={ this.props.urlsDownloading } 
-            showSubmittedUrls={ this.props.showSubmittedUrls } 
-            selectAll={ this.props.selectAll } 
-            showSpiderName={ this.props.showSpiderName } 
-            handleShowSpiderName={ this.props.handleShowSpiderName} 
-            
-            handleDeleteUrls={this.props.handleDeleteUrls }
-            handleSelectUrlToDelete={ this.props.handleSelectUrlToDelete }
-            handleSelectAllUrlToDelete={ this.props.handleSelectAllUrlToDelete }
-            handleSelectNoneUrlToDelete={ this.props.handleSelectNoneUrlToDelete }
-            handleCustomerSelectDashboard={ this.props.handleCustomerSelectDashboard }
-            handleUrlTypeSelectDashboard={ this.props.handleUrlTypeSelectDashboard }
-            handleGetSubmitedUrls={ this.props.handleGetSubmitedUrls } 
+          customers={ this.props.customers }
+          customerIdDashboard={ this.props.customerIdDashboard }
+          domainsLoading={ this.props.domainsLoading }
+          userLoading={ this.props.userLoading }
+          customersLoading={ this.props.customersLoading }
+          urlsUploading={ this.props.urlsUploading }
+          customerNameDashboard={ this.props.customerNameDashboard } 
+          urlTypeDashboard={ this.props.urlTypeDashboard } 
+          allSubmittedUrlsPerCustomer={ this.props.allSubmittedUrlsPerCustomer } 
+          urlsDownloading={ this.props.urlsDownloading } 
+          showSubmittedUrls={ this.props.showSubmittedUrls } 
+          selectAll={ this.props.selectAll } 
+          showSpiderName={ this.props.showSpiderName } 
+          handleShowSpiderName={ this.props.handleShowSpiderName} 
+          
+          handleDeleteUrls={this.props.handleDeleteUrls }
+          handleSelectUrlToDelete={ this.props.handleSelectUrlToDelete }
+          handleSelectAllUrlToDelete={ this.props.handleSelectAllUrlToDelete }
+          handleSelectNoneUrlToDelete={ this.props.handleSelectNoneUrlToDelete }
+          handleCustomerSelectDashboard={ this.props.handleCustomerSelectDashboard }
+          handleUrlTypeSelectDashboard={ this.props.handleUrlTypeSelectDashboard }
+          handleGetSubmitedUrls={ this.props.handleGetSubmitedUrls } 
+          />
+        </div>
+        )
+    } else if(activeComponent === 'custAdmin'){
+      return (
+        <div>
+          <CustAdmin
           />
         </div>
         )
